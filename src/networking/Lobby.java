@@ -1,5 +1,6 @@
 package networking;
 
+import java.awt.BorderLayout;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -13,13 +14,20 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 
 import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JList;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 
 public class Lobby extends JPanel 
 {
+	//Out of Lobby GUI elements.
 	private JButton newLobby = new JButton("Create Lobby");
 	private JButton joinLobby = new JButton("Join Lobby");
+	private JList lobbies = new JList();
+	private JLabel info = new JLabel("Lobby Information.");
 	
+	//General Elements.
 	private String lobbyID = null;
 	private String playerID = null;
 	
@@ -29,7 +37,7 @@ public class Lobby extends JPanel
 	
 	public Lobby(URL serverLocation)
 	{
-		
+		notInLobby();
 	}
 	
 	/*
@@ -37,7 +45,21 @@ public class Lobby extends JPanel
 	 */
 	private void notInLobby()
 	{
+		this.removeAll();
 		
+		this.setLayout(new BorderLayout());
+		
+		for(int i = 0; i < 50; i++)
+			info.add(new JLabel("Lobby numer " + i));
+		
+		
+		JScrollPane sp = new JScrollPane(lobbies);
+		this.add(sp, BorderLayout.CENTER);
+		
+		JPanel bottom = new JPanel(new BorderLayout());
+		bottom.add(info, BorderLayout.WEST);
+		bottom.add(newLobby, BorderLayout.CENTER);
+		bottom.add(joinLobby, BorderLayout.EAST);
 	}
 	
 	/*
