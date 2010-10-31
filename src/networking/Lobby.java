@@ -13,6 +13,7 @@ import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.LinkedList;
 
+import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JList;
@@ -24,8 +25,9 @@ public class Lobby extends JPanel
 	//Out of Lobby GUI elements.
 	private JButton newLobby = new JButton("Create Lobby");
 	private JButton joinLobby = new JButton("Join Lobby");
-	private JList lobbies = new JList();
+	private JList lobbies = null;
 	private JLabel info = new JLabel("Lobby Information.");
+	private DefaultListModel model = new DefaultListModel();
 	
 	//General Elements.
 	private String lobbyID = null;
@@ -37,6 +39,8 @@ public class Lobby extends JPanel
 	
 	public Lobby(URL serverLocation)
 	{
+		
+		lobbies = new JList(model);
 		notInLobby();
 	}
 	
@@ -48,9 +52,9 @@ public class Lobby extends JPanel
 		this.removeAll();
 		
 		this.setLayout(new BorderLayout());
-		
+
 		for(int i = 0; i < 50; i++)
-			info.add(new JLabel("Lobby numer " + i));
+			model.addElement("Lobby numer " + i);
 		
 		
 		JScrollPane sp = new JScrollPane(lobbies);
@@ -60,6 +64,8 @@ public class Lobby extends JPanel
 		bottom.add(info, BorderLayout.WEST);
 		bottom.add(newLobby, BorderLayout.CENTER);
 		bottom.add(joinLobby, BorderLayout.EAST);
+		
+		this.add(bottom, BorderLayout.SOUTH);
 	}
 	
 	/*
@@ -76,7 +82,7 @@ public class Lobby extends JPanel
 		
 		try 
 		{
-			to = new URL(server.getPath() + "/1");
+			to = new URL(server.getPath() + "1");
 		}
 		catch (MalformedURLException e) 
 		{
@@ -96,6 +102,30 @@ public class Lobby extends JPanel
 		LinkedList<String> returned = sentPOST(to, data);
 		
 		lobbyID = returned.getFirst();
+		inLobby();
+	}
+	
+	private void joinLobby(String lobbyid, String playerid)
+	{
+		URL to = null;
+		
+		try
+		{
+			to = new URL(server.getPath() + "2");
+		}
+		catch(MalformedURLException e)
+		{
+			e.printStackTrace();
+		}
+		
+		String[][] data = new String[2][2];
+		data[0][0] = "lobbyid";
+		data[1][0] = "playerid";
+		
+		data[0][1] = lobbyid;
+		data[1][1] = playerid;
+		
+		sentPOST(to, data);
 		inLobby();
 	}
 	
