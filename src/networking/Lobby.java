@@ -5,9 +5,11 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.UnsupportedEncodingException;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLEncoder;
+import java.util.ArrayList;
 import java.util.LinkedList;
 
 import javax.swing.JButton;
@@ -18,6 +20,11 @@ public class Lobby extends JPanel
 	private JButton newLobby = new JButton("Create Lobby");
 	private JButton joinLobby = new JButton("Join Lobby");
 	
+	private String lobbyID = null;
+	private String playerID = null;
+	
+	private ArrayList<String> messages = new ArrayList<String>(30);
+	
 	private URL server = null;
 	
 	public Lobby(URL serverLocation)
@@ -25,9 +32,49 @@ public class Lobby extends JPanel
 		
 	}
 	
-	private void createLobby(String name, String game, int playerID)
+	/*
+	 * The builds the interface for when the user is not in a lobby.
+	 */
+	private void notInLobby()
 	{
 		
+	}
+	
+	/*
+	 * This builds the interface for when the user is in a lobby.
+	 */
+	private void inLobby()
+	{
+		
+	}
+	
+	private void createLobby(String name, String game, String playerID)
+	{
+		URL to = null;
+		
+		try 
+		{
+			to = new URL(server.getPath() + "/1");
+		}
+		catch (MalformedURLException e) 
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		String[][] data = new String[3][2];
+		data[0][0] = "name";
+		data[1][0] = "game";
+		data[2][0] = "playerid";
+		
+		data[0][1] = name;
+		data[1][1] = game;
+		data[2][1] = playerID;
+		
+		LinkedList<String> returned = sentPOST(to, data);
+		
+		lobbyID = returned.getFirst();
+		inLobby();
 	}
 	
 	private LinkedList<String> sentPOST(URL to, String[][] data)
