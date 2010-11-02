@@ -78,17 +78,7 @@ public class Lobby extends JPanel
 	
 	private void createLobby(String name, String game, String playerID)
 	{
-		URL to = null;
-		
-		try 
-		{
-			to = new URL(server.getPath() + "1");
-		}
-		catch (MalformedURLException e) 
-		{
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		URL to = createURL("1");
 		
 		String[][] data = new String[3][2];
 		data[0][0] = "name";
@@ -107,16 +97,7 @@ public class Lobby extends JPanel
 	
 	private void joinLobby(String lobbyid, String playerid)
 	{
-		URL to = null;
-		
-		try
-		{
-			to = new URL(server.getPath() + "2");
-		}
-		catch(MalformedURLException e)
-		{
-			e.printStackTrace();
-		}
+		URL to = createURL("2");
 		
 		String[][] data = new String[2][2];
 		data[0][0] = "lobbyid";
@@ -170,5 +151,21 @@ public class Lobby extends JPanel
 		}
 		
 		return rv;
+	}
+	
+	/*
+	 * Appends the String append to whatever the server path is.
+	 */
+	private URL createURL(String append)
+	{
+		try
+		{
+			return new URL(server.getPath() + append);
+		}
+		catch(MalformedURLException e)
+		{
+			e.printStackTrace();
+			return null;
+		}
 	}
 }
