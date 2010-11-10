@@ -8,7 +8,9 @@ import java.util.Set;
 
 import listener.CollisionListener;
 import listener.bounding.Bounding;
+import listener.bounding.BoundingCircle;
 import sprites.Sprite;
+import util.ImageUtil;
 import util.Point2D;
 import event.CollisionEvent;
 
@@ -154,7 +156,7 @@ public class Room implements KeyListener
 		LinkedList<Sprite> as = new LinkedList<Sprite>();
 
 		Set<Integer> s = allSprites.keySet();
-		
+
 		for(Integer i : s)
 		{
 			try
@@ -166,10 +168,13 @@ public class Room implements KeyListener
 				//Ignore it, the sprite is mostly likely gone already/
 			}
 		}
-		
+
 		return as;
 	}
 
+	/*
+	 * Returns linkedlist of sprites whose bounding box contains the point P
+	 */
 	public LinkedList<Sprite> getSprites(Point2D p)
 	{
 		LinkedList<Sprite> rv = new LinkedList<Sprite>();
@@ -185,6 +190,86 @@ public class Room implements KeyListener
 					rv.add(s);
 				}
 			}
+		}
+		return rv;
+	}
+
+	/**
+	 *  Pixel perfect collision detection. Can only be used when all sprites use a bounding box.
+	 * @param p - Point to check for collisions
+	 * @param a - The sprite checking for the collisions
+	 * @return - LinkedList of sprites 
+	 */
+	public LinkedList<Sprite> getSprites(Point2D p, Sprite a)
+	{
+		LinkedList<Sprite> rv = new LinkedList<Sprite>();
+		int cx1, cy1, cx2, cy2;
+		int ax1, ax2, ay1, ay2;
+		int bx1, bx2, by1, by2;
+		
+		for(Sprite b: getSprites(p))
+		{
+			if((b==a)||(b.getBounding() instanceof BoundingCircle))
+			{
+				continue;
+			}
+			
+			ax1 = a.getX();
+			ax2 = a.getX() + a.getWidth() - 1;
+			bx1 = b.getX();
+			bx2 = b.getX() + b.getWidth() - 1;
+			ay1 = a.getY();
+			ay2 = a.getY() + a.getHeight() - 1;
+			by1 = b.getY();
+			by2 = b.getY() + b.getWidth() - 1;
+
+			if(ax1<=bx1)
+			{
+				cx1 = bx1;
+			}
+			else
+			{
+				cx1 = ax1;
+			}
+			if(ay1<=by1)
+			{
+				cy1 = by1;
+			}
+			else
+			{
+				cy1 = ay1;
+			}
+			if(ax2<=bx2)
+			{
+				cx2 = ax2;
+			}
+			else
+			{
+				cx2 = bx2;
+			}
+			if(ay2<=by2)
+			{
+				cy2 = ay2;
+			}
+			else
+			{
+				cy2 = by2;
+			}
+
+			System.out.println("("+cx1+","+cy1+") ("+cx2+","+cy2+")");
+			int[] amask = a.print().getRGB(cx1-ax1, cy1-ay1, cx2-cx1+1, cy2-cy1+1, null, 0, cx2-cx1+1);
+			int[] bmask = b.print().getRGB(cx1-bx1, cy1-by1, cx2-cx1+1, cy2-cy1+1, null, 0, cx2-cx1+1);
+
+			int[] bitmask = ImageUtil.getCombinedBitMask(ImageUtil.getBitMask(amask), ImageUtil.getBitMask(bmask));
+			for(int i = 0; i < bitmask.length; i++)
+			{
+				if(bitmask[i] == 0x1)
+				{
+					rv.add(b);
+					break;
+				}
+			}
+
 		}
 
 		return rv;
@@ -311,7 +396,7 @@ public class Room implements KeyListener
 
 		return false;
 	}
-	
+
 	public String toString()
 	{
 		return "Width: " + this.getWidth() + " Height: " + this.getHeight() + " Layers: " + this.getLayers();
