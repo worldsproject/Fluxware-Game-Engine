@@ -35,8 +35,10 @@ public class BoundingBox extends Bounding
 		if(p.getLayer() == bound.getLayer())
 		{
 			if(rect == null)
+			{
 				return false;
-			       
+			}
+			
 			return rect.contains(x, y);
 		}
 		else
@@ -78,13 +80,15 @@ public class BoundingBox extends Bounding
 		BoundingBox b = (BoundingBox)box;
 		
 		Point2D one = new Point2D(b.getX(), b.getX(), b.getLayer());  //Top Left Corner.
-		Point2D two = new Point2D(b.getX() + b.getWidth(), b.getY(), b.getLayer());  //Top Right Corner.
-		Point2D thr = new Point2D(b.getX(), b.getY() + b.getHeight(), b.getLayer());  //Bottom Left Corner.
-		Point2D fou = new Point2D(b.getX() + b.getWidth(), b.getY() + b.getHeight(), b.getLayer());  //Bottom Right Corner.
+		Point2D two = new Point2D(b.getX() + b.getWidth()-1, b.getY(), b.getLayer());  //Top Right Corner.
+		Point2D thr = new Point2D(b.getX(), b.getY() + b.getHeight()-1, b.getLayer());  //Bottom Left Corner.
+		Point2D fou = new Point2D(b.getX() + b.getWidth()-1, b.getY() + b.getHeight()-1, b.getLayer());  //Bottom Right Corner.
 		
 		if(this.withinBounds(one) || this.withinBounds(two) || this.withinBounds(thr) || this.withinBounds(fou))
+		{
 			return true;
-		else
-			return false;
+		}
+		
+		return false;
 	}
 }

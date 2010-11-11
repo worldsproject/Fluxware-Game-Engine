@@ -60,8 +60,12 @@ public class RoomTest {
 	@Test
 	public void testGetSprites()
 	{
-		sprites = room.getSprites(new Point2D(60,60,0));
-		assertEquals(1, sprites.size());
+		sprites = room.getOverlaps(new Point2D(60,60,0),a);
+		for(Sprite s: sprites)
+		{
+			System.out.println(s.id);
+		}
+		assertTrue(sprites.isEmpty());
 	}
 	
 	@Test
@@ -74,8 +78,7 @@ public class RoomTest {
 	@Test
 	public void testPPC_No_Collision()
 	{
-		sprites = room.getSprites(new Point2D(60,60,0), a);
-		sprites.addAll(room.getSprites(new Point2D(109,109,0), a));
+		sprites = room.getCollisions(new Point2D(60,60,0), a);
 		
 		assertTrue(sprites.isEmpty());
 	}
@@ -93,8 +96,7 @@ public class RoomTest {
 		e.setX(107);
 		e.update(1,1);
 
-		sprites = room.getSprites(new Point2D(60,60,0), a);
-		sprites.addAll(room.getSprites(new Point2D(109,109,0), a));
+		sprites = room.getCollisions(new Point2D(60,60,0), a);
 		
 		assertTrue(sprites.isEmpty());
 	}
@@ -113,8 +115,7 @@ public class RoomTest {
 		e.setX(99);
 		e.update(1,1);
 
-		sprites = room.getSprites(new Point2D(65,65,0), a);
-		sprites.addAll(room.getSprites(new Point2D(109,109,0), a));
+		sprites = room.getCollisions(new Point2D(65,65,0), a);
 
 		assertEquals(4,sprites.size());
 	}

@@ -175,22 +175,30 @@ public class Room implements KeyListener
 	/*
 	 * Returns linkedlist of sprites whose bounding box contains the point P
 	 */
-	public LinkedList<Sprite> getSprites(Point2D p)
+	public LinkedList<Sprite> getOverlaps(Point2D p, Sprite s)
 	{
 		LinkedList<Sprite> rv = new LinkedList<Sprite>();
-
-		for(Sprite s : this.getSprites())
+		Point2D original = s.getPoint();
+		s.setPoint(p);
+		s.getBounding().updateBounds();
+		for(Sprite sprite : this.getSprites())
 		{
-			Bounding b = s.getBounding();
-
+			if(sprite==s)
+			{
+				continue;
+			}
+			
+			Bounding b = sprite.getBounding();
+			
 			if(b != null)
 			{
-				if(b.withinBounds(p))
+				if(b.withinBounds(s.getBounding()))
 				{
-					rv.add(s);
+					rv.add(sprite);
 				}
 			}
 		}
+		s.setPoint(original);
 		return rv;
 	}
 
@@ -200,16 +208,16 @@ public class Room implements KeyListener
 	 * @param a - The sprite checking for the collisions
 	 * @return - LinkedList of sprites 
 	 */
-	public LinkedList<Sprite> getSprites(Point2D p, Sprite a)
+	public LinkedList<Sprite> getCollisions(Point2D p, Sprite a)
 	{
 		LinkedList<Sprite> rv = new LinkedList<Sprite>();
 		int cx1, cy1, cx2, cy2;
 		int ax1, ax2, ay1, ay2;
 		int bx1, bx2, by1, by2;
 		
-		for(Sprite b: getSprites(p))
+		for(Sprite b: getOverlaps(p,a))
 		{
-			if((b==a)||(b.getBounding() instanceof BoundingCircle))
+			if((b.getBounding() instanceof BoundingCircle))
 			{
 				continue;
 			}
@@ -256,7 +264,6 @@ public class Room implements KeyListener
 				cy2 = by2;
 			}
 
-			System.out.println("("+cx1+","+cy1+") ("+cx2+","+cy2+")");
 			int[] amask = a.print().getRGB(cx1-ax1, cy1-ay1, cx2-cx1+1, cy2-cy1+1, null, 0, cx2-cx1+1);
 			int[] bmask = b.print().getRGB(cx1-bx1, cy1-by1, cx2-cx1+1, cy2-cy1+1, null, 0, cx2-cx1+1);
 
@@ -375,7 +382,7 @@ public class Room implements KeyListener
 	{
 		for(CollisionListener cl : collisionListeners)
 		{
-			cl.collided(new CollisionEvent(s, this.getSprites(p)));
+			cl.collided(new CollisionEvent(s, this.getOverlaps(p,s)));
 		}
 	}
 

@@ -21,4 +21,5 @@ public abstract class Bounding implements Serializable
 	
 	public abstract void updateBounds();
 	public abstract boolean withinBounds(Point2D p);
+	public abstract boolean withinBounds(Bounding b);
 }
