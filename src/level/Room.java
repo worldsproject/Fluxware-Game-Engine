@@ -211,9 +211,16 @@ public class Room implements KeyListener
 	public LinkedList<Sprite> getCollisions(Point2D p, Sprite a)
 	{
 		LinkedList<Sprite> rv = new LinkedList<Sprite>();
-		int cx1, cy1, cx2, cy2;
-		int ax1, ax2, ay1, ay2;
+		
+		int ax1 = p.getX();
+		int ay1 = p.getY();
+		int ax2 = p.getX() + a.getWidth() - 1;
+		int ay2 = p.getY() + a.getHeight() - 1;
+		
 		int bx1, bx2, by1, by2;
+		int cx1, cy1, cx2, cy2;
+		
+		int[] amask, bmask, bitmask;
 		
 		for(Sprite b: getOverlaps(p,a))
 		{
@@ -222,52 +229,21 @@ public class Room implements KeyListener
 				continue;
 			}
 			
-			ax1 = a.getX();
-			ax2 = a.getX() + a.getWidth() - 1;
 			bx1 = b.getX();
 			bx2 = b.getX() + b.getWidth() - 1;
-			ay1 = a.getY();
-			ay2 = a.getY() + a.getHeight() - 1;
 			by1 = b.getY();
 			by2 = b.getY() + b.getWidth() - 1;
+			
+			cx1 = Math.max(ax1,bx1);
+			cy1 = Math.max(ay1,by1);
+			cx2 = Math.min(ax2,bx2);
+			cy2 = Math.min(ay2, by2);
 
-			if(ax1<=bx1)
-			{
-				cx1 = bx1;
-			}
-			else
-			{
-				cx1 = ax1;
-			}
-			if(ay1<=by1)
-			{
-				cy1 = by1;
-			}
-			else
-			{
-				cy1 = ay1;
-			}
-			if(ax2<=bx2)
-			{
-				cx2 = ax2;
-			}
-			else
-			{
-				cx2 = bx2;
-			}
-			if(ay2<=by2)
-			{
-				cy2 = ay2;
-			}
-			else
-			{
-				cy2 = by2;
-			}
+			amask = a.print().getRGB(cx1-ax1, cy1-ay1, cx2-cx1+1, cy2-cy1+1, null, 0, cx2-cx1+1);
+			bmask = b.print().getRGB(cx1-bx1, cy1-by1, cx2-cx1+1, cy2-cy1+1, null, 0, cx2-cx1+1);
 
-			int[] amask = a.print().getRGB(cx1-ax1, cy1-ay1, cx2-cx1+1, cy2-cy1+1, null, 0, cx2-cx1+1);
-			int[] bmask = b.print().getRGB(cx1-bx1, cy1-by1, cx2-cx1+1, cy2-cy1+1, null, 0, cx2-cx1+1);
-
-			int[] bitmask = ImageUtil.getCombinedBitMask(ImageUtil.getBitMask(amask), ImageUtil.getBitMask(bmask));
+			bitmask = ImageUtil.getCombinedBitMask(ImageUtil.getBitMask(amask), ImageUtil.getBitMask(bmask));
+			
 			for(int i = 0; i < bitmask.length; i++)
 			{
 				if(bitmask[i] == 0x1)
@@ -276,9 +252,7 @@ public class Room implements KeyListener
 					break;
 				}
 			}
-
 		}
-
 		return rv;
 	}
 

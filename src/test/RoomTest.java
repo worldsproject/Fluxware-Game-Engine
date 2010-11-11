@@ -87,13 +87,13 @@ public class RoomTest {
 	public void testPPC_TransparentOverlap()
 	{
 
-		b.setY(13);
+		b.setY(20);
 		b.update(1,1);
-		c.setX(13);
+		c.setX(20);
 		c.update(1,1);
-		d.setY(107);
+		d.setY(100);
 		d.update(1,1);
-		e.setX(107);
+		e.setX(100);
 		e.update(1,1);
 
 		sprites = room.getCollisions(new Point2D(60,60,0), a);
@@ -103,7 +103,7 @@ public class RoomTest {
 
 	@Test 
 
-	public void testPPc_NonTransparentOverlap()
+	public void testPPC_NonTransparentOverlap()
 	{
 
 		b.setY(21);
@@ -115,9 +115,20 @@ public class RoomTest {
 		e.setX(99);
 		e.update(1,1);
 
-		sprites = room.getCollisions(new Point2D(65,65,0), a);
+		sprites = room.getCollisions(new Point2D(60,60,0), a);
 
 		assertEquals(4,sprites.size());
+	}
+	
+	@Test
+	public void testPPC_NonTransparentOverlap2()
+	{
+		b.setX(15);
+		b.setY(15);
+		b.update(1,1);
+		
+		sprites = room.getCollisions(new Point2D(10,10,0), a);
+		assertEquals(1, sprites.size());
 	}
 
 
