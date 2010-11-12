@@ -13,7 +13,7 @@ public class BoundingBox extends Bounding
 	{
 		super(s);
 		
-		this.updateBounds();
+		rect = new Rectangle(bound.getX(), bound.getY(), bound.getWidth(), bound.getHeight());
 	}
 	
 	@Override
@@ -21,7 +21,10 @@ public class BoundingBox extends Bounding
 	{
 		if(bound.print() != null)
 		{
-			rect = new Rectangle(bound.getX(), bound.getY(), bound.getWidth(), bound.getHeight());
+			rect.x = bound.getX();
+			rect.y = bound.getY();
+			rect.width = bound.getWidth();
+			rect.height = bound.getHeight();
 		}
 		
 	}
@@ -91,4 +94,5 @@ public class BoundingBox extends Bounding
 		
 		return false;
 	}
+	
 }

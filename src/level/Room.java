@@ -178,9 +178,11 @@ public class Room implements KeyListener
 	public LinkedList<Sprite> getOverlaps(Point2D p, Sprite s)
 	{
 		LinkedList<Sprite> rv = new LinkedList<Sprite>();
-		Point2D original = s.getPoint();
-		s.setPoint(p);
-		s.getBounding().updateBounds();
+		
+		Point2D one = new Point2D(p.getX(),p.getY(),p.getLayer());
+		Point2D two = new Point2D(p.getX()+s.getWidth()-1,p.getY(),p.getLayer());
+		Point2D three = new Point2D(p.getX(),p.getY()+s.getHeight()-1,p.getLayer());
+		Point2D four = new Point2D(p.getX()+s.getWidth()-1,p.getY()+s.getHeight()-1,p.getLayer());
 		for(Sprite sprite : this.getSprites())
 		{
 			if(sprite==s)
@@ -192,13 +194,13 @@ public class Room implements KeyListener
 			
 			if(b != null)
 			{
-				if(b.withinBounds(s.getBounding()))
+				if(b.withinBounds(one)||b.withinBounds(two)||b.withinBounds(three)||b.withinBounds(four))
 				{
 					rv.add(sprite);
 				}
 			}
 		}
-		s.setPoint(original);
+
 		return rv;
 	}
 
