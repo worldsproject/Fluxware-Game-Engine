@@ -186,6 +186,23 @@ public class Lobby extends JPanel
 		sendPOST(to, data);
 	}
 	
+	public void sendMessage(String lobbyid, String playerid, String message)
+	{
+		URL to = createURL("8");
+		
+		String[][] data = new String[3][2];
+		
+		data[0][0] = "lobbyid";
+		data[1][0] = "playerid";
+		data[2][0] = "message";
+		
+		data[0][1] = lobbyid;
+		data[1][1] = playerid;
+		data[2][1] = message;
+		
+		sendPOST(to, data);
+	}
+	
 	private LinkedList<String> sendPOST(URL to, String[][] data)
 	{
 		StringBuffer buf = new StringBuffer(); //This is the String that we will create our data filled URL with.
