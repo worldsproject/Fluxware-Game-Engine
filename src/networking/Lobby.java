@@ -34,6 +34,7 @@ public class Lobby extends JPanel
 	private String playerID = null;
 	
 	private ArrayList<String> messages = new ArrayList<String>(30);
+	private LinkedList<String> players = new LinkedList<String>();
 	
 	private URL server = null;
 	
@@ -126,6 +127,19 @@ public class Lobby extends JPanel
 		
 		sendPOST(to, data);
 		inLobby();
+	}
+	
+	private void startGame(String lobbyid)
+	{
+		URL to = createURL("4");
+		
+		String[][] data = new String[1][2];
+		
+		data[0][0] = "lobbyid";
+		data[1][0] = lobbyid;
+		
+		players = sendPOST(to, data);
+		notInLobby();
 	}
 	
 	private LinkedList<String> sendPOST(URL to, String[][] data)
