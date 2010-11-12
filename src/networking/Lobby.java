@@ -106,7 +106,9 @@ public class Lobby extends JPanel
 		data[0][1] = lobbyid;
 		data[1][1] = playerid;
 		
-		sendPOST(to, data);
+		LinkedList<String> returned = sendPOST(to, data);
+		
+		lobbyID = returned.getFirst();
 		inLobby();
 	}
 	
