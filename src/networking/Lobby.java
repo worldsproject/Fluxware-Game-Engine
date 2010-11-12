@@ -130,45 +130,48 @@ public class Lobby extends JPanel
 	
 	private LinkedList<String> sendPOST(URL to, String[][] data)
 	{
-		StringBuffer buf = new StringBuffer();
+		StringBuffer buf = new StringBuffer(); //This is the String that we will create our data filled URL with.
 		
-		for(int i = 0; i < data.length; i++)
+		for(int i = 0; i < data.length; i++) //We are going to iterate through our 2D array.
 		{
 			try 
 			{
+				//We encode our URL with our (key, value) pairs.
 				buf.append(URLEncoder.encode(data[i][0], "UTF-8") + "=" + URLEncoder.encode(data[i][1], "UTF-8"));
-			}catch (UnsupportedEncodingException e){}
+			}catch (UnsupportedEncodingException e){} //This will (should) only happen if the UTF-8 doesn't work.
 		}
 		
+		//This will be the Linked list that contains all the data returned from the server.
 		LinkedList<String> rv = new LinkedList<String>();
 		
 		try 
 		{
-			URLConnection conn = to.openConnection();
-			conn.setDoOutput(true);
-			OutputStreamWriter wr = new OutputStreamWriter(conn.getOutputStream());
-			wr.write(buf.toString());
-			wr.flush();
+			URLConnection conn = to.openConnection(); //Open a connection to the server.
+			conn.setDoOutput(true); //Tell our connection that we will receive some output.
+			OutputStreamWriter wr = new OutputStreamWriter(conn.getOutputStream()); //Create our data pipe.
+			wr.write(buf.toString()); //Write to our data pipe with out URL that we made earlier.
+			wr.flush(); //Empty the pipe and ensure we send all the data.
 			
+			//This will be used to read that data coming from the server.
 			BufferedReader rd = new BufferedReader(new InputStreamReader(conn.getInputStream()));
 			
 			
-			String line;
-	        while ((line = rd.readLine()) != null) 
+			String line; //The lines that we get from the BufferedReader
+	        while ((line = rd.readLine()) != null) //Keep reading until we get all the information from the server.
 	        {
-	        	rv.add(line);
+	        	rv.add(line); //Add each line to the LinkedList
 	        }
 	        
-	        wr.close();
+	        wr.close(); //Close both pipes, we're done using them.
 	        rd.close();
 		} 
-		catch (IOException e) 
+		catch (IOException e) //Incase something bad happens.
 		{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
-		return rv;
+		return rv; //Return our LinkedList.
 	}
 	
 	/*
@@ -178,9 +181,9 @@ public class Lobby extends JPanel
 	{
 		try
 		{
-			return new URL(server.getPath() + append);
+			return new URL(server.getPath() + append); //Takes the default address and appends whatever was given to the URL
 		}
-		catch(MalformedURLException e)
+		catch(MalformedURLException e) //Incase the new URL is broken.
 		{
 			e.printStackTrace();
 			return null;
