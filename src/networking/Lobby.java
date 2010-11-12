@@ -1,6 +1,8 @@
 package networking;
 
 import java.awt.BorderLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -20,7 +22,7 @@ import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
-public class Lobby extends JPanel 
+public class Lobby extends JPanel implements ActionListener
 {
 	//Out of Lobby GUI elements.
 	private JButton newLobby = new JButton("Create Lobby");
@@ -203,6 +205,23 @@ public class Lobby extends JPanel
 		sendPOST(to, data);
 	}
 	
+	public void receiveMessage(String lobbyid, String time, String messageid)
+	{
+		URL to = createURL("9");
+		
+		String[][] data = new String[3][2];
+		
+		data[0][0] = "lobbyid";
+		data[1][0] = "time";
+		data[2][0] = "messageid";
+		
+		data[0][1] = lobbyid;
+		data[1][1] = time;
+		data[2][1] = messageid;
+		
+		LinkedList<String> messages = sendPOST(to, data);
+	}
+	
 	private LinkedList<String> sendPOST(URL to, String[][] data)
 	{
 		StringBuffer buf = new StringBuffer(); //This is the String that we will create our data filled URL with.
@@ -263,5 +282,12 @@ public class Lobby extends JPanel
 			e.printStackTrace();
 			return null;
 		}
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent arg0) 
+	{
+		// TODO Auto-generated method stub
+		
 	}
 }
