@@ -89,7 +89,7 @@ public class Lobby extends JPanel
 		data[1][1] = game;
 		data[2][1] = playerID;
 		
-		LinkedList<String> returned = sentPOST(to, data);
+		LinkedList<String> returned = sendPOST(to, data);
 		
 		lobbyID = returned.getFirst();
 		inLobby();
@@ -106,11 +106,27 @@ public class Lobby extends JPanel
 		data[0][1] = lobbyid;
 		data[1][1] = playerid;
 		
-		sentPOST(to, data);
+		sendPOST(to, data);
 		inLobby();
 	}
 	
-	private LinkedList<String> sentPOST(URL to, String[][] data)
+	private void leaveLobby(String lobbyid, String playerid)
+	{
+		URL to = createURL("3");
+		
+		String[][] data = new String[2][2];
+		
+		data[0][0] = "lobbyid";
+		data[1][0] = "playerid";
+		
+		data[0][1] = lobbyid;
+		data[1][1] = playerid;
+		
+		sendPOST(to, data);
+		inLobby();
+	}
+	
+	private LinkedList<String> sendPOST(URL to, String[][] data)
 	{
 		StringBuffer buf = new StringBuffer();
 		
