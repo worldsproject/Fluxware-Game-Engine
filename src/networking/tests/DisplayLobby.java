@@ -13,7 +13,7 @@ public class DisplayLobby extends JFrame
 	{
 		try 
 		{
-			this.add(new Lobby(new URL("http://localhost:8080/")));
+			this.add(new Lobby(new URL("http://localhost:8080/"), "test"));
 		}
 		catch (MalformedURLException e) 
 		{

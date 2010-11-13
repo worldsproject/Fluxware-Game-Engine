@@ -1,6 +1,7 @@
 package networking;
 
 import java.awt.BorderLayout;
+import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.BufferedReader;
@@ -21,6 +22,8 @@ import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
+import javax.swing.JTextField;
 
 public class Lobby extends JPanel implements ActionListener
 {
@@ -29,7 +32,16 @@ public class Lobby extends JPanel implements ActionListener
 	private JButton joinLobby = new JButton("Join Lobby");
 	private JList lobbies = null;
 	private JLabel info = new JLabel("Lobby Information.");
-	private DefaultListModel model = new DefaultListModel();
+	private DefaultListModel outOfLobbyModel = new DefaultListModel();
+	
+	//In lobby GUI elements.
+	private JButton ready = new JButton("Ready");
+	private JButton leave = new JButton("Leave");
+	
+	private JTextField input = new JTextField("Enter Message");
+	private JTextArea chat = new JTextArea("Welcome to the Lobby!");
+	private JList currentPlayers = null;
+	private DefaultListModel inLobbyModel = new DefaultListModel();
 	
 	//General Elements.
 	private String lobbyID = null;
@@ -42,11 +54,17 @@ public class Lobby extends JPanel implements ActionListener
 	
 	private URL server = null;
 	
-	public Lobby(URL serverLocation)
+	public Lobby(URL serverLocation, String game)
 	{
+		server = serverLocation;
 		
-		lobbies = new JList(model);
-		notInLobby();
+		lobbies = new JList(outOfLobbyModel);
+		currentPlayers = new JList(inLobbyModel);
+		
+//		newPlayer(game);
+		
+//		notInLobby();
+		inLobby();
 	}
 	
 	/*
@@ -58,8 +76,8 @@ public class Lobby extends JPanel implements ActionListener
 		
 		this.setLayout(new BorderLayout());
 
-		for(int i = 0; i < 50; i++)
-			model.addElement("Lobby numer " + i);
+		for(int i = 0; i < 10; i++)
+			outOfLobbyModel.addElement("Lobby number " + i);
 		
 		
 		JScrollPane sp = new JScrollPane(lobbies);
@@ -78,7 +96,24 @@ public class Lobby extends JPanel implements ActionListener
 	 */
 	private void inLobby()
 	{
+		this.removeAll();
 		
+		this.setLayout(new BorderLayout());
+		
+		for(int i = 0; i < 10; i++)
+			inLobbyModel.addElement("Player " + i);
+		
+		JScrollPane sp = new JScrollPane(currentPlayers);
+		
+		this.add(chat, BorderLayout.CENTER);
+		this.add(sp, BorderLayout.EAST);
+		
+		JPanel panel = new JPanel(new FlowLayout());
+		panel.add(input);
+		panel.add(ready);
+		panel.add(leave);
+		
+		this.add(panel, BorderLayout.SOUTH);
 	}
 	
 	private void createLobby(String name, String game, String playerID)
@@ -222,6 +257,18 @@ public class Lobby extends JPanel implements ActionListener
 		LinkedList<String> messages = sendPOST(to, data);
 	}
 	
+	public void newPlayer(String game)
+	{
+		URL to = createURL("a");
+		
+		String[][] data = new String[1][2];
+		
+		data[0][0] = "game";
+		data[0][1] = game;
+		
+		playerID = sendPOST(to, data).getFirst();
+	}
+	
 	private LinkedList<String> sendPOST(URL to, String[][] data)
 	{
 		StringBuffer buf = new StringBuffer(); //This is the String that we will create our data filled URL with.
@@ -275,7 +322,7 @@ public class Lobby extends JPanel implements ActionListener
 	{
 		try
 		{
-			return new URL(server.getPath() + append); //Takes the default address and appends whatever was given to the URL
+			return new URL(server.toString() + append); //Takes the default address and appends whatever was given to the URL
 		}
 		catch(MalformedURLException e) //Incase the new URL is broken.
 		{
