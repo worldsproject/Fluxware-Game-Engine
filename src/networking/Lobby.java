@@ -20,6 +20,7 @@ import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JList;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
@@ -53,18 +54,24 @@ public class Lobby extends JPanel implements ActionListener
 	private LinkedList<String> lobbys = new LinkedList<String>();
 	
 	private URL server = null;
+	private String game = null;
+	
+	private boolean inLobby = false;
 	
 	public Lobby(URL serverLocation, String game)
 	{
 		server = serverLocation;
+		this.game = game;
 		
 		lobbies = new JList(outOfLobbyModel);
 		currentPlayers = new JList(inLobbyModel);
 		
-//		newPlayer(game);
+		newLobby.addActionListener(this);
+		joinLobby.addActionListener(this);
 		
-//		notInLobby();
-		inLobby();
+		newPlayer(game);
+
+		notInLobby();
 	}
 	
 	/*
@@ -72,6 +79,8 @@ public class Lobby extends JPanel implements ActionListener
 	 */
 	private void notInLobby()
 	{
+		inLobby = false;
+		
 		this.removeAll();
 		
 		this.setLayout(new BorderLayout());
@@ -96,6 +105,8 @@ public class Lobby extends JPanel implements ActionListener
 	 */
 	private void inLobby()
 	{
+		inLobby = true;
+		
 		this.removeAll();
 		
 		this.setLayout(new BorderLayout());
@@ -114,6 +125,9 @@ public class Lobby extends JPanel implements ActionListener
 		panel.add(leave);
 		
 		this.add(panel, BorderLayout.SOUTH);
+		
+		this.revalidate();
+		this.repaint();
 	}
 	
 	private void createLobby(String name, String game, String playerID)
@@ -257,7 +271,7 @@ public class Lobby extends JPanel implements ActionListener
 		LinkedList<String> messages = sendPOST(to, data);
 	}
 	
-	public void newPlayer(String game)
+	public String newPlayer(String game)
 	{
 		URL to = createURL("a");
 		
@@ -267,6 +281,7 @@ public class Lobby extends JPanel implements ActionListener
 		data[0][1] = game;
 		
 		playerID = sendPOST(to, data).getFirst();
+		return playerID;
 	}
 	
 	private LinkedList<String> sendPOST(URL to, String[][] data)
@@ -332,9 +347,21 @@ public class Lobby extends JPanel implements ActionListener
 	}
 
 	@Override
-	public void actionPerformed(ActionEvent arg0) 
+	public void actionPerformed(ActionEvent e) 
 	{
-		// TODO Auto-generated method stub
+		Object o = e.getSource();
 		
+		if(inLobby == false)
+		{
+			if(o == newLobby)
+			{
+				String s = JOptionPane.showInputDialog("What is the name of your Lobby?");
+				createLobby(s, game, playerID);
+			}
+			else if( o == joinLobby)
+			{
+				
+			}
+		}
 	}
 }
