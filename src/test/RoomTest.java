@@ -1,6 +1,7 @@
 package test;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import java.util.LinkedList;
@@ -79,7 +80,7 @@ public class RoomTest {
 	public void testPPC_No_Collision()
 	{
 		sprites = room.getCollisions(new Point2D(60,60,0), a);
-		
+		assertFalse(room.hasCollided(a));
 		assertTrue(sprites.isEmpty());
 	}
 
@@ -97,7 +98,7 @@ public class RoomTest {
 		e.update(1,1);
 
 		sprites = room.getCollisions(new Point2D(60,60,0), a);
-		
+		assertFalse(room.hasCollided(a));
 		assertTrue(sprites.isEmpty());
 	}
 
@@ -116,7 +117,7 @@ public class RoomTest {
 		e.update(1,1);
 
 		sprites = room.getCollisions(new Point2D(60,60,0), a);
-
+		assertTrue(room.hasCollided(a));
 		assertEquals(4,sprites.size());
 	}
 	
@@ -129,6 +130,10 @@ public class RoomTest {
 		
 		sprites = room.getCollisions(new Point2D(10,10,0), a);
 		assertEquals(1, sprites.size());
+		a.setX(10);
+		a.setY(10);
+		a.update(1, 1);
+		assertTrue(room.hasCollided(a));
 	}
 
 

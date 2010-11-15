@@ -203,6 +203,15 @@ public class Room implements KeyListener
 
 		return rv;
 	}
+	
+	public boolean hasCollided(Sprite s)
+	{
+		if(!getCollisions(s.getPoint(),s).isEmpty())
+		{
+			return true;
+		}
+		return false;
+	}
 
 	/**
 	 *  Pixel perfect collision detection. Can only be used when all sprites use a bounding box.
