@@ -8,7 +8,9 @@ import java.util.Set;
 
 import listener.CollisionListener;
 import listener.bounding.Bounding;
+import listener.bounding.BoundingCircle;
 import sprites.Sprite;
+import util.ImageUtil;
 import util.Point2D;
 import event.CollisionEvent;
 
@@ -154,7 +156,7 @@ public class Room implements KeyListener
 		LinkedList<Sprite> as = new LinkedList<Sprite>();
 
 		Set<Integer> s = allSprites.keySet();
-		
+
 		for(Integer i : s)
 		{
 			try
@@ -166,27 +168,102 @@ public class Room implements KeyListener
 				//Ignore it, the sprite is mostly likely gone already/
 			}
 		}
-		
+
 		return as;
 	}
 
-	public LinkedList<Sprite> getSprites(Point2D p)
+	/*
+	 * Returns linkedlist of sprites whose bounding box contains the point P
+	 */
+	public LinkedList<Sprite> getOverlaps(Point2D p, Sprite s)
 	{
 		LinkedList<Sprite> rv = new LinkedList<Sprite>();
-
-		for(Sprite s : this.getSprites())
+		
+		Point2D one = new Point2D(p.getX(),p.getY(),p.getLayer());
+		Point2D two = new Point2D(p.getX()+s.getWidth()-1,p.getY(),p.getLayer());
+		Point2D three = new Point2D(p.getX(),p.getY()+s.getHeight()-1,p.getLayer());
+		Point2D four = new Point2D(p.getX()+s.getWidth()-1,p.getY()+s.getHeight()-1,p.getLayer());
+		for(Sprite sprite : this.getSprites())
 		{
-			Bounding b = s.getBounding();
-
+			if(sprite==s)
+			{
+				continue;
+			}
+			
+			Bounding b = sprite.getBounding();
+			
 			if(b != null)
 			{
-				if(b.withinBounds(p))
+				if(b.withinBounds(one)||b.withinBounds(two)||b.withinBounds(three)||b.withinBounds(four))
 				{
-					rv.add(s);
+					rv.add(sprite);
 				}
 			}
 		}
 
+		return rv;
+	}
+	
+	public boolean hasCollided(Sprite s)
+	{
+		if(!getCollisions(s.getPoint(),s).isEmpty())
+		{
+			return true;
+		}
+		return false;
+	}
+
+	/**
+	 *  Pixel perfect collision detection. Can only be used when all sprites use a bounding box.
+	 * @param p - Point to check for collisions
+	 * @param a - The sprite checking for the collisions
+	 * @return - LinkedList of sprites 
+	 */
+	public LinkedList<Sprite> getCollisions(Point2D p, Sprite a)
+	{
+		LinkedList<Sprite> rv = new LinkedList<Sprite>();
+		
+		int ax1 = p.getX();
+		int ay1 = p.getY();
+		int ax2 = p.getX() + a.getWidth() - 1;
+		int ay2 = p.getY() + a.getHeight() - 1;
+		
+		int bx1, bx2, by1, by2;
+		int cx1, cy1, cx2, cy2;
+		
+		int[] amask, bmask, bitmask;
+		
+		for(Sprite b: getOverlaps(p,a))
+		{
+			if((b.getBounding() instanceof BoundingCircle))
+			{
+				continue;
+			}
+			
+			bx1 = b.getX();
+			bx2 = b.getX() + b.getWidth() - 1;
+			by1 = b.getY();
+			by2 = b.getY() + b.getWidth() - 1;
+			
+			cx1 = Math.max(ax1,bx1);
+			cy1 = Math.max(ay1,by1);
+			cx2 = Math.min(ax2,bx2);
+			cy2 = Math.min(ay2, by2);
+
+			amask = a.print().getRGB(cx1-ax1, cy1-ay1, cx2-cx1+1, cy2-cy1+1, null, 0, cx2-cx1+1);
+			bmask = b.print().getRGB(cx1-bx1, cy1-by1, cx2-cx1+1, cy2-cy1+1, null, 0, cx2-cx1+1);
+
+			bitmask = ImageUtil.getCombinedBitMask(ImageUtil.getBitMask(amask), ImageUtil.getBitMask(bmask));
+			
+			for(int i = 0; i < bitmask.length; i++)
+			{
+				if(bitmask[i] == 0x1)
+				{
+					rv.add(b);
+					break;
+				}
+			}
+		}
 		return rv;
 	}
 
@@ -290,7 +367,7 @@ public class Room implements KeyListener
 	{
 		for(CollisionListener cl : collisionListeners)
 		{
-			cl.collided(new CollisionEvent(s, this.getSprites(p)));
+			cl.collided(new CollisionEvent(s, this.getOverlaps(p,s)));
 		}
 	}
 
@@ -311,7 +388,7 @@ public class Room implements KeyListener
 
 		return false;
 	}
-	
+
 	public String toString()
 	{
 		return "Width: " + this.getWidth() + " Height: " + this.getHeight() + " Layers: " + this.getLayers();

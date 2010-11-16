@@ -84,10 +84,13 @@ public class Lobby extends JPanel implements ActionListener
 		this.removeAll();
 		
 		this.setLayout(new BorderLayout());
-
-		for(int i = 0; i < 10; i++)
-			outOfLobbyModel.addElement("Lobby number " + i);
 		
+		listLobbies("test");
+		
+		for(String s : lobbys)
+		{
+			outOfLobbyModel.addElement(s);
+		}
 		
 		JScrollPane sp = new JScrollPane(lobbies);
 		this.add(sp, BorderLayout.CENTER);
@@ -98,6 +101,9 @@ public class Lobby extends JPanel implements ActionListener
 		bottom.add(joinLobby, BorderLayout.EAST);
 		
 		this.add(bottom, BorderLayout.SOUTH);
+		
+		this.revalidate();
+		this.repaint();
 	}
 	
 	/*
