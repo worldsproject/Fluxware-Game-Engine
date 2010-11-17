@@ -95,4 +95,29 @@ public class BoundingBox extends Bounding
 		return false;
 	}
 	
+	public boolean withinBounds(BoundingCircle circle)
+	{
+		int radius = circle.getRadius();
+		Point2D center = circle.getCenter();
+		
+		int cx = Math.abs(center.getX() - rect.x - rect.width/2);
+		int cy = Math.abs(center.getY() - rect.y - rect.height/2);
+		
+		if((cx>radius+rect.width/2)||(cy>radius+rect.height/2))
+		{
+			return false;
+		}
+		
+		else if((cx<=rect.width/2)||(cy<=rect.height/2))
+		{
+			return true;
+		}
+		
+		else
+		{
+			return (((cx-rect.width/2)*(cx-rect.width/2))+((cy-rect.height/2)*(cy-rect.height/2))<=radius*radius);
+		}
+		
+	}
+	
 }

@@ -69,9 +69,39 @@ public class BoundingCircle extends Bounding
 		return withinBounds(b.getCenter());
 	}
 	
-	protected Point2D getCenter()
+	public boolean withinBounds(BoundingBox box)
+	{
+		int width = box.getWidth();
+		int height = box.getHeight();
+
+		int cx = Math.abs(center.getX() - box.getX() - width/2);
+		int cy = Math.abs(center.getY() - box.getY() - height/2);
+		
+		if((cx>radius+width/2)||(cy>radius+height/2))
+		{
+			return false;
+		}
+		
+		else if((cx<=width/2)||(cy<=height/2))
+		{
+			return true;
+		}
+		
+		else
+		{
+			return (((cx-width/2)*(cx-width/2))+((cy-height/2)*(cy-height/2))<=radius*radius);
+		}
+		
+	}
+	
+	public Point2D getCenter()
 	{
 		return center;
+	}
+	
+	public int getRadius()
+	{
+		return radius;
 	}
 
 	public boolean withinBounds(Bounding b) {
