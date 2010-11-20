@@ -299,16 +299,25 @@ public class Lobby extends JPanel implements ActionListener
 			try 
 			{
 				//We encode our URL with our (key, value) pairs.
-				buf.append(URLEncoder.encode(data[i][0], "UTF-8") + "=" + URLEncoder.encode(data[i][1], "UTF-8"));
-			}catch (UnsupportedEncodingException e){} //This will (should) only happen if the UTF-8 doesn't work.
+				buf.append(URLEncoder.encode(data[i][0], "UTF-8") + "=" + URLEncoder.encode(data[i][1], "UTF-8") + "&");
+			}
+			catch (UnsupportedEncodingException e) //This will (should) only happen if the UTF-8 doesn't work.
+			{
+				
+			}
+			catch(NullPointerException e)
+			{
+				e.printStackTrace();
+			}
 		}
-		
+		System.out.println(buf.toString());
 		//This will be the Linked list that contains all the data returned from the server.
 		LinkedList<String> rv = new LinkedList<String>();
 		
 		try 
 		{
 			URLConnection conn = to.openConnection(); //Open a connection to the server.
+			conn.setConnectTimeout(2000);
 			conn.setDoOutput(true); //Tell our connection that we will receive some output.
 			OutputStreamWriter wr = new OutputStreamWriter(conn.getOutputStream()); //Create our data pipe.
 			wr.write(buf.toString()); //Write to our data pipe with out URL that we made earlier.
@@ -327,7 +336,7 @@ public class Lobby extends JPanel implements ActionListener
 	        wr.close(); //Close both pipes, we're done using them.
 	        rd.close();
 		} 
-		catch (IOException e) //Incase something bad happens.
+		catch (IOException e) //In case something bad happens.
 		{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -362,6 +371,7 @@ public class Lobby extends JPanel implements ActionListener
 			if(o == newLobby)
 			{
 				String s = JOptionPane.showInputDialog("What is the name of your Lobby?");
+				System.out.println(s);
 				createLobby(s, game, playerID);
 			}
 			else if( o == joinLobby)

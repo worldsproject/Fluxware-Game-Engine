@@ -11,6 +11,8 @@ public class DisplayLobby extends JFrame
 {
 	public DisplayLobby()
 	{
+		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		
 		try 
 		{
 			Lobby l = new Lobby(new URL("http://localhost:8080/"), "test");
