@@ -34,6 +34,7 @@ public class CollisionEvent extends Event
 		collisions = l;
 	}
 	
+	@Override
 	public Sprite getSource()
 	{
 		return (Sprite)source;
