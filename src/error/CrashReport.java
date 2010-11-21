@@ -103,7 +103,7 @@ public class CrashReport extends JFrame implements ActionListener
 		}
 		else if(o == repo)
 		{
-			SubmitIssue.sendIssue(comment.getText(), this.e);
+			//This is where the issue should be submitted.
 			quit();
 		}
 	}
