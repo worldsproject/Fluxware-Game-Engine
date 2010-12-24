@@ -123,5 +123,10 @@ public class Vector2D
 	{
 		return null;
 	}
+	
+	public String toString()
+	{
+		return "X component: " + this.getXComponent() + "\nY component: " + this.getYComponent() + "\nDirection: " + this.getDirection() + "\nMagnitude: " + this.getMagnitude(); 
+	}
 
 }

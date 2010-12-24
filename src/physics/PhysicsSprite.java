@@ -25,8 +25,8 @@ public class PhysicsSprite extends Sprite
 	{
 		applyVector(room.getGravity()); //This will continiously apply Gravity to the Sprite.
 		
-		int xMoved = (int) ((elapsed / 1000) * vector.getXComponent());
-		int yMoved = (int) ((elapsed / 1000) * vector.getYComponent());
+		int xMoved = (int) /*((elapsed / 1000) */ vector.getXComponent();
+		int yMoved = (int) /*((elapsed / 1000) */ vector.getYComponent();
 		
 		this.setX( this.getX() + xMoved);
 		this.setY( this.getY() + yMoved);
