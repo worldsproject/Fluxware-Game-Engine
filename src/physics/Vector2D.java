@@ -106,8 +106,8 @@ public class Vector2D
 		double xr = x1 - x2;
 		double yr = y1 - y2;
 		
-		double mr = Math.atan(yr / xr);
-		double dr = Math.sqrt(Math.pow(xr, 2) + Math.pow(yr, 2));
+		double dr = Math.atan(yr / xr);
+		double mr = Math.sqrt(Math.pow(xr, 2) + Math.pow(yr, 2));
 		
 		return new Vector2D(dr, mr);
 	}
