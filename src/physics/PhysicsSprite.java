@@ -14,7 +14,7 @@ public class PhysicsSprite extends Sprite
 		this.room = room;
 	}
 	
-	public PhysicsSprite(BufferedImage img, PhysicsRoom room, int x, int y)
+	public PhysicsSprite(BufferedImage img, PhysicsRoom room, int x, int y, int layer)
 	{
 		
 	}
