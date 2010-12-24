@@ -27,4 +27,13 @@ public class PhysicsSprite extends Sprite
 		this.setX( this.getX() + xMoved);
 		this.setY( this.getY() + yMoved);
 	}
+	
+	/**
+	 * Adds the given vector to the Sprites current Vector state.
+	 * @param vector - The Vector to be added.
+	 */
+	public void applyVector(Vector2D vector)
+	{
+		vector = Vector2D.add(this.vector, vector);
+	}
 }
