@@ -11,6 +11,11 @@ public class PhysicsRoom extends Room
 	
 	private LinkedList<PhysicsSprite> pSprites = new LinkedList<PhysicsSprite>();
 	
+	public PhysicsRoom(int width, int height, int layers)
+	{
+		super(width, height, layers);
+	}
+	
 	/**
 	 * Defines how many pixels equal a meter.
 	 * @param amount of pixels are in a meter.

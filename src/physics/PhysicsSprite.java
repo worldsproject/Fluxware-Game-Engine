@@ -16,11 +16,15 @@ public class PhysicsSprite extends Sprite
 	
 	public PhysicsSprite(BufferedImage img, PhysicsRoom room, int x, int y, int layer)
 	{
+		super(img, x, y, layer);
 		
+		this.room = room;
 	}
 	
 	public void update(long elapsed, long total)
 	{
+		applyVector(room.getGravity()); //This will continiously apply Gravity to the Sprite.
+		
 		int xMoved = (int) ((elapsed / 1000) * vector.getXComponent());
 		int yMoved = (int) ((elapsed / 1000) * vector.getYComponent());
 		

@@ -55,6 +55,8 @@ public class Game extends JFrame implements KeyListener, MouseListener
 	{
 		super("Fluxware Game Engine");
 		
+		this.room = room;
+		
 		construct(fullscreen);
 	}
 	
@@ -66,6 +68,8 @@ public class Game extends JFrame implements KeyListener, MouseListener
 	 */
 	public Game(Room room, boolean fullscreen, Dimension size)
 	{
+		this.room = room;
+		
 		if(size != null)
 		{
 			resolution = size;
@@ -83,6 +87,8 @@ public class Game extends JFrame implements KeyListener, MouseListener
 	 */
 	public Game(Room room, boolean fullscreen, Dimension size, String title)
 	{
+		this.room = room;
+		
 		if(title != null)
 		{
 			this.setTitle(title);
@@ -108,6 +114,8 @@ public class Game extends JFrame implements KeyListener, MouseListener
 	 */
 	public Game(Room room, boolean fullscreen, String title)
 	{
+		this.room = room;
+		
 		if(title != null)
 			this.setTitle(title);
 		else
@@ -238,7 +246,15 @@ public class Game extends JFrame implements KeyListener, MouseListener
 		this.room = room;
 		setupDP(room);
 	}
-
+	
+	/**
+	 * Returns the current Room
+	 */
+	public Room getRoom()
+	{
+		return room;
+	}
+	
 	/**
 	 * Updates all of the Sprites.
 	 * @param totalTime - The amount of time since the start of the Game.
