@@ -1,6 +1,5 @@
 package gui;
 
-import error.CrashReport;
 import gui.hud.HUD;
 
 import java.awt.Dimension;
@@ -333,7 +332,7 @@ public class Game extends JFrame implements KeyListener, MouseListener
 			}
 			catch(Exception e)
 			{
-				new CrashReport(e);
+				e.printStackTrace();
 			}
 
 		}
