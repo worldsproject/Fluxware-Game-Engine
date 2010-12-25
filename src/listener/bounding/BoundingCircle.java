@@ -9,6 +9,7 @@ import util.Point2D;
  * The radius of the circle is given by the biggest between the 
  * height or width.
  */
+@SuppressWarnings("serial")
 public class BoundingCircle extends Bounding 
 {
 	private Point2D center = null;
