@@ -1,13 +1,10 @@
 package gui;
 
-import gui.hud.HUD;
-
 import java.awt.Dimension;
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.Menu;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
@@ -24,6 +21,7 @@ import sprites.Sprite;
  * @author Fluxware
  *
  */
+@SuppressWarnings("serial")
 public class Game extends JFrame implements KeyListener, MouseListener
 {
 	private GraphicsDevice device = null;
@@ -35,11 +33,8 @@ public class Game extends JFrame implements KeyListener, MouseListener
 
 	protected JPanel root = null;
 
-	private boolean showMenu = false;
-	private Menu menu = null;
-
-	private HUD hud = null;
-	private boolean showHUD = true;
+//	private boolean showMenu = false;  //Unused variables.
+//	private Menu menu = null;  //Unused variables.
 	
 	private Dimension resolution = new Dimension(1024, 768);
 
@@ -206,34 +201,6 @@ public class Game extends JFrame implements KeyListener, MouseListener
 		rt = new RunThread(this);
 		rt.setPriority(Thread.MAX_PRIORITY);
 		rt.start();
-	}
-
-	/**
-	 * Sets the HUG to the given.
-	 * @param h - The HUD to be displayed.
-	 */
-	public void setHUD(HUD h)
-	{
-		this.hud = h;
-		dp.addHUD(h);
-	}
-
-	/**
-	 * Shows the current HUD, if one is available.
-	 * @param show - Shows the HUD if true.
-	 */
-	public void showHUD(boolean show)
-	{
-		showHUD = show;
-	}
-
-	/**
-	 * Returns the current HUD.
-	 * @return The current HUD.
-	 */
-	public HUD getHUD()
-	{
-		return hud;
 	}
 
 	/**
