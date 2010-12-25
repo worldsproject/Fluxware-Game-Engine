@@ -19,7 +19,6 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
 import sprites.Sprite;
-import error.CrashReport;
 
 
 public class LevelConversions 
@@ -32,7 +31,7 @@ public class LevelConversions
 		{
 			BufferedReader fr = new BufferedReader(new FileReader(f));
 			
-			String version = fr.readLine();
+//			String version = fr.readLine(); //Local Variable isn't read.
 			String room = fr.readLine();
 			
 			LinkedList<String> list = new LinkedList<String>();
@@ -63,7 +62,7 @@ public class LevelConversions
 			{
 				JSONObject temp = (JSONObject)parser.parse(l);
 				
-				String name = (String)temp.get("name");
+//				String name = (String)temp.get("name"); //Local variable isn't read.
 				String hash = (String)temp.get("hash");
 				int x = ((Long)temp.get("x")).intValue();
 				int y = ((Long)temp.get("y")).intValue();
@@ -83,7 +82,7 @@ public class LevelConversions
 		}
 		catch (Exception e) 
 		{
-			new CrashReport(e);
+			e.printStackTrace();
 		}
 		
 		return rv;
@@ -123,7 +122,7 @@ public class LevelConversions
 			
 			bw.write(roomInfo.toString() + "\n");
 
-			JSONObject sprites = new JSONObject();
+//			JSONObject sprites = new JSONObject(); //Local Variable isn't read.
 
 			for(Sprite s : allSprite)
 			{
@@ -145,7 +144,7 @@ public class LevelConversions
 				}
 				catch(Exception e)
 				{
-					new CrashReport(e);
+					e.printStackTrace();
 				}
 
 				try 
@@ -154,7 +153,7 @@ public class LevelConversions
 				}
 				catch (IOException e) 
 				{
-					new CrashReport(e);
+					e.printStackTrace();
 				}
 
 				temp.put("name", s.getClass().getName());
@@ -171,7 +170,7 @@ public class LevelConversions
 		}
 		catch(Exception e)
 		{
-			new CrashReport(e);
+			e.printStackTrace();
 		}
 	}
 	
