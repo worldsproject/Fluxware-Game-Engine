@@ -6,6 +6,7 @@ import java.io.Serializable;
  * The Point class encapsulates a single point in a TiledRoom
  * containing the X and Y coordinate, along with the Layer.
  */
+@SuppressWarnings("serial")
 public class Point2D implements Serializable
 {
 	private int x,y,layer;

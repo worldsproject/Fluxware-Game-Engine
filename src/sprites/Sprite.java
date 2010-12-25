@@ -10,7 +10,8 @@ import listener.bounding.Bounding;
 import listener.bounding.BoundingBox;
 import util.Point2D;
 
-public class Sprite implements Serializable //...well balls, it seems that BufferedImage isn't serializable.
+@SuppressWarnings("serial")
+public class Sprite implements Serializable
 {
 	public int serial = 0;
 	public int id = 0;

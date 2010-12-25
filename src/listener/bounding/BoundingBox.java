@@ -5,6 +5,7 @@ import java.awt.Rectangle;
 import sprites.Sprite;
 import util.Point2D;
 
+@SuppressWarnings("serial")
 public class BoundingBox extends Bounding 
 {
 	protected Rectangle rect = null;
