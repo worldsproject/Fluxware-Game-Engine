@@ -1,6 +1,5 @@
 package gui.test;
 
-import static org.junit.Assert.fail;
 import gui.Game;
 
 import java.awt.Dimension;
@@ -51,7 +50,7 @@ public class TestGame
 	{
 		Game g = new Game(room, false, new Dimension(400,400));
 		
-		Assert.assertNotNull(room);
+		Assert.assertNotNull(g.getRoom());
 	}
 
 	@Test
@@ -59,7 +58,7 @@ public class TestGame
 	{
 		Game g = new Game(room, false, new Dimension(400,400), "Test");
 		
-		Assert.assertNotNull(room);
+		Assert.assertNotNull(g.getRoom());
 	}
 
 	@Test
@@ -67,7 +66,7 @@ public class TestGame
 	{
 		Game g = new Game(room, false, "Test");
 		
-		Assert.assertNotNull(room);
+		Assert.assertNotNull(g.getRoom());
 	}
 
 }
