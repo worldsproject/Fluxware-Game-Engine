@@ -12,6 +12,7 @@ import util.Timer;
  * @author Tim Butram
  *
  */
+@SuppressWarnings("serial")
 public class AnimatedSprite extends Sprite implements ImageObserver
 {
 	public final int serial = 3;
