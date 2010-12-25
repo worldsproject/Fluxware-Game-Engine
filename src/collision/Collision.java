@@ -1,4 +1,4 @@
-package Collision;
+package collision;
 
 import java.util.LinkedList;
 
