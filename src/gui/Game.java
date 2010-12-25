@@ -27,11 +27,6 @@ import sprites.Sprite;
  */
 public class Game extends JFrame implements KeyListener, MouseListener
 {
-	/**
-	 * Debug is disabled by default.
-	 */
-	public static boolean DEBUG = false;
-
 	private GraphicsDevice device = null;
 	private Room room;
 	protected DisplayPanel dp;
@@ -51,15 +46,30 @@ public class Game extends JFrame implements KeyListener, MouseListener
 
 	public Game(){}
 
+	/**
+	 * Creates a new Game based on the given room and if it should be fullscreen or not.
+	 * @param room - The room to be displayed.
+	 * @param fullscreen - True to enable fullscreen. 
+	 */
 	public Game(Room room, boolean fullscreen)
 	{
 		super("Fluxware Game Engine");
 		
+		this.room = room;
+		
 		construct(fullscreen);
 	}
 	
+	/**
+	 * Creates a new Game based upon the Room given to it.
+	 * @param room - The room the Game will start displaying.
+	 * @param fullscreen - true if the game is fullscreen.
+	 * @param size - The resolution of the game.
+	 */
 	public Game(Room room, boolean fullscreen, Dimension size)
 	{
+		this.room = room;
+		
 		if(size != null)
 		{
 			resolution = size;
@@ -68,8 +78,17 @@ public class Game extends JFrame implements KeyListener, MouseListener
 		construct(fullscreen);
 	}
 	
+	/**
+	 * Creates a new Game based upon the Room given to it.
+	 * @param room - The Room the Game will start displaying.
+	 * @param fullscreen - true if the game is to be in fullscreen.
+	 * @param size - The resolution of the game.
+	 * @param title - The title of the window, if not fullscreen.
+	 */
 	public Game(Room room, boolean fullscreen, Dimension size, String title)
 	{
+		this.room = room;
+		
 		if(title != null)
 		{
 			this.setTitle(title);
@@ -87,8 +106,16 @@ public class Game extends JFrame implements KeyListener, MouseListener
 		construct(fullscreen);
 	}
 
+	/**
+	 * Creates a new Game based upon a given Room.
+	 * @param room - The Room the Game will start displaying.
+	 * @param fullscreen - true if the Game is to show as fullscreen.
+	 * @param title - The text of the window title, only shows if the game is not in fullscreen.
+	 */
 	public Game(Room room, boolean fullscreen, String title)
 	{
+		this.room = room;
+		
 		if(title != null)
 			this.setTitle(title);
 		else
@@ -155,6 +182,9 @@ public class Game extends JFrame implements KeyListener, MouseListener
 		}
 	}
 
+	/*
+	 * Changes the room.
+	 */
 	protected void setupDP(Room room)
 	{
 		if(dp != null)
@@ -216,27 +246,39 @@ public class Game extends JFrame implements KeyListener, MouseListener
 		this.room = room;
 		setupDP(room);
 	}
-
-	public static void enableDebug(boolean value)
+	
+	/**
+	 * Returns the current Room
+	 */
+	public Room getRoom()
 	{
-		DEBUG = value;
+		return room;
 	}
-
-	public static boolean isDebugEnabled()
-	{
-		return DEBUG;
-	}
-
+	
+	/**
+	 * Updates all of the Sprites.
+	 * @param totalTime - The amount of time since the start of the Game.
+	 * @param elapsedTime - The amount of time since the last Frame update.
+	 */
 	public void update(long totalTime, long elapsedTime)
 	{
 
 	}
 	
+	/**
+	 * Moves the viewscreen by X and Y amount. This is relative to it's current position.
+	 * @param x - The amount of X movement.
+	 * @param y - The amount of Y movement.
+	 */
 	public void scrollViewscreen(int x, int y)
 	{
 		dp.scrollViewscreen(x, y);
 	}
 	
+	/**
+	 * Centers the Viewscreen to the given Sprite.
+	 * @param s - The Sprite that the Viewscreen will center upon.
+	 */
 	public void scrollViewscreenRelativeTo(Sprite s)
 	{
 		dp.scrollRelativeTo(s);

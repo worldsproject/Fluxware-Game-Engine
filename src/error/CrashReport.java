@@ -45,72 +45,80 @@ public class CrashReport extends JFrame implements ActionListener
 	{
 		try
 		{
-			this.setTitle("FluxEngine has crashed.");
+			this.setTitle("FluxEngine has crashed.");  //Sets the title of the window.
 			this.e = e;
 
-			JPanel textAreas = new JPanel(new BorderLayout(5, 5));
-			JPanel buttons = new JPanel(new FlowLayout());
+			JPanel textAreas = new JPanel(new BorderLayout(5, 5));  //Sets up the area for the text to appear.
+			JPanel buttons = new JPanel(new FlowLayout()); //Simple pane to hold the two buttons.
 			JPanel root = (JPanel)this.getContentPane();
 			root.setLayout(new BorderLayout());
 
+			//Add both buttons to the buttons pane.
 			buttons.add(repo);
 			buttons.add(quit);
 
+			//Set the information textbox to contain the default "we crashed" message.
 			information.setText(message);
-			information.setHorizontalTextPosition(JLabel.CENTER);
+			information.setHorizontalTextPosition(JLabel.CENTER); //Also center it.
 
-			Writer result = new StringWriter();
+			Writer result = new StringWriter(); //Output the stack trace to a writer, so we can use it.
 			PrintWriter printWriter = new PrintWriter(result);
 			e.printStackTrace(printWriter);
 
-			String stackTrack = result.toString();
+			String stackTrack = result.toString(); //Save the stack trace as a String.
 
-			error.setText(stackTrack);
-			error.setEditable(false);
+			error.setText(stackTrack); //Set the error textArea text to our stack trace.
+			error.setEditable(false); //Don't let them edit it.
 
 
 
+			//Add the textAreas to the JPanel, with information on top, the error in the middle, and room for comments on the bottom.
 			textAreas.add(information, BorderLayout.NORTH);
 			textAreas.add(error, BorderLayout.CENTER);
 			textAreas.add(comment, BorderLayout.SOUTH);
 
+			//Add the TextAreas to the top of the Frame.
 			root.add(textAreas, BorderLayout.NORTH);
-			root.add(buttons, BorderLayout.SOUTH);
-			root.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+			root.add(buttons, BorderLayout.SOUTH); //Put the buttons at the bottom.
+			root.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5)); //Put a nice 5px margin around it all.
 
+			//Add ActionListeners to both buttons.
 			repo.addActionListener(this);
 			quit.addActionListener(this);
 			
+			//Clicking the 'X' kills the program.
 			this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-			this.pack();
-			this.setLocationRelativeTo(null);
+			
+			//Pack and show
+			this.pack(); 
+			this.setLocationRelativeTo(null); //Center it.
 			this.setVisible(true);
 		}
 		catch(Exception easdfasdf)
 		{
-			quit();
+			quit(); //No "error in error" just quit. We give up at this point.
 		}
 	}
 
 	@Override
-	public void actionPerformed(ActionEvent e) 
+	public void actionPerformed(ActionEvent e) //When
 	{
-		Object o = e.getSource();
+		Object o = e.getSource(); //Get the source of our action.
 
-		if(o == quit)
+		if(o == quit) //Quit quites.
 		{
 			quit();
 		}
-		else if(o == repo)
+		else if(o == repo) //Report, then quit.
 		{
-			SubmitIssue.sendIssue(comment.getText(), this.e);
+			//This is where the issue should be submitted.
 			quit();
 		}
 	}
 
 	private void quit()  //Because quit() is shorter than System.exit(1);
 	{
-		e.printStackTrace();
-		System.exit(1);
+		e.printStackTrace(); //Print the stack trace to the terminal (if any)
+		System.exit(1); //Exit with error code of 1.
 	}
 }

@@ -173,8 +173,11 @@ public class Room implements KeyListener
 		return as;
 	}
 
-	/*
-	 * Returns linkedlist of sprites whose bounding box contains the point P
+	/**
+	 * 
+	 * @param p
+	 * @param s
+	 * @return
 	 */
 	public LinkedList<Sprite> getOverlaps(Point2D p, Sprite s)
 	{
