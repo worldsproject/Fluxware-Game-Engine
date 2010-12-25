@@ -1,14 +1,10 @@
 package gui;
 
-import gui.hud.HUD;
-
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
-import java.util.HashMap;
 import java.util.LinkedList;
-import java.util.Set;
 
 import javax.swing.JPanel;
 
@@ -23,10 +19,10 @@ import sprites.Sprite;
  * Each DisplayPanel is only capable of Displaying a single room,
  * and the size of the DisplayPanel is DEPENDENT on the Room size.
  */
+@SuppressWarnings("serial")
 public class DisplayPanel extends JPanel 
 {
 	private Room r; //The displayed room.
-	private HUD h = null; //Optional HUD
 
 	private Dimension resolution; //The resolution the window is showing.
 	private Dimension size; //The pixel size of the Room.
@@ -83,17 +79,6 @@ public class DisplayPanel extends JPanel
 	public void changeRoom(Room r)
 	{
 		this.r = r; //Changes the room.
-	}
-
-	/**
-	 * Adds a HUD to the display.
-	 * @param h - The HUD to be displayed.
-	 */
-	public void addHUD(HUD h)
-	{
-		this.h = h; //Sets the HUD.
-		h.setWidth(r.getWidth());
-		h.setHeight(h.getHeight());
 	}
 
 	/**
@@ -171,18 +156,6 @@ public class DisplayPanel extends JPanel
 		for(Sprite temp: l) //Iterate through each sprite and draw it.
 		{	
 			buf.drawImage(temp.print(), (temp.getX() * spacing) - viewX, (temp.getY() * spacing) - viewY, null);	
-		}
-
-		if(h != null && h.isVisible()) //This deals with the display of the HUD
-		{
-			HashMap<Integer, Sprite> hash = h.getSprites();
-			Set<Integer> set = h.getSprites().keySet();
-
-			for(Integer i : set)
-			{
-				Sprite s = hash.get(i);
-				buf.drawImage(s.print(), s.getX(), s.getY(), null);
-			}
 		}
 
 		g.drawImage(offscreen, 0, 0, null);
