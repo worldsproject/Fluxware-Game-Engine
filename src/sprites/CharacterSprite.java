@@ -16,9 +16,9 @@ import java.awt.image.BufferedImage;
  * @author Fluxware
  *
  */
+@SuppressWarnings("serial")
 public class CharacterSprite extends Sprite
 {
-	private String rep = null;
 	/**
 	 * Default Constructor for the Sprite.  Creates a blank Sprite
 	 * at location (-1, -1) with a null representation.
@@ -44,7 +44,6 @@ public class CharacterSprite extends Sprite
 	{
 		super(null, x, y, layer);
 		
-		rep = c.toString();
 		BufferedImage img = createImage(c.toString());
 		
 		this.setSprite(resizeImage(img, 30));
@@ -69,7 +68,6 @@ public class CharacterSprite extends Sprite
 	{
 		super(null, x, y, layer);
 
-		rep = c.toString();
 		BufferedImage img = createImage(c.toString());
 		
 		if(size > 0)
@@ -102,8 +100,6 @@ public class CharacterSprite extends Sprite
 	public void setSprite(Character c) 
 	{
 		BufferedImage img = this.createImage(c.toString());
-		
-		rep = c.toString();
 
 		this.setSprite(resizeImage(img, 30));
 	}
@@ -116,8 +112,6 @@ public class CharacterSprite extends Sprite
 	public void setSprite(Character c, int size) 
 	{
 		BufferedImage img = createImage(c.toString());
-		
-		rep = c.toString();
 
 		this.setSprite(resizeImage(img, size));
 	}
