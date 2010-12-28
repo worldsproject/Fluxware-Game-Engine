@@ -2,12 +2,17 @@
 <classpath>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="lib" path="src/resources/jl1.0.jar"/>
 	<classpathentry kind="lib" path="src/resources/gdata-projecthosting-2.1.jar"/>
 	<classpathentry kind="lib" path="src/resources/gdata-core-1.0.jar"/>
 	<classpathentry kind="lib" path="src/resources/google-collect-1.0-rc1.jar"/>
 	<classpathentry kind="lib" path="src/resources/jsr305.jar"/>
 	<classpathentry kind="lib" path="src/resources/json_simple-1.1.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
+	<classpathentry kind="lib" path="src/resources/jogg-0.0.7.jar"/>
+	<classpathentry kind="lib" path="src/resources/jorbis-0.0.15.jar"/>
+	<classpathentry kind="lib" path="src/resources/tritonus_share.jar"/>
+	<classpathentry kind="lib" path="src/resources/vorbisspi1.0.3.jar"/>
+	<classpathentry kind="lib" path="src/resources/jl1.0.1.jar"/>
+	<classpathentry kind="lib" path="src/resources/mp3spi1.9.5.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
