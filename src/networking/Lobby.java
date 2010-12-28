@@ -15,6 +15,7 @@ import java.net.URLConnection;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.NoSuchElementException;
 
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
@@ -68,6 +69,8 @@ public class Lobby extends JPanel implements ActionListener
 		
 		newLobby.addActionListener(this);
 		joinLobby.addActionListener(this);
+		
+		leave.addActionListener(this);
 		
 		newPlayer(game);
 
@@ -151,7 +154,15 @@ public class Lobby extends JPanel implements ActionListener
 		
 		LinkedList<String> returned = sendPOST(to, data);
 		
-		lobbyID = returned.getFirst();
+		try
+		{
+			lobbyID = returned.getFirst();
+		}
+		catch(NoSuchElementException e)
+		{
+			lobbyID = returned.getFirst();
+		}
+		
 		inLobby();
 	}
 	
@@ -377,6 +388,15 @@ public class Lobby extends JPanel implements ActionListener
 			else if( o == joinLobby)
 			{
 				
+			}
+		}
+		else
+		{
+			if(o == leave)
+			{
+				leaveLobby(lobbyID, playerID);
+				
+				notInLobby();
 			}
 		}
 	}
