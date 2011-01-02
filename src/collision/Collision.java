@@ -148,6 +148,11 @@ public class Collision {
 		
 		for(Sprite b: sprites)
 		{
+			if(a == b)
+			{
+				continue;
+			}
+			
 			if(hasCollided(a,b,pixelPerfectCollision))
 			{
 				collisions.add(b);
