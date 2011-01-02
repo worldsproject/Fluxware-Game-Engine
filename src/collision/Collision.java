@@ -6,6 +6,7 @@ import listener.bounding.BoundingBox;
 import listener.bounding.BoundingCircle;
 import sprites.Sprite;
 import util.ImageUtil;
+import util.Point2D;
 
 public class Collision {
 	
@@ -59,6 +60,51 @@ public class Collision {
 			return 1;
 		}
 		return 2;
+	}
+	
+	public static LinkedList<Point2D> getPixels(Sprite a, Sprite b)
+	{
+		if(a.getBounding() instanceof BoundingBox && b.getBounding() instanceof BoundingBox)
+		{
+			if(boundsCollided(a,b))
+			{
+				LinkedList<Point2D> points = new LinkedList<Point2D>();
+				int ax1 = a.getX();
+				int ay1 = a.getY();
+				int ax2 = a.getX() + a.getWidth() - 1;
+				int ay2 = a.getY() + a.getHeight() - 1;
+
+				int bx1, bx2, by1, by2;
+				int cx1, cy1, cx2, cy2;
+
+				int[] amask, bmask, bitmask;
+
+				bx1 = b.getX();
+				bx2 = b.getX() + b.getWidth() - 1;
+				by1 = b.getY();
+				by2 = b.getY() + b.getWidth() - 1;
+
+				cx1 = Math.max(ax1,bx1);
+				cy1 = Math.max(ay1,by1);
+				cx2 = Math.min(ax2,bx2) - cx1 + 1;
+				cy2 = Math.min(ay2,by2) - cy1 + 1;
+
+				amask = a.print().getRGB(cx1-ax1, cy1-ay1, cx2, cy2, null, 0, cx2);
+				bmask = b.print().getRGB(cx1-bx1, cy1-by1, cx2, cy2, null, 0, cx2);
+
+				bitmask = ImageUtil.getCombinedBitMask(ImageUtil.getBitMask(amask), ImageUtil.getBitMask(bmask));
+
+				for(int i = 0; i < bitmask.length; i++)
+				{
+					if(bitmask[i] == 0x1)
+					{
+						points.add(new Point2D(cx1+(i%cx2), cy1+(i/cx2), a.getLayer()));
+					}
+				}
+				return points;
+			}
+		}
+		return null;
 	}
 	
 	/**

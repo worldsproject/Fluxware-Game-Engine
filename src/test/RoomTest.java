@@ -12,6 +12,8 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import collision.Collision;
+
 import sprites.Sprite;
 import util.ImageUtil;
 import util.Point2D;
@@ -134,6 +136,20 @@ public class RoomTest {
 		a.setY(10);
 		a.update(1, 1);
 		assertTrue(room.hasCollided(a));
+	}
+	
+	@Test
+	public void test_getCollisions()
+	{
+		b.setY(21);
+		b.update(1,1);
+		
+		LinkedList<Point2D> points = Collision.getPixels(a, b);
+		
+		for(Point2D point: points)
+		{
+			System.out.println(point.getX() + " : " + point.getY());
+		}
 	}
 
 
