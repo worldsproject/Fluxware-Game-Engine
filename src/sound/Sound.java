@@ -37,36 +37,47 @@ public class Sound implements LineListener, Runnable
 	protected AudioInputStream inputStream;
 	protected AudioFormat format;
 	protected long position, leftFrame, rightFrame;
+	protected int frameSize;
 	protected SourceDataLine line;
 	protected byte[] data;
 	protected int bytesRead, bytesWritten;
-	protected boolean paused,close;
+	protected boolean paused,close,loop;
 	protected String file;
-	protected Thread t;
+
 
 	public Sound(){}
 
 	public Sound(String file)
 	{
 		this.file = file;
-		openInputStream();
 	}
 
 	public void run()
 	{
+		openInputStream();
+		getLine();
+		line.start();
 		if(line!=null)
 		{
+			frameSize = line.getFormat().getFrameSize();
+			data = new byte[1024*frameSize];
+
 			while(!close)
 			{
 				try {
-					data = new byte[1024*line.getFormat().getFrameSize()];
-					if((bytesRead = inputStream.read(data, 0, data.length)) != -1)
+
+					if(line.isActive())
 					{
-						line.write(data, 0, bytesRead);
+						if((bytesRead = inputStream.read(data, 0, data.length)) != -1)
+						{
+							line.write(data, 0, bytesRead);
+							position = line.getLongFramePosition();
+						}
 					}
 					else if(paused)
 					{
 						try {
+
 							Thread.sleep(0,1);
 						} catch (InterruptedException e) {
 							// TODO Auto-generated catch block
@@ -79,16 +90,26 @@ public class Sound implements LineListener, Runnable
 
 				} 
 			}
+			
+			try {
+				inputStream.close();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 
 			line.flush();
 			line.close();
-		}
 
-		try {
-			inputStream.close();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			inputStream = null;
+			line = null;
+			
+			if(loop)
+			{
+				close = false;
+				new Thread(this).start();
+			}
+
 		}
 	}
 
@@ -96,14 +117,15 @@ public class Sound implements LineListener, Runnable
 	 * Starts playback of the file.
 	 */
 	public void play()
-	{
-		if(line == null)
+	{		
+		if(paused)
 		{
-			openInputStream();
-			getLine();
+			paused = false;
 		}
-
-		line.start();
+		else
+		{
+			new Thread(this).start();
+		}
 	}
 
 	/**
@@ -120,6 +142,15 @@ public class Sound implements LineListener, Runnable
 	}
 
 	/**
+	 * 
+	 */
+	public void stopLoop()
+	{
+		loop = false;
+		stop();
+	}
+
+	/**
 	 * Pauses playback of the file.
 	 */
 	public void pause()
@@ -129,6 +160,15 @@ public class Sound implements LineListener, Runnable
 			paused = true;
 			line.stop();
 		}
+	}
+
+	/**
+	 * 
+	 */
+	public void loop()
+	{
+		loop = true;
+		play();
 	}
 
 	protected void getLine()
@@ -197,28 +237,15 @@ public class Sound implements LineListener, Runnable
 	public void update(LineEvent event) {
 		// TODO Auto-generated method stub
 
-		if(event.getType() == LineEvent.Type.OPEN)
-		{
-			t = new Thread(this);
-			t.start();
-		}
-		else if(event.getType() == LineEvent.Type.START)
-		{
-			paused = false;
-		}
-		else if(event.getType() == LineEvent.Type.STOP)
+		System.out.println(event.getType());
+
+		if(event.getType() == LineEvent.Type.STOP)
 		{
 			if(!paused)
 			{
 				close = true;
 			}
 		}
-		else
-		{
-			line = null;
-			close = false;
-		}
 	}
-
 }
 
