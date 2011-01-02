@@ -6,11 +6,13 @@ public class SoundTest {
 
 	public static void main(String args[])
 	{
-		Sound sound = new Sound("/resources/test.ogg");
+		Sound sound = new Sound("/resources/sound.wav");
+		sound.loop();
 		
-		sound.play();
-		long x = System.currentTimeMillis();
+		
+		/*long x = System.currentTimeMillis();
 		while(System.currentTimeMillis()-x<5000){}
+		
 		sound.pause();
 		sound.pause();
 		sound.pause();
@@ -29,6 +31,7 @@ public class SoundTest {
 		sound.play();
 		x = System.currentTimeMillis();
 		while(System.currentTimeMillis()-x<15000){}
-		sound.stop();
+		sound.stop();*/
+		
 	}
 }
