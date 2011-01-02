@@ -49,9 +49,8 @@ public class PhysicsSprite extends Sprite
 
 		this.setX( this.getX() + xMoved);
 		this.setY( this.getY() + yMoved);
-
-		//		System.out.println(vector.getYComponent());
-		//		System.out.println(this.getY());
+		
+		
 	}
 
 	/**

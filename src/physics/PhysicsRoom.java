@@ -3,11 +3,12 @@ package physics;
 import java.util.LinkedList;
 
 import level.Room;
+import sprites.Sprite;
 
 public class PhysicsRoom extends Room 
 {
 	private int pixelsToMeters = 10;
-	private Vector2D gravity = new Vector2D((1.5 * Math.PI), 9.8);
+	private Vector2D gravity = new Vector2D((1.5 * Math.PI), 2.0);
 	
 	private LinkedList<PhysicsSprite> pSprites = new LinkedList<PhysicsSprite>();
 	
@@ -50,5 +51,20 @@ public class PhysicsRoom extends Room
 	public Vector2D getGravity()
 	{
 		return gravity;
+	}
+	
+	public void addSprite(Sprite sprite)
+	{
+		super.addSprite(sprite);
+		
+		if(sprite instanceof PhysicsSprite)
+		{
+			pSprites.add((PhysicsSprite)sprite);
+		}
+	}
+	
+	public LinkedList<PhysicsSprite> getPhysicsSprites()
+	{
+		return pSprites;
 	}
 }
