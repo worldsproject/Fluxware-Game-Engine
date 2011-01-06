@@ -13,21 +13,7 @@ import javax.sound.sampled.SourceDataLine;
 import javax.sound.sampled.UnsupportedAudioFileException;
 
 /**
- * Supports the playback of wave files. 
- * If a "unsupported format" problem arises,
- * use an external program (such as audacity)
- * to export the song in the following format:
- * Compression: Uncompressed PCM
- * Samplerate: 44100Hz
- * Bit Depth: 16
- * 
- * Also has trouble playing 24 bit with
- * pulseaudio on default configuration.
- * Although it is not recommended,
- * disabling pulseaudio withe following
- * command may solve the problem
- * 
- * killall -9 pulseaudio
+ * Make sure java version is 1.5 or higher for support of 24 bit audio. If below 1.5, 24bit audio will not work.
  * 
  * @author cj
  *
