@@ -133,6 +133,8 @@ public class Game extends JFrame implements KeyListener, MouseListener
 		
 		this.addKeyListener(this);
 		this.addMouseListener(this);
+		
+		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 
 		setRoom(room);
 		setupGUI();
