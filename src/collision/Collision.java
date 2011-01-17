@@ -37,7 +37,7 @@ public class Collision {
 				bx1 = b.getX();
 				bx2 = b.getX() + b.getWidth() - 1;
 				by1 = b.getY();
-				by2 = b.getY() + b.getWidth() - 1;
+				by2 = b.getY() + b.getHeight() - 1;
 
 				cx1 = Math.max(ax1,bx1);
 				cy1 = Math.max(ay1,by1);
