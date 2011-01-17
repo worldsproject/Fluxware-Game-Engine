@@ -1,8 +1,6 @@
 package sprites;
 
-import java.awt.Image;
 import java.awt.image.BufferedImage;
-import java.awt.image.ImageObserver;
 
 import util.Timer;
 
@@ -12,14 +10,15 @@ import util.Timer;
  * @author Tim Butram
  *
  */
-public class AnimatedSprite extends Sprite implements ImageObserver
+@SuppressWarnings("serial")
+public class AnimatedSprite extends Sprite
 {
 	public final int serial = 3;
 	
-	private BufferedImage[] img = null;
-	private Timer time = new Timer(200);
+	protected BufferedImage[] images = null;
+	protected Timer time = new Timer(200);
 	
-	private int currentImg = 0;
+	protected int currentImg = 0;
 	
 	/**
 	 * Creates a default AnimatedSprite.  This sprite has no animation as it is
@@ -32,9 +31,11 @@ public class AnimatedSprite extends Sprite implements ImageObserver
 	
 	public AnimatedSprite(BufferedImage image, int x, int y, int layer)
 	{
-		img = new BufferedImage[1];
+		super(image, x, y, layer);
 		
-		img[0] = image;
+		images = new BufferedImage[1];
+		
+		images[0] = image;
 	}
 	
 	/**
@@ -49,7 +50,7 @@ public class AnimatedSprite extends Sprite implements ImageObserver
 	{
 		super(img[0], x, y, layer);
 		
-		this.img = img;
+		this.images = img;
 	}
 	
 	/**
@@ -65,7 +66,7 @@ public class AnimatedSprite extends Sprite implements ImageObserver
 	{
 		super(img[0], x, y, layer);
 		
-		this.img = img;
+		this.images = img;
 		this.time = new Timer(time);
 	}
 	
@@ -75,34 +76,26 @@ public class AnimatedSprite extends Sprite implements ImageObserver
 	 */
 	public void setSprite(BufferedImage[] im)
 	{
-		img = im;
+		images = im;
 	}
 	
 	public BufferedImage print() 
 	{
-		if(time.hasRung())
+		if(this.time.hasRung())
 		{
 			nextFrame();
 		}
 		
-		return img[currentImg];
+		return images[currentImg];
 	}
 	
 	private void nextFrame()
 	{
 		currentImg++;
 		
-		if(currentImg >= img.length)
+		if(currentImg >= images.length)
 		{
 			currentImg = 0;
 		}
-	}
-
-	@Override
-	public boolean imageUpdate(Image image, int flags, int x, int y, int width, int height) 
-	{
-		img[0] = (BufferedImage)image;
-		
-		return true;
 	}
 }

@@ -5,6 +5,7 @@ import java.awt.Rectangle;
 import sprites.Sprite;
 import util.Point2D;
 
+@SuppressWarnings("serial")
 public class BoundingBox extends Bounding 
 {
 	protected Rectangle rect = null;
@@ -13,18 +14,32 @@ public class BoundingBox extends Bounding
 	{
 		super(s);
 		
-		rect = new Rectangle(bound.getX(), bound.getY(), bound.getWidth(), bound.getHeight());
+		try
+		{
+			rect = new Rectangle(bound.getX(), bound.getY(), bound.getWidth(), bound.getHeight());
+		}
+		catch(NullPointerException e)
+		{
+			rect = new Rectangle(30, 30, 30, 30);
+		}
 	}
 	
 	@Override
 	public void updateBounds() 
 	{
-		if(bound.print() != null)
+		try
 		{
 			rect.x = bound.getX();
 			rect.y = bound.getY();
 			rect.width = bound.getWidth();
 			rect.height = bound.getHeight();
+		}
+		catch(NullPointerException e)
+		{
+			rect.x = 30;
+			rect.y = 30;
+			rect.width = 30;
+			rect.height = 30;
 		}
 		
 	}
