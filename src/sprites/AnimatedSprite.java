@@ -2,8 +2,6 @@ package sprites;
 
 import java.awt.image.BufferedImage;
 
-import util.Timer;
-
 /**
  * The Animated Sprite takes in an array of images and rotates through them in order
  * to create an animation.
