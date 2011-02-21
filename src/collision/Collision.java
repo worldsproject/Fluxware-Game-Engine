@@ -144,9 +144,13 @@ public class Collision {
 	{
 		if(a.getBounding() instanceof BoundingCircle)
 		{
+			BoundingCircle aTemp = (BoundingCircle)a.getBounding();
+			
 			if(b.getBounding() instanceof BoundingCircle)
 			{
-				if(((BoundingCircle)a.getBounding()).withinBounds((BoundingCircle)b.getBounding()))
+				BoundingCircle bTemp = (BoundingCircle)b.getBounding();
+				
+				if(aTemp.withinBounds(bTemp) || bTemp.withinBounds(aTemp))
 				{
 					return true;
 				}
@@ -154,7 +158,9 @@ public class Collision {
 			
 			else if(b.getBounding() instanceof BoundingBox)
 			{
-				if(((BoundingCircle)a.getBounding()).withinBounds((BoundingBox)b.getBounding()))
+				BoundingBox bTemp = (BoundingBox)b.getBounding();
+				
+				if(aTemp.withinBounds(bTemp) || bTemp.withinBounds(aTemp))
 				{
 					return true;
 				}
@@ -163,16 +169,25 @@ public class Collision {
 		
 		else if(a.getBounding() instanceof BoundingBox)
 		{
+			BoundingBox aTemp = (BoundingBox)a.getBounding();
+			
 			if(b.getBounding() instanceof BoundingCircle)
 			{
-				if(((BoundingBox)a.getBounding()).withinBounds((BoundingCircle)b.getBounding()))
+				BoundingCircle bTemp = (BoundingCircle)b.getBounding();
+				
+				if(aTemp.withinBounds(bTemp) || bTemp.withinBounds(aTemp))
 				{
 					return true;
 				}
 			}
-			else if(((BoundingBox)a.getBounding()).withinBounds((BoundingBox)b.getBounding()))
+			else
 			{
-				return true;
+				BoundingBox bTemp = (BoundingBox)b.getBounding();
+				
+				if(aTemp.withinBounds(bTemp) || bTemp.withinBounds(bTemp))
+				{
+					return true;
+				}
 			}
 		}
 		
@@ -181,25 +196,25 @@ public class Collision {
 	
 	/**
 	 * Checks if sprite a has collided with any of the secondary sprites in the linked list.
-	 * @param a - Primary sprite
+	 * @param primary - Primary sprite
 	 * @param sprites - List of secondary sprites
 	 * @param pixelPerfectCollision - True to perform pixel perfect collision check, 
 	 * false to check for overlapping boundings. If pixelPerfectCollision is true, but both sprite a and b do not have 
 	 * bounding boxes, the method will only check for overlapping boundings.
 	 * @return True if an overlap of boundings or pixel perfect collision has occured, false otherwise.
 	 */
-	public static LinkedList<Sprite> hasCollided(Sprite a, LinkedList<Sprite> sprites, boolean pixelPerfectCollision)
+	public static LinkedList<Sprite> hasCollided(Sprite primary, LinkedList<Sprite> sprites, boolean pixelPerfectCollision)
 	{
 		LinkedList<Sprite> collisions = new LinkedList<Sprite>();
 		
 		for(Sprite b: sprites)
 		{
-			if(a == b)
+			if(primary == b)
 			{
 				continue;
 			}
 			
-			if(hasCollided(a,b,pixelPerfectCollision))
+			if(hasCollided(primary,b,pixelPerfectCollision))
 			{
 				collisions.add(b);
 			}
