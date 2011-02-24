@@ -5,7 +5,6 @@ import java.awt.image.WritableRaster;
 import java.io.IOException;
 import java.io.Serializable;
 
-import level.Room;
 import listener.bounding.Bounding;
 import listener.bounding.BoundingBox;
 import util.Point2D;
@@ -22,7 +21,6 @@ public class Sprite implements Serializable
 	protected Point2D location;
 	
 	protected Bounding box = null;
-	protected Room sight = null;
 
 	public Sprite()
 	{
