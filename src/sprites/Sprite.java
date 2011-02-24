@@ -19,9 +19,7 @@ public class Sprite implements Serializable //...well balls, it seems that Buffe
 	private transient BufferedImage o = new BufferedImage(1, 1, 1);
 
 	protected int state;
-	protected int x;
-	protected int y;
-	protected int layer;
+	protected Point2D location;
 	
 	protected Bounding box = null;
 	protected Room sight = null;
@@ -30,9 +28,8 @@ public class Sprite implements Serializable //...well balls, it seems that Buffe
 	{
 		o = null;
 		state = 0;
-		layer = 0;
-		x = -1;
-		y = -1;
+		
+		location = new Point2D(-1, -1, 0);
 		
 		id = ++internalID;
 		
@@ -43,9 +40,8 @@ public class Sprite implements Serializable //...well balls, it seems that Buffe
 	public Sprite(BufferedImage img, int x, int y, int layer)
 	{
 		o = img;
-		this.x = x;
-		this.y = y;
-		this.layer = layer;
+		
+		location = new Point2D(x, y, layer);
 		
 		id = ++internalID;
 		
@@ -58,7 +54,7 @@ public class Sprite implements Serializable //...well balls, it seems that Buffe
 	 */
 	public int getX() 
 	{
-		return x;
+		return location.getX();
 	}
 
 	/**
@@ -67,7 +63,7 @@ public class Sprite implements Serializable //...well balls, it seems that Buffe
 	 */
 	public void setX(int x)
 	{
-		this.x = x;
+		location.setX(x);
 	}
 
 	/**
@@ -75,7 +71,7 @@ public class Sprite implements Serializable //...well balls, it seems that Buffe
 	 */
 	public int getY() 
 	{
-		return y;
+		return location.getY();
 	}
 
 	/**
@@ -83,7 +79,7 @@ public class Sprite implements Serializable //...well balls, it seems that Buffe
 	 */
 	public void setY(int y)
 	{
-		this.y = y;
+		location.setY(y);
 	}
 
 	/**
@@ -91,7 +87,7 @@ public class Sprite implements Serializable //...well balls, it seems that Buffe
 	 */
 	public int getLayer()
 	{
-		return layer;
+		return location.getLayer();
 	}
 
 	/**
@@ -99,7 +95,7 @@ public class Sprite implements Serializable //...well balls, it seems that Buffe
 	 */
 	public void setLayer(int layer)
 	{
-		this.layer = layer;
+		location.setLayer(layer);
 	}
 
 	public int getState()
@@ -155,14 +151,12 @@ public class Sprite implements Serializable //...well balls, it seems that Buffe
 	
 	public Point2D getPoint()
 	{
-		return new Point2D(x, y, layer);
+		return location;
 	}
 	
 	public void setPoint(Point2D p)
 	{
-		x = p.getX();
-		y = p.getY();
-		layer = p.getLayer();
+		location = p;
 	}
 	
 	public int getWidth()
