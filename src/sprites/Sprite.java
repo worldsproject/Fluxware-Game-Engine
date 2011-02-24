@@ -10,7 +10,7 @@ import listener.bounding.Bounding;
 import listener.bounding.BoundingBox;
 import util.Point2D;
 
-public class Sprite implements Serializable //...well balls, it seems that BufferedImage isn't serializable.
+public class Sprite implements Serializable
 {
 	public int serial = 0;
 	public int id = 0;
@@ -112,17 +112,10 @@ public class Sprite implements Serializable //...well balls, it seems that Buffe
 	{
 		o = img;
 	}
-	
-	@Deprecated
-	public void update(long time)
-	{
-		
-	}
 
 	public void update(long lastUpdate, long totalTime)
 	{
 		box.updateBounds();
-		update(lastUpdate);
 	}
 	
 	/**
@@ -177,21 +170,6 @@ public class Sprite implements Serializable //...well balls, it seems that Buffe
 	public void setBounding(Bounding b)
 	{
 		box = b;
-	}
-	
-	public void setSight(Room r)
-	{
-		sight = r;
-	}
-	
-	public Room getSight()
-	{
-		return sight;
-	}
-	
-	public void collided(Sprite s)
-	{
-		
 	}
 	
 	public String toString()
