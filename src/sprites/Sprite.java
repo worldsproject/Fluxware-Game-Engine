@@ -21,6 +21,8 @@ public class Sprite implements Serializable
 	protected Point2D location;
 	
 	protected Bounding box = null;
+	
+	protected boolean dead = false;
 
 	public Sprite()
 	{
@@ -168,6 +170,16 @@ public class Sprite implements Serializable
 	public void setBounding(Bounding b)
 	{
 		box = b;
+	}
+	
+	public boolean isGarbage()
+	{
+		return dead;
+	}
+	
+	public void setAsGarbage(boolean garbage)
+	{
+		dead = garbage;
 	}
 	
 	public String toString()

@@ -181,6 +181,13 @@ public class DisplayPanel extends JPanel
 			for(Integer i : set)
 			{
 				Sprite s = hash.get(i);
+				
+				if(s.isGarbage())
+				{
+					hash.remove(i);
+					continue;
+				}
+				
 				buf.drawImage(s.print(), s.getX(), s.getY(), null);
 			}
 		}
