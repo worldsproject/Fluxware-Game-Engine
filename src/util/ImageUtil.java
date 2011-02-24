@@ -1,5 +1,8 @@
 package util;
 
+import java.awt.AlphaComposite;
+import java.awt.Graphics2D;
+import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 
@@ -7,6 +10,42 @@ import javax.imageio.ImageIO;
 
 public class ImageUtil 
 {
+	public static int LOW_QUALITY = 0;
+	public static int MEDIUM_QUALITY = 1;
+	public static int HIGH_QUALITY = 2;
+	
+	public static BufferedImage scaleImage(BufferedImage original, int width, int height, int quality)
+	{
+		if(width < 0 || height < 0)
+			return original;
+		
+		Object qual = null;
+		
+		if(quality == LOW_QUALITY)
+		{
+			qual = RenderingHints.VALUE_RENDER_SPEED;
+		}
+		else if(quality == MEDIUM_QUALITY)
+		{
+			qual = RenderingHints.VALUE_RENDER_DEFAULT;
+		}
+		else
+		{
+			qual = RenderingHints.VALUE_RENDER_QUALITY;
+		}
+		
+		int type = original.getType() == 0? BufferedImage.TYPE_INT_ARGB : original.getType();
+		BufferedImage resizedImage = new BufferedImage(width, height, type);
+		Graphics2D g = resizedImage.createGraphics();
+		g.setComposite(AlphaComposite.Src);
+		g.setRenderingHint(RenderingHints.KEY_INTERPOLATION,RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+		g.setRenderingHint(RenderingHints.KEY_RENDERING, qual);
+		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+		g.drawImage(original, 0, 0, width, height, null);
+		
+		return resizedImage;
+	}
+	
 	/**
 	 * Returns an array of BufferedImages that is the spliting to the given Bufferedimage.
 	 * 
@@ -15,7 +54,7 @@ public class ImageUtil
 	 * @param rows - How many rows the BufferedImage is to be split into.
 	 * @return An array of BufferedImages that is of size (rows * cols).
 	 */
-	public static BufferedImage[] splitImage(BufferedImage ori, int cols, int rows)
+ 	public static BufferedImage[] splitImage(BufferedImage ori, int cols, int rows)
 	{
 		int width = ori.getWidth();  //Get the width and the height of the Image
 		int height = ori.getHeight();
