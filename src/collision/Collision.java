@@ -184,7 +184,7 @@ public class Collision {
 			{
 				BoundingBox bTemp = (BoundingBox)b.getBounding();
 				
-				if(aTemp.withinBounds(bTemp) || bTemp.withinBounds(bTemp))
+				if(aTemp.withinBounds(bTemp) || bTemp.withinBounds(aTemp))
 				{
 					return true;
 				}
