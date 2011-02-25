@@ -1,14 +1,14 @@
 package sprites;
 
-import java.awt.AlphaComposite;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.RenderingHints;
 import java.awt.font.FontRenderContext;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
+import java.io.File;
+
+import util.ImageUtil;
 
 
 /**
@@ -19,6 +19,7 @@ import java.awt.image.BufferedImage;
 public class CharacterSprite extends Sprite
 {
 	private String rep = null;
+	private Font f = new Font(Font.MONOSPACED, Font.PLAIN, 24);
 	/**
 	 * Default Constructor for the Sprite.  Creates a blank Sprite
 	 * at location (-1, -1) with a null representation.
@@ -47,7 +48,7 @@ public class CharacterSprite extends Sprite
 		rep = c.toString();
 		BufferedImage img = createImage(c.toString());
 		
-		this.setSprite(resizeImage(img, 30));
+		this.setSprite(ImageUtil.scaleImage(img, 30, 30, ImageUtil.HIGH_QUALITY));
 	}
 	
 	/**
@@ -73,7 +74,7 @@ public class CharacterSprite extends Sprite
 		BufferedImage img = createImage(c.toString());
 		
 		if(size > 0)
-			this.setSprite(resizeImage(img, size));
+			this.setSprite(ImageUtil.scaleImage(img, size, size, ImageUtil.HIGH_QUALITY));
 		else
 			this.setSprite(img);
 	}
@@ -87,10 +88,19 @@ public class CharacterSprite extends Sprite
 	 * @param y - The Y location of the CharacterSprite.
 	 * @param layer - The Layer the CharacterSprite will be located on.
 	 */
-	public CharacterSprite(String s, int x, int y, int layer)
+	public CharacterSprite(String s, int x, int y, int layer, String fontLocation)
 	{
 		super(null, x, y, layer);
 		
+	    try
+		{
+			f = Font.createFont(Font.TRUETYPE_FONT, new File(fontLocation));
+		}
+		catch (Exception e)
+		{
+			System.err.println(e);
+		}
+	      
 		BufferedImage img = createImage(s);
 		this.setSprite(img);
 	}
@@ -105,7 +115,7 @@ public class CharacterSprite extends Sprite
 		
 		rep = c.toString();
 
-		this.setSprite(resizeImage(img, 30));
+		this.setSprite(ImageUtil.scaleImage(img, 30, 30, ImageUtil.HIGH_QUALITY));
 	}
 	
 	/**
@@ -119,32 +129,11 @@ public class CharacterSprite extends Sprite
 		
 		rep = c.toString();
 
-		this.setSprite(resizeImage(img, size));
-	}
-	
-	private BufferedImage resizeImage(BufferedImage img, int size)
-	{
-		if(size < 0)
-			return img;
-		
-		int width = size;
-		int height = size;
-		int type = img.getType() == 0? BufferedImage.TYPE_INT_ARGB : img.getType();
-		BufferedImage resizedImage = new BufferedImage(width, height, type);
-		Graphics2D g = resizedImage.createGraphics();
-		g.setComposite(AlphaComposite.Src);
-		g.setRenderingHint(RenderingHints.KEY_INTERPOLATION,RenderingHints.VALUE_INTERPOLATION_BILINEAR);
-		g.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
-		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-		g.drawImage(img, 0, 0, width, height, null);
-		
-		return resizedImage;
+		this.setSprite(ImageUtil.scaleImage(img, size, size, ImageUtil.HIGH_QUALITY));
 	}
 	
 	private BufferedImage createImage(String c)
 	{
-		Font f = new Font(Font.MONOSPACED, Font.PLAIN, 24);
-
 		BufferedImage img = new BufferedImage(1, 1, BufferedImage.TYPE_4BYTE_ABGR);
 		Graphics g = img.getGraphics();
 		g.setFont(f);
