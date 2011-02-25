@@ -88,7 +88,7 @@ public class CharacterSprite extends Sprite
 	 * @param y - The Y location of the CharacterSprite.
 	 * @param layer - The Layer the CharacterSprite will be located on.
 	 */
-	public CharacterSprite(String s, int x, int y, int layer, String fontLocation)
+	public CharacterSprite(String s, int x, int y, int layer, String fontLocation, Color color)
 	{
 		super(null, x, y, layer);
 		
