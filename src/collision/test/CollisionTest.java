@@ -123,7 +123,6 @@ public class CollisionTest
 		assertFalse(Collision.hasCollided(two, one, false));
 		
 		one.setPoint(new Point2D(25, 25, 0));
-		one.update(0, 0);
 		
 		assertTrue(Collision.hasCollided(one, two, false));
 		assertTrue(Collision.hasCollided(two, one, false));
@@ -142,7 +141,6 @@ public class CollisionTest
 		assertFalse(Collision.hasCollided(two, one, true));
 		
 		one.setPoint(new Point2D(25, 25, 0));
-		one.update(0, 0);
 		
 		assertTrue(Collision.hasCollided(one, two, true));
 		assertTrue(Collision.hasCollided(two, one, true));
