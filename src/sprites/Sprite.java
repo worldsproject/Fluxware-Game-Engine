@@ -64,6 +64,7 @@ public class Sprite implements Serializable
 	public void setX(int x)
 	{
 		location.setX(x);
+		box.updateBounds();
 	}
 
 	/**
@@ -80,6 +81,7 @@ public class Sprite implements Serializable
 	public void setY(int y)
 	{
 		location.setY(y);
+		box.updateBounds();
 	}
 
 	/**
@@ -96,6 +98,7 @@ public class Sprite implements Serializable
 	public void setLayer(int layer)
 	{
 		location.setLayer(layer);
+		box.updateBounds();
 	}
 
 	public int getState()
@@ -150,6 +153,7 @@ public class Sprite implements Serializable
 	public void setPoint(Point2D p)
 	{
 		location = p;
+		box.updateBounds();
 	}
 	
 	public int getWidth()
