@@ -16,6 +16,7 @@ import util.ImageUtil;
  * @author Fluxware
  *
  */
+@SuppressWarnings("serial")
 public class CharacterSprite extends Sprite
 {
 	private String rep = null;
@@ -45,7 +46,6 @@ public class CharacterSprite extends Sprite
 	{
 		super(null, x, y, layer);
 		
-		rep = c.toString();
 		BufferedImage img = createImage(c.toString());
 		
 		this.setSprite(ImageUtil.scaleImage(img, 30, 30, ImageUtil.HIGH_QUALITY));
@@ -70,7 +70,6 @@ public class CharacterSprite extends Sprite
 	{
 		super(null, x, y, layer);
 
-		rep = c.toString();
 		BufferedImage img = createImage(c.toString());
 		
 		if(size > 0)
@@ -112,8 +111,6 @@ public class CharacterSprite extends Sprite
 	public void setSprite(Character c) 
 	{
 		BufferedImage img = this.createImage(c.toString());
-		
-		rep = c.toString();
 
 		this.setSprite(ImageUtil.scaleImage(img, 30, 30, ImageUtil.HIGH_QUALITY));
 	}
@@ -126,8 +123,6 @@ public class CharacterSprite extends Sprite
 	public void setSprite(Character c, int size) 
 	{
 		BufferedImage img = createImage(c.toString());
-		
-		rep = c.toString();
 
 		this.setSprite(ImageUtil.scaleImage(img, size, size, ImageUtil.HIGH_QUALITY));
 	}

@@ -5,6 +5,7 @@ import java.io.Serializable;
 import sprites.Sprite;
 import util.Point2D;
 
+@SuppressWarnings("serial")
 public abstract class Bounding implements Serializable
 {
 	protected Sprite bound;
