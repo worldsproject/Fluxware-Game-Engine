@@ -90,9 +90,9 @@ public class BoundingBox extends Bounding
 		return bound.getLayer();
 	}
 
-	public boolean withinBounds(Bounding box) 
-	{
-		if((box instanceof BoundingBox) == false)
+	public boolean withinBounds(BoundingBox box) 
+	{	
+		if(this.getLayer() != box.getLayer())
 			return false;
 		
 		BoundingBox b = (BoundingBox)box;
@@ -106,7 +106,6 @@ public class BoundingBox extends Bounding
 		{
 			return true;
 		}
-		
 		return false;
 	}
 	

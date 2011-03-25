@@ -43,6 +43,8 @@ public class CollisionTest
 		room.addSprite(two);
 		assertFalse(Collision.hasCollided(one, two, false));
 		assertFalse(Collision.hasCollided(two, one, false));
+		assertTrue((Collision.hasCollided(one, room.getSprites(), false)).isEmpty());
+		assertTrue((Collision.hasCollided(two, room.getSprites(), false)).isEmpty());
 	}
 	
 	@Test
@@ -56,6 +58,8 @@ public class CollisionTest
 		
 		assertFalse(Collision.hasCollided(one, two, true));
 		assertFalse(Collision.hasCollided(two, one, true));
+		assertTrue((Collision.hasCollided(one, room.getSprites(), true)).isEmpty());
+		assertTrue((Collision.hasCollided(two, room.getSprites(), true)).isEmpty());
 	}
 	
 	@Test
@@ -69,6 +73,8 @@ public class CollisionTest
 		
 		assertTrue(Collision.hasCollided(one, two, false));
 		assertTrue(Collision.hasCollided(two, one, false));
+		assertFalse((Collision.hasCollided(one, room.getSprites(), false)).isEmpty());
+		assertFalse((Collision.hasCollided(two, room.getSprites(), false)).isEmpty());
 	}
 
 	@Test
@@ -82,6 +88,8 @@ public class CollisionTest
 		
 		assertTrue(Collision.hasCollided(one, two, true));
 		assertTrue(Collision.hasCollided(two, one, true));
+		assertFalse((Collision.hasCollided(one, room.getSprites(), true)).isEmpty());
+		assertFalse((Collision.hasCollided(two, room.getSprites(), true)).isEmpty());
 	}
 	
 	@Test
@@ -95,6 +103,8 @@ public class CollisionTest
 		
 		assertTrue(Collision.hasCollided(one, two, false));
 		assertTrue(Collision.hasCollided(two, one, false));
+		assertFalse((Collision.hasCollided(one, room.getSprites(), false)).isEmpty());
+		assertFalse((Collision.hasCollided(two, room.getSprites(), false)).isEmpty());
 	}
 	
 	@Test
@@ -108,6 +118,8 @@ public class CollisionTest
 		
 		assertTrue(Collision.hasCollided(one, two, true));
 		assertTrue(Collision.hasCollided(two, one, true));
+		assertFalse((Collision.hasCollided(one, room.getSprites(), true)).isEmpty());
+		assertFalse((Collision.hasCollided(two, room.getSprites(), true)).isEmpty());
 	}
 	
 	@Test
@@ -121,11 +133,15 @@ public class CollisionTest
 		
 		assertFalse(Collision.hasCollided(one, two, false));
 		assertFalse(Collision.hasCollided(two, one, false));
+		assertTrue((Collision.hasCollided(one, room.getSprites(), false)).isEmpty());
+		assertTrue((Collision.hasCollided(two, room.getSprites(), false)).isEmpty());
 		
 		one.setPoint(new Point2D(25, 25, 0));
 		
 		assertTrue(Collision.hasCollided(one, two, false));
 		assertTrue(Collision.hasCollided(two, one, false));
+		assertFalse((Collision.hasCollided(one, room.getSprites(), false)).isEmpty());
+		assertFalse((Collision.hasCollided(two, room.getSprites(), false)).isEmpty());
 	}
 	
 	@Test
@@ -139,10 +155,44 @@ public class CollisionTest
 		
 		assertFalse(Collision.hasCollided(one, two, true));
 		assertFalse(Collision.hasCollided(two, one, true));
+		assertTrue((Collision.hasCollided(one, room.getSprites(), true)).isEmpty());
+		assertTrue((Collision.hasCollided(two, room.getSprites(), true)).isEmpty());
 		
 		one.setPoint(new Point2D(25, 25, 0));
 		
 		assertTrue(Collision.hasCollided(one, two, true));
 		assertTrue(Collision.hasCollided(two, one, true));
+		assertFalse((Collision.hasCollided(one, room.getSprites(), true)).isEmpty());
+		assertFalse((Collision.hasCollided(two, room.getSprites(), true)).isEmpty());
+	}
+	
+	@Test
+	public void test_Sprite_Not_Collide_On_Different_Layers_Bounding_Box()
+	{
+		Sprite one = new Sprite(ImageUtil.getBufferedImage("/resources/100x100.png"), 0, 0, 0);
+		Sprite two = new Sprite(ImageUtil.getBufferedImage("/resources/50x50.png"), 0, 0, 1);
+		
+		room.addSprite(one);
+		room.addSprite(two);
+		
+		assertFalse(Collision.hasCollided(one, two, false));
+		assertFalse(Collision.hasCollided(two, one, false));
+		assertTrue((Collision.hasCollided(one, room.getSprites(), false)).isEmpty());
+		assertTrue((Collision.hasCollided(two, room.getSprites(), false)).isEmpty());
+	}
+	
+	@Test
+	public void test_Sprite_Not_Collide_On_Different_Layers_Pixel_Perfect()
+	{
+		Sprite one = new Sprite(ImageUtil.getBufferedImage("/resources/100x100.png"), 0, 0, 0);
+		Sprite two = new Sprite(ImageUtil.getBufferedImage("/resources/50x50.png"), 0, 0, 1);
+		
+		room.addSprite(one);
+		room.addSprite(two);
+		
+		assertFalse(Collision.hasCollided(one, two, true));
+		assertFalse(Collision.hasCollided(two, one, true));
+		assertTrue((Collision.hasCollided(one, room.getSprites(), true)).isEmpty());
+		assertTrue((Collision.hasCollided(two, room.getSprites(), true)).isEmpty());
 	}
 }
