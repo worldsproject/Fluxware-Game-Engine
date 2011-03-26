@@ -1,8 +1,5 @@
 package gui;
 
-import error.CrashReport;
-import gui.hud.HUD;
-
 import java.awt.Dimension;
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
@@ -19,6 +16,7 @@ import javax.swing.JPanel;
 
 import level.Room;
 import sprites.Sprite;
+import error.CrashReport;
 
 /**
  * This is the main class for the Fluxware Game Engine.  This class handles and maintains the Windowing System.
@@ -38,9 +36,6 @@ public class Game extends JFrame implements KeyListener, MouseListener
 
 	private boolean showMenu = false;
 	private Menu menu = null;
-
-	private HUD hud = null;
-	private boolean showHUD = true;
 	
 	private Dimension resolution = new Dimension(1024, 768);
 
@@ -207,34 +202,6 @@ public class Game extends JFrame implements KeyListener, MouseListener
 		rt = new RunThread(this);
 		rt.setPriority(Thread.MAX_PRIORITY);
 		rt.start();
-	}
-
-	/**
-	 * Sets the HUG to the given.
-	 * @param h - The HUD to be displayed.
-	 */
-	public void setHUD(HUD h)
-	{
-		this.hud = h;
-		dp.addHUD(h);
-	}
-
-	/**
-	 * Shows the current HUD, if one is available.
-	 * @param show - Shows the HUD if true.
-	 */
-	public void showHUD(boolean show)
-	{
-		showHUD = show;
-	}
-
-	/**
-	 * Returns the current HUD.
-	 * @return The current HUD.
-	 */
-	public HUD getHUD()
-	{
-		return hud;
 	}
 
 	/**
