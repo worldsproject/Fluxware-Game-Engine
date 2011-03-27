@@ -159,11 +159,18 @@ public class DisplayPanel extends JPanel
 		{	
 			Sprite temp = it.next();
 			
-			if(temp.isGarbage())
+			if(temp == null)
 			{
 				it.remove();
 				continue;
 			}
+			
+			if(temp.isGarbage())
+			{
+				temp = null;
+				continue;
+			}
+			
 			buf.drawImage(temp.print(), (temp.getX() * spacing) - viewX, (temp.getY() * spacing) - viewY, null);	
 		}
 
