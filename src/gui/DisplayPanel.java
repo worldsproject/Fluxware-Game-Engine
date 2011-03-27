@@ -153,25 +153,15 @@ public class DisplayPanel extends JPanel
 
 		buf.setColor(Color.WHITE);
 
-		Iterator<Sprite> it = l.iterator();
-		
-		while(it.hasNext()) //Iterate through each sprite and draw it.
+		for(Sprite s: l) //Iterate through each sprite and draw it.
 		{	
-			Sprite temp = it.next();
-			
-			if(temp == null)
+			if(s.isGarbage())
 			{
-				it.remove();
+				r.removeSprite(s);
 				continue;
 			}
 			
-			if(temp.isGarbage())
-			{
-				temp = null;
-				continue;
-			}
-			
-			buf.drawImage(temp.print(), (temp.getX() * spacing) - viewX, (temp.getY() * spacing) - viewY, null);	
+			buf.drawImage(s.print(), (s.getX() * spacing) - viewX, (s.getY() * spacing) - viewY, null);	
 		}
 
 		g.drawImage(offscreen, 0, 0, null);
