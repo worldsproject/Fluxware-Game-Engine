@@ -1,0 +1,6 @@
+This is a Java Game Engine desiged for simplicty. It works with a conjuntion of other tools to make game creation as simple as possible.
+
+Fixes/Additions
+
+1.0.8
+Sprites correctly removed when declaired as garbage.
