@@ -46,7 +46,7 @@ public class CharacterSprite extends Sprite
 		super(null, x, y, layer);
 		
 		rep = c.toString();
-		BufferedImage img = createImage(c.toString());
+		BufferedImage img = createImage(c.toString(), null);
 		
 		this.setSprite(ImageUtil.scaleImage(img, 30, 30, ImageUtil.HIGH_QUALITY));
 	}
@@ -71,7 +71,7 @@ public class CharacterSprite extends Sprite
 		super(null, x, y, layer);
 
 		rep = c.toString();
-		BufferedImage img = createImage(c.toString());
+		BufferedImage img = createImage(c.toString(), null);
 		
 		if(size > 0)
 			this.setSprite(ImageUtil.scaleImage(img, size, size, ImageUtil.HIGH_QUALITY));
@@ -98,10 +98,10 @@ public class CharacterSprite extends Sprite
 		}
 		catch (Exception e)
 		{
-			System.err.println(e);
+			//Default font used.
 		}
 	      
-		BufferedImage img = createImage(s);
+		BufferedImage img = createImage(s, color);
 		this.setSprite(img);
 	}
 
@@ -111,7 +111,7 @@ public class CharacterSprite extends Sprite
 	 */
 	public void setSprite(Character c) 
 	{
-		BufferedImage img = this.createImage(c.toString());
+		BufferedImage img = this.createImage(c.toString(), null);
 		
 		rep = c.toString();
 
@@ -125,15 +125,18 @@ public class CharacterSprite extends Sprite
 	 */
 	public void setSprite(Character c, int size) 
 	{
-		BufferedImage img = createImage(c.toString());
+		BufferedImage img = createImage(c.toString(), null);
 		
 		rep = c.toString();
 
 		this.setSprite(ImageUtil.scaleImage(img, size, size, ImageUtil.HIGH_QUALITY));
 	}
 	
-	private BufferedImage createImage(String c)
+	private BufferedImage createImage(String c, Color color)
 	{
+		if(color == null)
+			color = Color.BLUE;
+		
 		BufferedImage img = new BufferedImage(1, 1, BufferedImage.TYPE_4BYTE_ABGR);
 		Graphics g = img.getGraphics();
 		g.setFont(f);
@@ -146,7 +149,7 @@ public class CharacterSprite extends Sprite
 		img = new BufferedImage((int)Math.ceil(rect.getWidth()), (int)Math.ceil(rect.getHeight()), BufferedImage.TYPE_4BYTE_ABGR);
 
 		g = img.getGraphics();
-		g.setColor(Color.BLUE);
+		g.setColor(color);
 		g.setFont(f);
 		g.drawString(c, 0, (int)Math.ceil(rect.getHeight()));
 		
