@@ -2,9 +2,11 @@ package gui;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.DisplayMode;
 import java.awt.Graphics;
+import java.awt.GraphicsDevice;
+import java.awt.GraphicsEnvironment;
 import java.awt.image.BufferedImage;
-import java.util.Iterator;
 import java.util.LinkedList;
 
 import javax.swing.JPanel;
@@ -12,6 +14,7 @@ import javax.swing.JPanel;
 import level.Room;
 import level.TiledRoom;
 import sprites.Sprite;
+import util.ImageUtil;
 
 /**
  * Default class for displaying a Room.  
@@ -32,6 +35,9 @@ public class DisplayPanel extends JPanel
 	private int viewX = 0;
 	private int viewY = 0;
 
+	private boolean fullscreen;
+	private Dimension screenSize;
+
 	//For DoubleBuffering.
 	Graphics buf;
 	BufferedImage offscreen;
@@ -41,12 +47,24 @@ public class DisplayPanel extends JPanel
 	 * 
 	 * @param r - The default room to be displayed.
 	 */
-	public DisplayPanel(Room r, Dimension res)
+	public DisplayPanel(Room r, Dimension res, boolean fullscreen)
 	{
 		//Sets the space to the TiledRoom cellsize.
 		if(r instanceof TiledRoom)
 		{
 			spacing = ((TiledRoom)r).getCellSize();
+		}
+
+		if(fullscreen)
+		{
+			GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+			GraphicsDevice[] gs = ge.getScreenDevices();
+
+			DisplayMode dm = gs[0].getDisplayMode();
+			int screenWidth = dm.getWidth();
+			int screenHeight = dm.getHeight();
+			
+			screenSize = new Dimension(screenWidth, screenHeight);
 		}
 
 		resolution = res; //How big the window should be.
@@ -160,10 +178,13 @@ public class DisplayPanel extends JPanel
 				r.removeSprite(s);
 				continue;
 			}
-			
+
 			buf.drawImage(s.print(), (s.getX() * spacing) - viewX, (s.getY() * spacing) - viewY, null);	
 		}
 
-		g.drawImage(offscreen, 0, 0, null);
+		if(!fullscreen)
+			g.drawImage(offscreen, 0, 0, null);
+		else
+			g.drawImage(ImageUtil.scaleImage(offscreen, (int)screenSize.getWidth(), (int)screenSize.getHeight(), ImageUtil.LOW_QUALITY), 0, 0, null);
 	}
 }

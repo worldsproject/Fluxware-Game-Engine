@@ -3,8 +3,8 @@ package gui;
 import java.awt.Dimension;
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
+//import java.awt.GridBagConstraints;
+//import java.awt.GridBagLayout;
 import java.awt.Menu;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -148,9 +148,9 @@ public class Game extends JFrame implements KeyListener, MouseListener
 		setupDP(room);  //Sets up the Display Panel with the first room.
 
 		root = (JPanel)this.getContentPane();  //Gets the content pane, and sets it up so that it is always centered.
-		root.setLayout(new GridBagLayout());
+		//root.setLayout(new GridBagLayout());
 
-		root.add(dp, new GridBagConstraints());
+		root.add(dp);//, new GridBagConstraints());
 
 		//This is here to determine the fullscreen status
 		if(fullscreen == false)//Keep it as a window.
@@ -190,7 +190,7 @@ public class Game extends JFrame implements KeyListener, MouseListener
 		}
 		else
 		{
-			dp = new DisplayPanel(room, resolution);
+			dp = new DisplayPanel(room, resolution, fullscreen);
 		}
 	}
 
