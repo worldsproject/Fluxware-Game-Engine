@@ -82,7 +82,7 @@ public class ImageUtil
 		{
 			for(int j = 0; j < yPoints.length; j++)
 			{
-				rv[pos++] = ori.getSubimage(xPoints[j], yPoints[i], newWidth, newHeight);  //Get the subimage of each one.
+				rv[pos++] = ori.getSubimage(xPoints[i], yPoints[j], newWidth, newHeight);  //Get the subimage of each one.
 			}
 		}
 
