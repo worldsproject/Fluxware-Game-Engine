@@ -5,6 +5,7 @@ import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.util.HashMap;
 
 import javax.imageio.ImageIO;
 
@@ -13,14 +14,16 @@ public class ImageUtil
 	public static int LOW_QUALITY = 0;
 	public static int MEDIUM_QUALITY = 1;
 	public static int HIGH_QUALITY = 2;
-	
+
+	private static HashMap<String, BufferedImage> cache = new HashMap<String, BufferedImage>();
+
 	public static BufferedImage scaleImage(BufferedImage original, int width, int height, int quality)
 	{
 		if(width < 0 || height < 0)
 			return original;
-		
+
 		Object qual = null;
-		
+
 		if(quality == LOW_QUALITY)
 		{
 			qual = RenderingHints.VALUE_RENDER_SPEED;
@@ -33,7 +36,7 @@ public class ImageUtil
 		{
 			qual = RenderingHints.VALUE_RENDER_QUALITY;
 		}
-		
+
 		int type = original.getType() == 0? BufferedImage.TYPE_INT_ARGB : original.getType();
 		BufferedImage resizedImage = new BufferedImage(width, height, type);
 		Graphics2D g = resizedImage.createGraphics();
@@ -42,10 +45,10 @@ public class ImageUtil
 		g.setRenderingHint(RenderingHints.KEY_RENDERING, qual);
 		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 		g.drawImage(original, 0, 0, width, height, null);
-		
+
 		return resizedImage;
 	}
-	
+
 	/**
 	 * Returns an array of BufferedImages that is the spliting to the given Bufferedimage.
 	 * 
@@ -54,7 +57,7 @@ public class ImageUtil
 	 * @param rows - How many rows the BufferedImage is to be split into.
 	 * @return An array of BufferedImages that is of size (rows * cols).
 	 */
- 	public static BufferedImage[] splitImage(BufferedImage ori, int cols, int rows)
+	public static BufferedImage[] splitImage(BufferedImage ori, int cols, int rows)
 	{
 		int width = ori.getWidth();  //Get the width and the height of the Image
 		int height = ori.getHeight();
@@ -98,15 +101,27 @@ public class ImageUtil
 	{
 		return img.getRGB(0, 0, img.getWidth(), img.getHeight(), null, 0, 0);
 	}
-	
+
 	public static BufferedImage getBufferedImage(String path)
 	{
-		try {
-			return ImageIO.read(ImageUtil.class.getResource(path));
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			return null;
+		if(cache.containsKey(path))
+		{
+			return cache.get(path);
+		}
+		else
+		{
+			try 
+			{
+				BufferedImage temp = ImageIO.read(ImageUtil.class.getResource(path));
+				cache.put(path, temp);
+				return temp;
+			}
+			catch (IOException e) 
+			{
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				return null;
+			}
 		}
 	}
 
@@ -123,19 +138,19 @@ public class ImageUtil
 				bitmask[i] = 0x0;
 			}
 		}
-		
+
 		return bitmask;
 	}
-	
+
 	public static int[] getCombinedBitMask(int[] pixels_1, int[] pixels_2)
 	{
-	    int[] bitmask = new int[Math.min(pixels_1.length, pixels_2.length)];
+		int[] bitmask = new int[Math.min(pixels_1.length, pixels_2.length)];
 
-	    for(int i = 0; i < bitmask.length;  i++)
-	    {
-	           bitmask[i] = pixels_1[i] & pixels_2[i];
-	    }
-	    return bitmask;
+		for(int i = 0; i < bitmask.length;  i++)
+		{
+			bitmask[i] = pixels_1[i] & pixels_2[i];
+		}
+		return bitmask;
 	}
 
 }

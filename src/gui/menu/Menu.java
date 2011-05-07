@@ -171,9 +171,9 @@ public class Menu extends Room
 	{
 		MenuEventListener[] list = listeners.getListeners(MenuEventListener.class);
 
-		for (int i=0; i<list.length; i+=2) 
+		for (int i=0; i<list.length; i++) 
 		{
-			((MenuEventListener)list[i+1]).menuItemSelected(m);
+			((MenuEventListener)list[i]).menuItemSelected(m);
 		}
 	}
 }
