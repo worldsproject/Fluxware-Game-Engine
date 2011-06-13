@@ -6,14 +6,12 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Set;
 
-import listener.CollisionListener;
 import listener.bounding.Bounding;
 import listener.bounding.BoundingBox;
 import listener.bounding.BoundingCircle;
 import sprites.Sprite;
 import util.ImageUtil;
 import util.Point2D;
-import event.CollisionEvent;
 
 /**
  * Default Room class. This is the general, broad overview of a room.
@@ -31,7 +29,6 @@ public class Room implements KeyListener
 	protected int width;
 	protected int layers;
 	protected LinkedList<KeyListener> keylisteners = new LinkedList<KeyListener>();
-	protected LinkedList<CollisionListener> collisionListeners = new LinkedList<CollisionListener>();
 
 	//Holds all of the sprites in the room.
 	protected HashMap<Integer, LinkedList<Sprite>> allSprites = new HashMap<Integer, LinkedList<Sprite>>();
@@ -70,50 +67,6 @@ public class Room implements KeyListener
 	}
 
 	/**
-	 * Returns the Sprite, if any, at the location (x,y, layer)
-	 * @param x - The X coordinate of the search.
-	 * @param y - The Y coordinate of the search.
-	 * @param layer - The layer you are looking at.
-	 * @return - The sprite at (x,y,layer) if any.  If there is no sprite at (x,y,layer) then null is returned.
-	 */
-	@Deprecated
-	public Sprite getSprite(int x, int y, int layer)
-	{	
-		LinkedList<Sprite> as = allSprites.get(new Integer(layer));
-
-		for(Sprite s: as)
-		{
-			if(s.getX() == x && s.getY() == y)
-			{
-				return s;
-			}
-		}
-
-		return null;
-	}
-
-	/**
-	 * Returns a Sprite based on the location represented by <i>p</i>.
-	 * @param p - Location to be checked.
-	 * @return - A Sprite if the location at <i>p</i> contains a Sprite, null otherwise.
-	 */
-	@Deprecated
-	public Sprite getSprite(Point2D p)
-	{
-		LinkedList<Sprite> as = allSprites.get(new Integer(p.getLayer()));
-
-		for(Sprite s: as)
-		{
-			if(s.getX() == p.getX() && s.getY() == p.getY())
-			{
-				return s;
-			}
-		}
-
-		return null;
-	}
-
-	/**
 	 * Returns a Sprite based on the optional unique ID.
 	 * @param id - The ID being searched for.
 	 * @return - The Sprite with the matching ID, null if no Sprite exists with given ID.
@@ -129,23 +82,6 @@ public class Room implements KeyListener
 		}
 
 		return null;
-	}
-
-	/**
-	 * Moves the Sprite by the given <i>xAmount</i> and given <i>yAmount</i>
-	 * <br /><b><font color=red>DOES NOT DO COLLISION DETECTION AS OF NOW.</font></b>
-	 * 
-	 * @param sprite - The Sprite to be moved.
-	 * @param xAmount - Amount in the X direction the Sprite is to move, may be negative.
-	 * @param yAmount - Amount in the Y direction the Sprite is to move, may be negative.
-	 * @return true is the move was successful, false if otherwise.
-	 */
-	@Deprecated
-	public boolean move(Sprite sprite, int xAmount, int yAmount)
-	{
-		sprite.setX(sprite.getX() + xAmount);
-		sprite.setY(sprite.getY() + yAmount);
-		return true;
 	}
 
 	/**
@@ -208,6 +144,12 @@ public class Room implements KeyListener
 		return rv;
 	}
 
+	/**
+	 * Returns true is the Sprite has collided with anything on the layer.
+	 * 
+	 * @param s - The Sprite being check.
+	 * @return <b>true</b> if the Sprite has collided with anything, <b>false</b> otherwise.
+	 */
 	public boolean hasCollided(Sprite s)
 	{
 		if(!getCollisions(s.getPoint(),s).isEmpty())
@@ -385,35 +327,6 @@ public class Room implements KeyListener
 	public LinkedList<KeyListener> getKeyListeners()
 	{
 		return keylisteners;
-	}
-
-	public LinkedList<CollisionListener> getCollisionListeners()
-	{
-		return collisionListeners;
-	}
-
-	public void throwCollision(Sprite s, LinkedList<Sprite> list)
-	{
-		for(CollisionListener cl : collisionListeners)
-		{
-			cl.collided(new CollisionEvent(s, list));
-		}
-	}
-
-	public void throwCollision(Sprite s, Point2D p)
-	{
-		for(CollisionListener cl : collisionListeners)
-		{
-			cl.collided(new CollisionEvent(s, this.getOverlaps(p,s)));
-		}
-	}
-
-	public void throwCollision(Sprite s, int serial)
-	{
-		for(CollisionListener cl : collisionListeners)
-		{
-			cl.collided(new CollisionEvent(s, this.getSprites(serial)));
-		}
 	}
 
 	public boolean inBound(int x, int y)

@@ -62,6 +62,13 @@ public class Collision {
 		return 2;
 	}
 	
+	/**
+	 * The method gives all the points that two sprites are colliding.
+	 * 
+	 * @param a - The first Sprite to be checked.
+	 * @param b - The second Sprite to be checked.
+	 * @return A LinkedList<Point2D> that contains all points that a and b are colliding at.
+	 */
 	public static LinkedList<Point2D> getPixels(Sprite a, Sprite b)
 	{
 		if(a.getBounding() instanceof BoundingBox && b.getBounding() instanceof BoundingBox)

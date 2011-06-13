@@ -15,7 +15,9 @@ public class Menu extends Room
 {
 	private EventListenerList listeners = new EventListenerList();
 
+	@SuppressWarnings("unused")
 	private Sprite background = null;
+	@SuppressWarnings("unused")
 	private Sprite title = null;
 	private Sprite cursorIcon = null;
 
@@ -26,6 +28,11 @@ public class Menu extends Room
 	private int downKey = KeyEvent.VK_DOWN;
 	private int selectKey = KeyEvent.VK_ENTER;
 
+	/**
+	 * Creates a Menu of <b>width</b> width and <b>height</b> height.
+	 * @param width - How wide the menu is.
+	 * @param height - How tall the menu is.
+	 */
 	public Menu(int width, int height)
 	{
 		super(width, height, 2);
@@ -82,6 +89,10 @@ public class Menu extends Room
 		}
 	}
 
+	/**
+	 * Adds a cursor icon. This cursor can be any Sprite.
+	 * @param cursor - The Sprite that is to act as the menu cursor.
+	 */
 	public void addCursor(Sprite cursor)
 	{
 		cursorIcon = cursor;
@@ -89,16 +100,28 @@ public class Menu extends Room
 		setCursorPoint();
 	}
 
+	/**
+	 * Sets the key to move the current selection up.
+	 * @param keyCode - The key to move the current selection up.
+	 */
 	public void setMoveUpKey(int keyCode)
 	{
 		upKey = keyCode;
 	}
 
+	/**
+	 * Sets the key to move the current selection down.
+	 * @param keyCode - The key to move the current selection down.
+	 */
 	public void setMoveDownKey(int keyCode)
 	{
 		downKey = keyCode;
 	}
 
+	/**
+	 * Sets the key to choose the current selection.
+	 * @param keyCode - The key to choose the current selection.
+	 */
 	public void setSelectKey(int keyCode)
 	{
 		selectKey = keyCode;
@@ -157,11 +180,19 @@ public class Menu extends Room
 		}
 	}
 
+	/**
+	 * Adds a MenuListener.
+	 * @param m - The MenuListener to be added.
+	 */
 	public void addMenuListener(MenuEventListener m)
 	{
 		listeners.add(MenuEventListener.class, m);
 	}
 
+	/**
+	 * Removes a MenuListener from this Menu.
+	 * @param m - The MenuListener to be removed.
+	 */
 	public void removeMenuListener(MenuEventListener m)
 	{
 		listeners.remove(MenuEventListener.class, m);

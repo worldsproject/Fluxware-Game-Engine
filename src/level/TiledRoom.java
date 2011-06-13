@@ -1,14 +1,9 @@
 package level;
 import java.awt.event.KeyListener;
-import java.io.File;
-import java.util.HashMap;
 import java.util.LinkedList;
 
-import listener.bounding.Bounding;
 import listener.bounding.TiledBoundingBox;
 import sprites.Sprite;
-import util.LevelReader;
-import util.Point2D;
 
 
 /**
@@ -37,29 +32,6 @@ public class TiledRoom extends Room
 {
 	//This is a default size of the cells.
 	private int cellSize = 30;
-
-	/**
-	 * This creates a Tiled Room based off of a Level created either by hand or
-	 * by the Fluxware Level Editor.
-	 * 
-	 * @param f - The File containing the location of the Level File.
-	 * @param ex - A Hashmap containing the Serial and example Sprites.
-	 */
-	public TiledRoom(File f, HashMap<Integer, Sprite> ex)
-	{
-		LevelReader reader = new LevelReader(f, ex);
-
-		LinkedList<Sprite> temp = reader.getSprites();
-		
-		for(Sprite s : temp)
-		{
-			addSprite(s);
-		}
-
-		this.width = reader.getWidth();
-		this.height = reader.getHeight();
-		this.layers = reader.getLayers();
-	}
 	
 	/**
 	 * Creates and empty room with the given dimensions.
@@ -77,6 +49,14 @@ public class TiledRoom extends Room
 		keylisteners = new LinkedList<KeyListener>();
 	}
 	
+	/**
+	 * Creates a TiledRoom with the given dimensions.
+	 * 
+	 * @param width - The width of the room.
+	 * @param height - The height of the room.
+	 * @param layers - The number of layers in the room.
+	 * @param cs - The size of each cell.
+	 */
 	public TiledRoom(int width, int height, int layers, int cs)
 	{
 		cellSize = cs;
@@ -139,30 +119,5 @@ public class TiledRoom extends Room
 	public int getCellSize()
 	{
 		return cellSize;
-	}
-	
-	/**
-	 * <b><font color="red">Do not pass in a point that has been scaled by the cellSize of TiledRoom.</font></b>
-	 */
-	public LinkedList<Sprite> getSprites(Point2D unscaled)
-	{
-		LinkedList<Sprite> rv = new LinkedList<Sprite>();
-		
-		Point2D p = unscaled.scale(cellSize);  
-		
-		for(Sprite s : this.getSprites())
-		{
-			Bounding b = s.getBounding();
-
-			if(b != null)
-			{
-				if(b.withinBounds(p))
-				{
-					rv.add(s);
-				}
-			}
-		}
-		
-		return rv;
 	}
 }

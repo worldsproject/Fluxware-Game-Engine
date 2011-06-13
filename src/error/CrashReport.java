@@ -21,6 +21,8 @@ import javax.swing.JTextArea;
  * @author tbutram
  *
  */
+@SuppressWarnings("serial")
+@Deprecated
 public class CrashReport extends JFrame implements ActionListener 
 {
 	private String message = "<html><p align=\"center\">We are sorry but the Fluxware Game Engine has crashed.<br>" +

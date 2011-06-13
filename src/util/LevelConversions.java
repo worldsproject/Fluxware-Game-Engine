@@ -22,6 +22,7 @@ import sprites.Sprite;
 import error.CrashReport;
 
 
+@SuppressWarnings("deprecation")
 public class LevelConversions 
 {
 	public static Room JSONToRoom(File f)
@@ -32,7 +33,7 @@ public class LevelConversions
 		{
 			BufferedReader fr = new BufferedReader(new FileReader(f));
 			
-			String version = fr.readLine();
+			//String version = fr.readLine();
 			String room = fr.readLine();
 			
 			LinkedList<String> list = new LinkedList<String>();
@@ -63,7 +64,7 @@ public class LevelConversions
 			{
 				JSONObject temp = (JSONObject)parser.parse(l);
 				
-				String name = (String)temp.get("name");
+				//String name = (String)temp.get("name");
 				String hash = (String)temp.get("hash");
 				int x = ((Long)temp.get("x")).intValue();
 				int y = ((Long)temp.get("y")).intValue();
@@ -123,7 +124,7 @@ public class LevelConversions
 			
 			bw.write(roomInfo.toString() + "\n");
 
-			JSONObject sprites = new JSONObject();
+			//JSONObject sprites = new JSONObject();
 
 			for(Sprite s : allSprite)
 			{

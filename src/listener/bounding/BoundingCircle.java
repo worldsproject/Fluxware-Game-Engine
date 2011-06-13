@@ -9,6 +9,7 @@ import util.Point2D;
  * The radius of the circle is given by the biggest between the 
  * height or width.
  */
+@SuppressWarnings("serial")
 public class BoundingCircle extends Bounding 
 {
 	private Point2D center = null;
@@ -31,6 +32,10 @@ public class BoundingCircle extends Bounding
 		radius = (((int)Math.max(sw, sh))/ 2);
 	}
 	
+	/*
+	 * Returns the (X,Y) of the center of BoundingCircle. 
+	 * @return An int[] where [0] is the X coordinate and [1] is the Y coordinate.
+	 */
 	private int[] findCenter()
 	{
 		int[] rv = new int[2];
@@ -62,13 +67,18 @@ public class BoundingCircle extends Bounding
 	 * Checks to see if two BoundingCircles are intersecting.
 	 * 
 	 * @param b - The BoundingCircle to be checked against.
-	 * @return true if they intersect, false otherwise.
+	 * @return <b>true</b> if they intersect, <b>false</b> otherwise.
 	 */
 	public boolean withinBounds(BoundingCircle b) 
 	{
 		return withinBounds(b.getCenter());
 	}
 	
+	/**
+	 * Checks to see if a BoundingBox and this object is intersecting.
+	 * @param box - The BoundingBox to be checked against.
+	 * @return <b>true</b> if the BoundingCircle and BoundingBox intersect, <b>false</b> otherwise.
+	 */
 	public boolean withinBounds(BoundingBox box)
 	{
 		int width = box.getWidth();
@@ -94,19 +104,21 @@ public class BoundingCircle extends Bounding
 		
 	}
 	
+	/**
+	 * Returns the Point2D of the center of the BoundingCircle
+	 * @return A Point2D of the center of the BoundingCircle.
+	 */
 	public Point2D getCenter()
 	{
 		return center;
 	}
 	
+	/**
+	 * Returns the radius of the BoundingCircle.
+	 * @return Returns the radius as an int.
+	 */
 	public int getRadius()
 	{
 		return radius;
 	}
-
-	public boolean withinBounds(Bounding b) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
 }

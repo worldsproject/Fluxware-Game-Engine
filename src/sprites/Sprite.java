@@ -9,6 +9,7 @@ import listener.bounding.Bounding;
 import listener.bounding.BoundingBox;
 import util.Point2D;
 
+@SuppressWarnings("serial")
 public class Sprite implements Serializable
 {
 	public int serial = 0;

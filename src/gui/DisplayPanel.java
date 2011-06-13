@@ -23,6 +23,7 @@ import util.ImageUtil;
  * Each DisplayPanel is only capable of Displaying a single room,
  * and the size of the DisplayPanel is DEPENDENT on the Room size.
  */
+@SuppressWarnings("serial")
 public class DisplayPanel extends JPanel 
 {
 	private Room r; //The displayed room.

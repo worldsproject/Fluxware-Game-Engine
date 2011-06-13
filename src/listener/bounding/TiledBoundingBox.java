@@ -4,6 +4,7 @@ import java.awt.Rectangle;
 
 import sprites.Sprite;
 
+@SuppressWarnings("serial")
 public class TiledBoundingBox extends BoundingBox{
 
 	protected int cellSize;

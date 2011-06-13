@@ -20,6 +20,7 @@ public class BoundingBox extends Bounding
 		}
 		catch(NullPointerException e)
 		{
+			System.err.println("Sprite has no side, setting to default size 30x30 at (30,30)");
 			rect = new Rectangle(30, 30, 30, 30);
 		}
 	}
@@ -65,31 +66,56 @@ public class BoundingBox extends Bounding
 		}
 	}
 	
+	/**
+	 * Gets the X of the BoundingBox.
+	 * @return The X coordinate.
+	 */
 	public int getX()
 	{
 		return rect.x;
 	}
 	
+	/**
+	 * Gets the Y of the BoundingBox
+	 * @return The Y coordinate.
+	 */
 	public int getY()
 	{
 		return rect.y;
 	}
 	
+	/**
+	 * Gets the width of the BoundingBox.
+	 * @return The width of the BoundingBox.
+	 */
 	public int getWidth()
 	{
 		return rect.width;
 	}
 	
+	/**
+	 * Gets the height of the BoundingBox.
+	 * @return The height of the BoundingBox.
+	 */
 	public int getHeight()
 	{
 		return rect.height;
 	}
 	
+	/**
+	 * Gets the Layer that BoundingBox is currently on.
+	 * @return The layer the BoundingBox is on.
+	 */
 	public int getLayer()
 	{
 		return bound.getLayer();
 	}
 
+	/**
+	 * Tests if another BoundingBox is overlapped with the calling object.
+	 * @param box - The other BoundingBox to be tested.
+	 * @return <b>true</b> if there is any overlap between the two BoundingBoxes, <b>false</b> otherwise.
+	 */
 	public boolean withinBounds(BoundingBox box) 
 	{	
 		if(this.getLayer() != box.getLayer())
@@ -109,6 +135,11 @@ public class BoundingBox extends Bounding
 		return false;
 	}
 	
+	/**
+	 * Tests to see if a BoundingCircle overlaps with this BoundingBox.
+	 * @param circle - The BoundingCircle to be checked with.
+	 * @return <b>true</b> if there is any overlap between the BoundingBox and BoundingCircle, <b>false</b> otherwise.
+	 */
 	public boolean withinBounds(BoundingCircle circle)
 	{
 		int radius = circle.getRadius();

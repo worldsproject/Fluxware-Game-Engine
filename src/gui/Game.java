@@ -1,11 +1,10 @@
 package gui;
 
+import error.CrashReport;
+
 import java.awt.Dimension;
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
-//import java.awt.GridBagConstraints;
-//import java.awt.GridBagLayout;
-import java.awt.Menu;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
@@ -16,13 +15,13 @@ import javax.swing.JPanel;
 
 import level.Room;
 import sprites.Sprite;
-import error.CrashReport;
 
 /**
  * This is the main class for the Fluxware Game Engine.  This class handles and maintains the Windowing System.
  * @author Fluxware
  *
  */
+@SuppressWarnings({ "serial", "deprecation" })
 public class Game extends JFrame implements KeyListener, MouseListener
 {
 	private GraphicsDevice device = null;
@@ -33,9 +32,6 @@ public class Game extends JFrame implements KeyListener, MouseListener
 	private boolean fullscreen = false;
 
 	protected JPanel root = null;
-
-	private boolean showMenu = false;
-	private Menu menu = null;
 	
 	private Dimension resolution = new Dimension(1024, 768);
 
@@ -199,7 +195,7 @@ public class Game extends JFrame implements KeyListener, MouseListener
 	 */
 	protected void run()
 	{
-		rt = new RunThread(this);
+		rt = new RunThread();
 		rt.setPriority(Thread.MAX_PRIORITY);
 		rt.start();
 	}
@@ -222,16 +218,6 @@ public class Game extends JFrame implements KeyListener, MouseListener
 	public Room getRoom()
 	{
 		return room;
-	}
-	
-	/**
-	 * Updates all of the Sprites.
-	 * @param totalTime - The amount of time since the start of the Game.
-	 * @param elapsedTime - The amount of time since the last Frame update.
-	 */
-	public void update(long totalTime, long elapsedTime)
-	{
-
 	}
 	
 	/**
@@ -259,12 +245,6 @@ public class Game extends JFrame implements KeyListener, MouseListener
 	private class RunThread extends Thread 
 	{
 		private long time = System.currentTimeMillis();
-		private Game g = null;
-		RunThread(Game g)
-		{
-			this.g = g;
-		}
-
 
 		public void run()
 		{	
@@ -283,7 +263,6 @@ public class Game extends JFrame implements KeyListener, MouseListener
 					root.repaint();
 
 					dp.updateSprites(time, totalTime);
-					g.update(time, totalTime);
 					dp.repaint();
 
 					try 
