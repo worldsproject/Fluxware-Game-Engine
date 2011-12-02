@@ -19,6 +19,11 @@ public abstract class Bounding implements Serializable
 		bound = s;
 	}
 	
+	public int getLayer()
+	{
+		return bound.getLayer();
+	}
+	
 	public abstract void updateBounds();
 	public abstract boolean withinBounds(Point2D p);
 }

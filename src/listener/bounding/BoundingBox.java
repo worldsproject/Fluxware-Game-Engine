@@ -84,11 +84,6 @@ public class BoundingBox extends Bounding
 	{
 		return rect.height;
 	}
-	
-	public int getLayer()
-	{
-		return bound.getLayer();
-	}
 
 	public boolean withinBounds(BoundingBox box) 
 	{	
