@@ -8,17 +8,19 @@ import java.io.Serializable;
  */
 public class Point2D implements Serializable
 {
-	private int x,y,layer;
+	private double x;
+	private double y;
+	private int layer;
 
 	/**
 	 * The Point class encapsulates a single point in a TiledRoom
 	 * containing the X and Y coordinate, along with the Layer.
 	 * 
-	 * @param x - int of the X coordinate in the TiledRoom.
-	 * @param y - int of the Y coordinate in the TiledRoom.
+	 * @param x - double of the X coordinate in the TiledRoom.
+	 * @param y - double of the Y coordinate in the TiledRoom.
 	 * @param layer - int of the Layer in the TiledRoom.
 	 */
-	public Point2D(int x, int y, int layer)
+	public Point2D(double x, double y, int layer)
 	{
 		this.x = x;
 		this.y = y;
@@ -30,7 +32,7 @@ public class Point2D implements Serializable
 	 * 
 	 * @return int of the X coordinate of the Point.
 	 */
-	public int getX()
+	public double getX()
 	{
 		return x;
 	}
@@ -40,7 +42,7 @@ public class Point2D implements Serializable
 	 * 
 	 * @return int of the Y coordinate of the Point.
 	 */
-	public int getY()
+	public double getY()
 	{
 		return y;
 	}
@@ -60,7 +62,7 @@ public class Point2D implements Serializable
 	 * 
 	 * @param x - int of the x coordinate.
 	 */
-	public void setX(int x)
+	public void setX(double x)
 	{
 		this.x = x;
 	}
@@ -70,7 +72,7 @@ public class Point2D implements Serializable
 	 * 
 	 * @param y - int of the y coordinate.
 	 */
-	public void setY(int y)
+	public void setY(double y)
 	{
 		this.y = y;
 	}
