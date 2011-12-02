@@ -4,8 +4,7 @@ import java.io.File;
 import java.util.HashMap;
 import java.util.LinkedList;
 
-import listener.bounding.Bounding;
-import listener.bounding.TiledBoundingBox;
+import listener.bounding.BoundingBox;
 import sprites.Sprite;
 import util.LevelReader;
 import util.Point2D;
@@ -85,28 +84,6 @@ public class TiledRoom extends Room
 		this.layers = layers;
 		keylisteners = new LinkedList<KeyListener>();
 	}
-	
-	/**
-	 * Adds a Sprite.
-	 * @param sprite - The sprite to be added.
-	 */
-	public void addSprite(Sprite sprite)
-	{
-		sprite.setBounding(new TiledBoundingBox(sprite, cellSize));
-
-		LinkedList<Sprite> temp = allSprites.get(sprite.getLayer());
-		
-		if(temp != null)
-		{
-			temp.add(sprite);
-		}
-		else
-		{
-			temp = new LinkedList<Sprite>();
-			temp.add(sprite);
-			allSprites.put(new Integer(sprite.getLayer()), temp);
-		}
-	}
 
 	/**
 	 * Removes a sprite located at (x, y, layer).
@@ -152,7 +129,7 @@ public class TiledRoom extends Room
 		
 		for(Sprite s : this.getSprites())
 		{
-			Bounding b = s.getBounding();
+			BoundingBox b = s.getBoundingBox();
 
 			if(b != null)
 			{

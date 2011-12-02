@@ -5,7 +5,6 @@ import java.awt.image.WritableRaster;
 import java.io.IOException;
 import java.io.Serializable;
 
-import listener.bounding.Bounding;
 import listener.bounding.BoundingBox;
 import util.Point2D;
 
@@ -20,7 +19,7 @@ public class Sprite implements Serializable
 	protected int state;
 	protected Point2D location;
 	
-	protected Bounding box = null;
+	protected BoundingBox box = null;
 	
 	protected boolean dead = false;
 
@@ -166,12 +165,12 @@ public class Sprite implements Serializable
 		return o.getHeight();
 	}
 
-	public Bounding getBounding()
+	public BoundingBox getBoundingBox()
 	{
 		return box;
 	}
 	
-	public void setBounding(Bounding b)
+	public void setBoundingBox(BoundingBox b)
 	{
 		box = b;
 	}

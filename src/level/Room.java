@@ -7,9 +7,7 @@ import java.util.LinkedList;
 import java.util.Set;
 
 import listener.CollisionListener;
-import listener.bounding.Bounding;
 import listener.bounding.BoundingBox;
-import listener.bounding.BoundingCircle;
 import sprites.Sprite;
 import util.ImageUtil;
 import util.Point2D;
@@ -177,7 +175,7 @@ public class Room implements KeyListener
 				continue;
 			}
 
-			Bounding b = sprite.getBounding();
+			BoundingBox b = sprite.getBoundingBox();
 
 			if(b != null)
 			{
@@ -211,80 +209,46 @@ public class Room implements KeyListener
 		LinkedList<Sprite> rv = new LinkedList<Sprite>();
 		LinkedList<Sprite> overlaps = getOverlaps(p,a);
 
-		if(a.getBounding() instanceof BoundingCircle)
+
+		for(Sprite b: overlaps)
 		{
-			for(Sprite b: overlaps)
+			double ax1 = p.getX();
+			double ay1 = p.getY();
+			double ax2 = p.getX() + a.getWidth() - 1;
+			double ay2 = p.getY() + a.getHeight() - 1;
+
+			double bx1, bx2, by1, by2;
+			double cx1, cy1, cx2, cy2;
+
+			int[] amask, bmask, bitmask;
+
+			bx1 = b.getX();
+			bx2 = b.getX() + b.getWidth() - 1;
+			by1 = b.getY();
+			by2 = b.getY() + b.getWidth() - 1;
+
+			cx1 = Math.max(ax1,bx1);
+			cy1 = Math.max(ay1,by1);
+			cx2 = Math.min(ax2,bx2);
+			cy2 = Math.min(ay2, by2);
+
+			amask = a.print().getRGB((int)(cx1-ax1), (int)(cy1-ay1), (int)(cx2-cx1+1), (int)(cy2-cy1+1), null, 0, (int)(cx2-cx1+1));
+			bmask = b.print().getRGB((int)(cx1-bx1), (int)(cy1-by1), (int)(cx2-cx1+1), (int)(cy2-cy1+1), null, 0, (int)(cx2-cx1+1));
+
+			bitmask = ImageUtil.getCombinedBitMask(ImageUtil.getBitMask(amask), ImageUtil.getBitMask(bmask));
+
+			for(int i = 0; i < bitmask.length; i++)
 			{
-				if(b.getBounding() instanceof BoundingCircle)
+				if(bitmask[i] == 0x1)
 				{
-					if(((BoundingCircle)a.getBounding()).withinBounds((BoundingCircle)b.getBounding()))
-					{
-						rv.add(b);
-					}
-				}
-				else
-				{
-					if(((BoundingCircle)a.getBounding()).withinBounds((BoundingBox)b.getBounding()))
-					{
-						rv.add(b);
-					}
-				}
-			}
-		}
-
-		else
-		{
-			for(Sprite b: overlaps)
-			{
-				if(b.getBounding() instanceof BoundingCircle)
-				{
-					if(((BoundingBox)a.getBounding()).withinBounds((BoundingCircle)b.getBounding()))
-					{
-						rv.add(b);
-					}
-				}
-
-				else
-				{
-					double ax1 = p.getX();
-					double ay1 = p.getY();
-					double ax2 = p.getX() + a.getWidth() - 1;
-					double ay2 = p.getY() + a.getHeight() - 1;
-
-					double bx1, bx2, by1, by2;
-					double cx1, cy1, cx2, cy2;
-
-					int[] amask, bmask, bitmask;
-
-					bx1 = b.getX();
-					bx2 = b.getX() + b.getWidth() - 1;
-					by1 = b.getY();
-					by2 = b.getY() + b.getWidth() - 1;
-
-					cx1 = Math.max(ax1,bx1);
-					cy1 = Math.max(ay1,by1);
-					cx2 = Math.min(ax2,bx2);
-					cy2 = Math.min(ay2, by2);
-
-					amask = a.print().getRGB((int)(cx1-ax1), (int)(cy1-ay1), (int)(cx2-cx1+1), (int)(cy2-cy1+1), null, 0, (int)(cx2-cx1+1));
-					bmask = b.print().getRGB((int)(cx1-bx1), (int)(cy1-by1), (int)(cx2-cx1+1), (int)(cy2-cy1+1), null, 0, (int)(cx2-cx1+1));
-
-					bitmask = ImageUtil.getCombinedBitMask(ImageUtil.getBitMask(amask), ImageUtil.getBitMask(bmask));
-
-					for(int i = 0; i < bitmask.length; i++)
-					{
-						if(bitmask[i] == 0x1)
-						{
-							rv.add(b);
-							break;
-						}
-					}
+					rv.add(b);
+					break;
 				}
 			}
 		}
 		return rv;
 	}
-	
+
 
 
 	/**

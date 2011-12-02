@@ -6,13 +6,14 @@ import sprites.Sprite;
 import util.Point2D;
 
 @SuppressWarnings("serial")
-public class BoundingBox extends Bounding 
+public class BoundingBox
 {
-	protected Rectangle rect = null;
+	private Sprite bound = null;
+	private Rectangle rect = null;
 	
 	public BoundingBox(Sprite s)
 	{
-		super(s);
+		bound = s;
 		
 		try
 		{
@@ -24,7 +25,6 @@ public class BoundingBox extends Bounding
 		}
 	}
 	
-	@Override
 	public void updateBounds() 
 	{
 		try
@@ -44,7 +44,6 @@ public class BoundingBox extends Bounding
 		
 	}
 
-	@Override
 	public boolean withinBounds(Point2D p) 
 	{
 		double x = p.getX();
@@ -87,35 +86,9 @@ public class BoundingBox extends Bounding
 
 	public boolean withinBounds(BoundingBox box) 
 	{	
-		if(this.getLayer() != box.getLayer())
+		if(bound.getLayer() != bound.getLayer())
 			return false;
 		
 		return rect.intersects(box.rect);
 	}
-	
-	public boolean withinBounds(BoundingCircle circle)
-	{
-		int radius = circle.getRadius();
-		Point2D center = circle.getCenter();
-		
-		double cx = Math.abs(center.getX() - rect.x - rect.width/2);
-		double cy = Math.abs(center.getY() - rect.y - rect.height/2);
-		
-		if((cx>radius+rect.width/2)||(cy>radius+rect.height/2))
-		{
-			return false;
-		}
-		
-		else if((cx<=rect.width/2)||(cy<=rect.height/2))
-		{
-			return true;
-		}
-		
-		else
-		{
-			return (((cx-rect.width/2)*(cx-rect.width/2))+((cy-rect.height/2)*(cy-rect.height/2))<=radius*radius);
-		}
-		
-	}
-	
 }

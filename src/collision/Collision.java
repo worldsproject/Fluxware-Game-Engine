@@ -3,13 +3,12 @@ package collision;
 import java.util.LinkedList;
 
 import listener.bounding.BoundingBox;
-import listener.bounding.BoundingCircle;
 import sprites.Sprite;
 import util.ImageUtil;
 import util.Point2D;
 
 public class Collision {
-	
+
 	/**
 	 * Checks if a collision has occurred between non-transparent pixels of sprite a and b.
 	 * @param a - Primary sprite
@@ -20,93 +19,86 @@ public class Collision {
 	 */
 	public static int pixelsCollided(Sprite a, Sprite b)
 	{
-		if(a.getBounding() instanceof BoundingBox && b.getBounding() instanceof BoundingBox)
+		if(boundsCollided(a,b))
 		{
-			if(boundsCollided(a,b))
+			double ax1 = a.getX();
+			double ay1 = a.getY();
+			double ax2 = a.getX() + a.getWidth() - 1;
+			double ay2 = a.getY() + a.getHeight() - 1;
+
+			double bx1, bx2, by1, by2;
+			double cx1, cy1, cx2, cy2;
+
+			int[] amask, bmask, bitmask;
+
+			bx1 = b.getX();
+			bx2 = b.getX() + b.getWidth() - 1;
+			by1 = b.getY();
+			by2 = b.getY() + b.getHeight() - 1;
+
+			cx1 = Math.max(ax1,bx1);
+			cy1 = Math.max(ay1,by1);
+			cx2 = Math.min(ax2,bx2);
+			cy2 = Math.min(ay2, by2);
+
+			amask = a.print().getRGB((int)(cx1-ax1), (int)(cy1-ay1), (int)(cx2-cx1+1), (int)(cy2-cy1+1), null, 0, (int)(cx2-cx1+1));
+			bmask = b.print().getRGB((int)(cx1-bx1), (int)(cy1-by1), (int)(cx2-cx1+1), (int)(cy2-cy1+1), null, 0, (int)(cx2-cx1+1));
+
+			bitmask = ImageUtil.getCombinedBitMask(ImageUtil.getBitMask(amask), ImageUtil.getBitMask(bmask));
+
+			for(int i = 0; i < bitmask.length; i++)
 			{
-				double ax1 = a.getX();
-				double ay1 = a.getY();
-				double ax2 = a.getX() + a.getWidth() - 1;
-				double ay2 = a.getY() + a.getHeight() - 1;
-
-				double bx1, bx2, by1, by2;
-				double cx1, cy1, cx2, cy2;
-
-				int[] amask, bmask, bitmask;
-
-				bx1 = b.getX();
-				bx2 = b.getX() + b.getWidth() - 1;
-				by1 = b.getY();
-				by2 = b.getY() + b.getHeight() - 1;
-
-				cx1 = Math.max(ax1,bx1);
-				cy1 = Math.max(ay1,by1);
-				cx2 = Math.min(ax2,bx2);
-				cy2 = Math.min(ay2, by2);
-
-				amask = a.print().getRGB((int)(cx1-ax1), (int)(cy1-ay1), (int)(cx2-cx1+1), (int)(cy2-cy1+1), null, 0, (int)(cx2-cx1+1));
-				bmask = b.print().getRGB((int)(cx1-bx1), (int)(cy1-by1), (int)(cx2-cx1+1), (int)(cy2-cy1+1), null, 0, (int)(cx2-cx1+1));
-
-				bitmask = ImageUtil.getCombinedBitMask(ImageUtil.getBitMask(amask), ImageUtil.getBitMask(bmask));
-
-				for(int i = 0; i < bitmask.length; i++)
+				if(bitmask[i] == 0x1)
 				{
-					if(bitmask[i] == 0x1)
-					{
-						return 0;
-					}
+					return 0;
 				}
 			}
-			return 1;
 		}
-		return 2;
+		return 1;
 	}
-	
+
 	public static LinkedList<Point2D> getPixels(Sprite a, Sprite b)
 	{
-		if(a.getBounding() instanceof BoundingBox && b.getBounding() instanceof BoundingBox)
+		if(boundsCollided(a,b))
 		{
-			if(boundsCollided(a,b))
+			LinkedList<Point2D> points = new LinkedList<Point2D>();
+			double ax1 = a.getX();
+			double ay1 = a.getY();
+			double ax2 = a.getX() + a.getWidth() - 1;
+			double ay2 = a.getY() + a.getHeight() - 1;
+
+			double bx1, bx2, by1, by2;
+			double cx1, cy1, cx2, cy2;
+
+			int[] amask, bmask, bitmask;
+
+			bx1 = b.getX();
+			bx2 = b.getX() + b.getWidth() - 1;
+			by1 = b.getY();
+			by2 = b.getY() + b.getWidth() - 1;
+
+			cx1 = Math.max(ax1,bx1);
+			cy1 = Math.max(ay1,by1);
+			cx2 = Math.min(ax2,bx2) - cx1 + 1;
+			cy2 = Math.min(ay2,by2) - cy1 + 1;
+
+			amask = a.print().getRGB((int)(cx1-ax1), (int)(cy1-ay1), (int)(cx2), (int)(cy2), null, 0, (int)(cx2));
+			bmask = b.print().getRGB((int)(cx1-bx1), (int)(cy1-by1), (int)(cx2), (int)(cy2), null, 0, (int)(cx2));
+
+			bitmask = ImageUtil.getCombinedBitMask(ImageUtil.getBitMask(amask), ImageUtil.getBitMask(bmask));
+
+			for(int i = 0; i < bitmask.length; i++)
 			{
-				LinkedList<Point2D> points = new LinkedList<Point2D>();
-				double ax1 = a.getX();
-				double ay1 = a.getY();
-				double ax2 = a.getX() + a.getWidth() - 1;
-				double ay2 = a.getY() + a.getHeight() - 1;
-
-				double bx1, bx2, by1, by2;
-				double cx1, cy1, cx2, cy2;
-
-				int[] amask, bmask, bitmask;
-
-				bx1 = b.getX();
-				bx2 = b.getX() + b.getWidth() - 1;
-				by1 = b.getY();
-				by2 = b.getY() + b.getWidth() - 1;
-
-				cx1 = Math.max(ax1,bx1);
-				cy1 = Math.max(ay1,by1);
-				cx2 = Math.min(ax2,bx2) - cx1 + 1;
-				cy2 = Math.min(ay2,by2) - cy1 + 1;
-
-				amask = a.print().getRGB((int)(cx1-ax1), (int)(cy1-ay1), (int)(cx2), (int)(cy2), null, 0, (int)(cx2));
-				bmask = b.print().getRGB((int)(cx1-bx1), (int)(cy1-by1), (int)(cx2), (int)(cy2), null, 0, (int)(cx2));
-
-				bitmask = ImageUtil.getCombinedBitMask(ImageUtil.getBitMask(amask), ImageUtil.getBitMask(bmask));
-
-				for(int i = 0; i < bitmask.length; i++)
+				if(bitmask[i] == 0x1)
 				{
-					if(bitmask[i] == 0x1)
-					{
-						points.add(new Point2D(cx1+(i%cx2), cy1+(i/cx2), a.getLayer()));
-					}
+					points.add(new Point2D(cx1+(i%cx2), cy1+(i/cx2), a.getLayer()));
 				}
-				return points;
 			}
+			return points;
 		}
 		return null;
 	}
-	
+
 	/**
 	 * Either checks for a pixel perfect collision or overlapping bounds.
 	 * @param a - Primary sprite
@@ -121,7 +113,7 @@ public class Collision {
 		if(pixelPerfectCollision)
 		{
 			int i = pixelsCollided(a,b);
-			
+
 			if(i == 0)
 			{
 				return true;
@@ -133,7 +125,7 @@ public class Collision {
 		}
 		return boundsCollided(a,b);
 	}
-	
+
 	/**
 	 * Checks if the boundings of sprite a and sprite b overlap
 	 * @param a - Primary sprite
@@ -142,58 +134,18 @@ public class Collision {
 	 */
 	public static boolean boundsCollided(Sprite a, Sprite b)
 	{
-		if(a.getBounding() instanceof BoundingCircle)
+		BoundingBox aTemp = a.getBoundingBox();
+
+		BoundingBox bTemp = b.getBoundingBox();
+
+		if(aTemp.withinBounds(bTemp) || bTemp.withinBounds(aTemp))
 		{
-			BoundingCircle aTemp = (BoundingCircle)a.getBounding();
-			
-			if(b.getBounding() instanceof BoundingCircle)
-			{
-				BoundingCircle bTemp = (BoundingCircle)b.getBounding();
-				
-				if(aTemp.withinBounds(bTemp) || bTemp.withinBounds(aTemp))
-				{
-					return true;
-				}
-			}
-			
-			else if(b.getBounding() instanceof BoundingBox)
-			{
-				BoundingBox bTemp = (BoundingBox)b.getBounding();
-				
-				if(aTemp.withinBounds(bTemp) || bTemp.withinBounds(aTemp))
-				{
-					return true;
-				}
-			}
+			return true;
 		}
-		
-		else if(a.getBounding() instanceof BoundingBox)
-		{
-			BoundingBox aTemp = (BoundingBox)a.getBounding();
-			
-			if(b.getBounding() instanceof BoundingCircle)
-			{
-				BoundingCircle bTemp = (BoundingCircle)b.getBounding();
-				
-				if(aTemp.withinBounds(bTemp) || bTemp.withinBounds(aTemp))
-				{
-					return true;
-				}
-			}
-			else
-			{
-				BoundingBox bTemp = (BoundingBox)b.getBounding();
-				
-				if(aTemp.withinBounds(bTemp) || bTemp.withinBounds(aTemp))
-				{
-					return true;
-				}
-			}
-		}
-		
+
 		return false;
 	}
-	
+
 	/**
 	 * Checks if sprite a has collided with any of the secondary sprites in the linked list.
 	 * @param primary - Primary sprite
@@ -206,20 +158,20 @@ public class Collision {
 	public static LinkedList<Sprite> hasCollided(Sprite primary, LinkedList<Sprite> sprites, boolean pixelPerfectCollision)
 	{
 		LinkedList<Sprite> collisions = new LinkedList<Sprite>();
-		
+
 		for(Sprite b: sprites)
 		{
 			if(primary == b)
 			{
 				continue;
 			}
-			
+
 			if(hasCollided(primary,b,pixelPerfectCollision))
 			{
 				collisions.add(b);
 			}
 		}
-		
+
 		return collisions;
 	}
 }
