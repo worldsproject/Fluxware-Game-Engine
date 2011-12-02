@@ -130,8 +130,8 @@ public class DisplayPanel extends JPanel
 		int centerWidth = (vpWidth >> 1) - width;
 
 		//Then we set the viewports X and Y to the calculated point.
-		viewY = s.getY() - centerHeight;
-		viewX = s.getX() - centerWidth;
+		viewY = (int)s.getY() - centerHeight;
+		viewX = (int)s.getX() - centerWidth;
 	}
 
 	/**
@@ -161,7 +161,7 @@ public class DisplayPanel extends JPanel
 				continue;
 			}
 			
-			buf.drawImage(s.print(), (s.getX() * spacing) - viewX, (s.getY() * spacing) - viewY, null);	
+			buf.drawImage(s.print(), ((int)s.getX() * spacing) - viewX, ((int)s.getY() * spacing) - viewY, null);	
 		}
 
 		g.drawImage(offscreen, 0, 0, null);

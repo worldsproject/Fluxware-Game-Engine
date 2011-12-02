@@ -24,13 +24,13 @@ public class Collision {
 		{
 			if(boundsCollided(a,b))
 			{
-				int ax1 = a.getX();
-				int ay1 = a.getY();
-				int ax2 = a.getX() + a.getWidth() - 1;
-				int ay2 = a.getY() + a.getHeight() - 1;
+				double ax1 = a.getX();
+				double ay1 = a.getY();
+				double ax2 = a.getX() + a.getWidth() - 1;
+				double ay2 = a.getY() + a.getHeight() - 1;
 
-				int bx1, bx2, by1, by2;
-				int cx1, cy1, cx2, cy2;
+				double bx1, bx2, by1, by2;
+				double cx1, cy1, cx2, cy2;
 
 				int[] amask, bmask, bitmask;
 
@@ -44,8 +44,8 @@ public class Collision {
 				cx2 = Math.min(ax2,bx2);
 				cy2 = Math.min(ay2, by2);
 
-				amask = a.print().getRGB(cx1-ax1, cy1-ay1, cx2-cx1+1, cy2-cy1+1, null, 0, cx2-cx1+1);
-				bmask = b.print().getRGB(cx1-bx1, cy1-by1, cx2-cx1+1, cy2-cy1+1, null, 0, cx2-cx1+1);
+				amask = a.print().getRGB((int)(cx1-ax1), (int)(cy1-ay1), (int)(cx2-cx1+1), (int)(cy2-cy1+1), null, 0, (int)(cx2-cx1+1));
+				bmask = b.print().getRGB((int)(cx1-bx1), (int)(cy1-by1), (int)(cx2-cx1+1), (int)(cy2-cy1+1), null, 0, (int)(cx2-cx1+1));
 
 				bitmask = ImageUtil.getCombinedBitMask(ImageUtil.getBitMask(amask), ImageUtil.getBitMask(bmask));
 
@@ -69,13 +69,13 @@ public class Collision {
 			if(boundsCollided(a,b))
 			{
 				LinkedList<Point2D> points = new LinkedList<Point2D>();
-				int ax1 = a.getX();
-				int ay1 = a.getY();
-				int ax2 = a.getX() + a.getWidth() - 1;
-				int ay2 = a.getY() + a.getHeight() - 1;
+				double ax1 = a.getX();
+				double ay1 = a.getY();
+				double ax2 = a.getX() + a.getWidth() - 1;
+				double ay2 = a.getY() + a.getHeight() - 1;
 
-				int bx1, bx2, by1, by2;
-				int cx1, cy1, cx2, cy2;
+				double bx1, bx2, by1, by2;
+				double cx1, cy1, cx2, cy2;
 
 				int[] amask, bmask, bitmask;
 
@@ -89,8 +89,8 @@ public class Collision {
 				cx2 = Math.min(ax2,bx2) - cx1 + 1;
 				cy2 = Math.min(ay2,by2) - cy1 + 1;
 
-				amask = a.print().getRGB(cx1-ax1, cy1-ay1, cx2, cy2, null, 0, cx2);
-				bmask = b.print().getRGB(cx1-bx1, cy1-by1, cx2, cy2, null, 0, cx2);
+				amask = a.print().getRGB((int)(cx1-ax1), (int)(cy1-ay1), (int)(cx2), (int)(cy2), null, 0, (int)(cx2));
+				bmask = b.print().getRGB((int)(cx1-bx1), (int)(cy1-by1), (int)(cx2), (int)(cy2), null, 0, (int)(cx2));
 
 				bitmask = ImageUtil.getCombinedBitMask(ImageUtil.getBitMask(amask), ImageUtil.getBitMask(bmask));
 

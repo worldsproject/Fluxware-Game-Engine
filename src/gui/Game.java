@@ -1,22 +1,17 @@
 package gui;
 
 import java.awt.Dimension;
-import java.awt.GraphicsDevice;
-import java.awt.GraphicsEnvironment;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.Menu;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-
-import javax.swing.JFrame;
-import javax.swing.JPanel;
 
 import level.Room;
+
+import org.lwjgl.LWJGLException;
+import org.lwjgl.input.Mouse;
+import org.lwjgl.opengl.Display;
+import org.lwjgl.opengl.DisplayMode;
+
+import static org.lwjgl.opengl.GL11.*;
+
 import sprites.Sprite;
-import error.CrashReport;
 
 /**
  * This is the main class for the Fluxware Game Engine.  This class handles and maintains the Windowing System.
@@ -34,6 +29,12 @@ public class Game
 	//The current room that the game is displaying.
 	private Room room = null;
 
+	//The title of the window. Defaults to 'Fluxware Game Engine'
+	private String title = "Fluxware Game Engine";
+	
+	//Each of the differing managers.
+	//SoundManager
+	//CollisionManager
 	/**
 	 * Creates a Game with the given Room. Uses defaults of 800x600 and not in fullscreen.
 	 * @param room
@@ -62,7 +63,9 @@ public class Game
 	 */
 	public Game(Room room, boolean fullscreen, Dimension size)
 	{
-
+		this.room = room;
+		this.fullscreen = fullscreen;
+		this.size = size;
 	}
 	
 	/**
@@ -74,26 +77,62 @@ public class Game
 	 */
 	public Game(Room room, boolean fullscreen, Dimension size, String title)
 	{
-
-	}
-
-	/**
-	 * Creates a new Game based upon a given Room.
-	 * @param room - The Room the Game will start displaying.
-	 * @param fullscreen - true if the Game is to show as fullscreen.
-	 * @param title - The text of the window title, only shows if the game is not in fullscreen.
-	 */
-	public Game(Room room, boolean fullscreen, String title)
-	{
-
+		this.room = room;
+		this.fullscreen = fullscreen;
+		this.size = size;
+		this.title = title;
 	}
 	
 	/*
 	 * The standard default method calls that are needed for every constructor.
 	 */
-	private void construct(boolean fullscreen)
+	private void construct()
 	{
-		
+		try
+		{
+			setDisplayMode();
+			Display.setTitle(title);
+			Display.setFullscreen(fullscreen);
+			Display.create();
+			
+			Mouse.setGrabbed(true);
+			
+			glEnable(GL_TEXTURE_2D); //Enable textures in 2D mode.
+			glDisable(GL_DEPTH_TEST); //Disable depth test as we are only doing 2D items.
+			glMatrixMode(GL_PROJECTION); //TODO unknown function.
+			glLoadIdentity(); //TODO unknown function.
+			
+			glOrtho(0, size.width, size.height, 0, -1, 1);
+			glMatrixMode(GL_MODELVIEW);
+			glLoadIdentity();
+			glViewport(0, 0, size.width, size.height);
+		}
+		catch(LWJGLException e)
+		{
+			System.err.println("Game Exiting - Error in initialization: ");
+			e.printStackTrace();
+		}
+	}
+	
+	//Sets the display mode for fullscreen if possible.
+	private void setDisplayMode()
+	{
+		try
+		{
+			DisplayMode[] dm = org.lwjgl.util.Display.getAvailableDisplayModes(size.width, size.height, -1, -1, -1, -1, 60, 60);
+			
+			org.lwjgl.util.Display.setDisplayMode(dm, new String[] {
+					"width="+size.width,
+					"height="+size.height,
+					"freq=60",
+					"bpp="+org.lwjgl.opengl.Display.getDisplayMode().getBitsPerPixel()
+					});
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+			System.err.println("Unable to enter into fullscreen, continuing in windowed mode.");
+		}
 	}
 
 	/**

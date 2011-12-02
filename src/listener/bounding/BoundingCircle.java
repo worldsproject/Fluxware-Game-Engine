@@ -22,7 +22,7 @@ public class BoundingCircle extends Bounding
 	{
 		bound = s;
 		
-		int re[] = findCenter();
+		double re[] = findCenter();
 		center = new Point2D(re[0], re[1], s.getLayer());
 		
 		int sw = s.getWidth();
@@ -31,9 +31,9 @@ public class BoundingCircle extends Bounding
 		radius = (((int)Math.max(sw, sh))/ 2);
 	}
 	
-	private int[] findCenter()
+	private double[] findCenter()
 	{
-		int[] rv = new int[2];
+		double[] rv = new double[2];
 		
 		rv[0] = bound.getX() + (bound.getWidth() >> 1);
 		rv[1] = bound.getY() + (bound.getHeight() >> 1);
@@ -44,7 +44,7 @@ public class BoundingCircle extends Bounding
 	@Override
 	public void updateBounds() 
 	{
-		int[] re = findCenter();
+		double[] re = findCenter();
 		
 		center.setX(re[0]);
 		center.setY(re[1]);
@@ -74,8 +74,8 @@ public class BoundingCircle extends Bounding
 		int width = box.getWidth();
 		int height = box.getHeight();
 
-		int cx = Math.abs(center.getX() - box.getX() - width/2);
-		int cy = Math.abs(center.getY() - box.getY() - height/2);
+		double cx = Math.abs(center.getX() - box.getX() - width/2);
+		double cy = Math.abs(center.getY() - box.getY() - height/2);
 		
 		if((cx>radius+width/2)||(cy>radius+height/2))
 		{

@@ -52,7 +52,7 @@ public class Sprite implements Serializable
 	/**
 	 * @return The current X coordinate of the Sprite.
 	 */
-	public int getX() 
+	public double getX() 
 	{
 		return location.getX();
 	}
@@ -70,7 +70,7 @@ public class Sprite implements Serializable
 	/**
 	 * @return The current Y coordinate of the Sprite.
 	 */
-	public int getY() 
+	public double getY() 
 	{
 		return location.getY();
 	}

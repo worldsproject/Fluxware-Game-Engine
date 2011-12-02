@@ -16,7 +16,7 @@ public class BoundingBox extends Bounding
 		
 		try
 		{
-			rect = new Rectangle(bound.getX(), bound.getY(), bound.getWidth(), bound.getHeight());
+			rect = new Rectangle((int)bound.getX(), (int)bound.getY(), bound.getWidth(), bound.getHeight());
 		}
 		catch(NullPointerException e)
 		{
@@ -29,8 +29,8 @@ public class BoundingBox extends Bounding
 	{
 		try
 		{
-			rect.x = bound.getX();
-			rect.y = bound.getY();
+			rect.x = (int)bound.getX();
+			rect.y = (int)bound.getY();
 			rect.width = bound.getWidth();
 			rect.height = bound.getHeight();
 		}
@@ -47,8 +47,8 @@ public class BoundingBox extends Bounding
 	@Override
 	public boolean withinBounds(Point2D p) 
 	{
-		int x = p.getX();
-		int y = p.getY();
+		double x = p.getX();
+		double y = p.getY();
 		
 		if(p.getLayer() == bound.getLayer())
 		{
@@ -98,8 +98,8 @@ public class BoundingBox extends Bounding
 		int radius = circle.getRadius();
 		Point2D center = circle.getCenter();
 		
-		int cx = Math.abs(center.getX() - rect.x - rect.width/2);
-		int cy = Math.abs(center.getY() - rect.y - rect.height/2);
+		double cx = Math.abs(center.getX() - rect.x - rect.width/2);
+		double cy = Math.abs(center.getY() - rect.y - rect.height/2);
 		
 		if((cx>radius+rect.width/2)||(cy>radius+rect.height/2))
 		{

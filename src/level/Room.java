@@ -132,23 +132,6 @@ public class Room implements KeyListener
 	}
 
 	/**
-	 * Moves the Sprite by the given <i>xAmount</i> and given <i>yAmount</i>
-	 * <br /><b><font color=red>DOES NOT DO COLLISION DETECTION AS OF NOW.</font></b>
-	 * 
-	 * @param sprite - The Sprite to be moved.
-	 * @param xAmount - Amount in the X direction the Sprite is to move, may be negative.
-	 * @param yAmount - Amount in the Y direction the Sprite is to move, may be negative.
-	 * @return true is the move was successful, false if otherwise.
-	 */
-	@Deprecated
-	public boolean move(Sprite sprite, int xAmount, int yAmount)
-	{
-		sprite.setX(sprite.getX() + xAmount);
-		sprite.setY(sprite.getY() + yAmount);
-		return true;
-	}
-
-	/**
 	 * Returns all Sprites in the room.
 	 * @return - All Sprites.
 	 */
@@ -263,13 +246,13 @@ public class Room implements KeyListener
 
 				else
 				{
-					int ax1 = p.getX();
-					int ay1 = p.getY();
-					int ax2 = p.getX() + a.getWidth() - 1;
-					int ay2 = p.getY() + a.getHeight() - 1;
+					double ax1 = p.getX();
+					double ay1 = p.getY();
+					double ax2 = p.getX() + a.getWidth() - 1;
+					double ay2 = p.getY() + a.getHeight() - 1;
 
-					int bx1, bx2, by1, by2;
-					int cx1, cy1, cx2, cy2;
+					double bx1, bx2, by1, by2;
+					double cx1, cy1, cx2, cy2;
 
 					int[] amask, bmask, bitmask;
 
@@ -283,8 +266,8 @@ public class Room implements KeyListener
 					cx2 = Math.min(ax2,bx2);
 					cy2 = Math.min(ay2, by2);
 
-					amask = a.print().getRGB(cx1-ax1, cy1-ay1, cx2-cx1+1, cy2-cy1+1, null, 0, cx2-cx1+1);
-					bmask = b.print().getRGB(cx1-bx1, cy1-by1, cx2-cx1+1, cy2-cy1+1, null, 0, cx2-cx1+1);
+					amask = a.print().getRGB((int)(cx1-ax1), (int)(cy1-ay1), (int)(cx2-cx1+1), (int)(cy2-cy1+1), null, 0, (int)(cx2-cx1+1));
+					bmask = b.print().getRGB((int)(cx1-bx1), (int)(cy1-by1), (int)(cx2-cx1+1), (int)(cy2-cy1+1), null, 0, (int)(cx2-cx1+1));
 
 					bitmask = ImageUtil.getCombinedBitMask(ImageUtil.getBitMask(amask), ImageUtil.getBitMask(bmask));
 

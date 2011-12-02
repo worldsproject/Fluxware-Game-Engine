@@ -19,7 +19,7 @@ public class TiledBoundingBox extends BoundingBox{
 	{
 		if(bound.print() != null)
 		{
-			rect = new Rectangle(bound.getX() * cellSize, bound.getY() * cellSize, bound.getWidth(), bound.getHeight());
+			rect = new Rectangle((int)bound.getX() * cellSize, (int)bound.getY() * cellSize, bound.getWidth(), bound.getHeight());
 		}
 		
 	}
