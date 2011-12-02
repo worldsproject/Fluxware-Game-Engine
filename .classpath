@@ -11,5 +11,6 @@
 	<classpathentry kind="lib" path="src/resources/vorbisspi1.0.3.jar"/>
 	<classpathentry kind="lib" path="src/resources/jl1.0.1.jar"/>
 	<classpathentry kind="lib" path="src/resources/mp3spi1.9.5.jar"/>
+	<classpathentry kind="lib" path="src/resources/lwjgl/lwjgl.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
