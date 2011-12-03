@@ -1,30 +1,26 @@
 package util;
-import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
-import java.io.IOException;
 import java.security.MessageDigest;
 import java.util.LinkedList;
 
-import javax.imageio.ImageIO;
-
 import level.Room;
-import level.TiledRoom;
 
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
 import sprites.Sprite;
-import error.CrashReport;
 
 
 public class LevelConversions 
 {
-	public static Room JSONToRoom(File f)
+	private ImageManager imageManager = new ImageManager();
+	
+	public Room JSONToRoom(File f)
 	{
 		Room rv = null;
 		
@@ -50,14 +46,7 @@ public class LevelConversions
 			
 			String type = (String)ob.get("type");
 			
-			if(type.equals("Tiled Room"))
-			{
-				rv = new TiledRoom(((Long)ob.get("width")).intValue(), ((Long)ob.get("height")).intValue(), ((Long)ob.get("layers")).intValue());
-			}
-			else
-			{
-				rv = new Room(((Long)ob.get("width")).intValue(), ((Long)ob.get("height")).intValue(), ((Long)ob.get("layers")).intValue());
-			}
+			rv = new Room(((Long)ob.get("width")).intValue(), ((Long)ob.get("height")).intValue(), ((Long)ob.get("layers")).intValue());
 			
 			for(String l : list)
 			{
@@ -69,44 +58,29 @@ public class LevelConversions
 				int y = ((Long)temp.get("y")).intValue();
 				int layer = ((Long)temp.get("layer")).intValue();
 				
-				BufferedImage img = null;
-				try
-				{
-					img = ImageIO.read(new File(hash + ".png"));
-				}
-				catch(Exception e){}  //Let img be null.
-				
-				Sprite s = new Sprite(img, x, y, layer);
+				Texture tex = imageManager.getTexture(new File(hash + ".png").getPath());
+				Sprite s = new Sprite(tex, x, y, layer);
 				
 				rv.addSprite(s);
 			}
 		}
 		catch (Exception e) 
 		{
-			new CrashReport(e);
+			//TODO
+			e.printStackTrace();
 		}
 		
 		return rv;
 	}
 	
-	@SuppressWarnings("unchecked")
-	public static void RoomToJSON(Room room, File f)
+	public void RoomToJSON(Room room, File f)
 	{
 		try
 		{
 			BufferedWriter bw = new BufferedWriter(new FileWriter(f));
 
 			LinkedList<Sprite> allSprite = room.getSprites();
-			String typeOfRoom = null;
-
-			if(room instanceof TiledRoom)
-			{
-				typeOfRoom = "Tiled Room";
-			}
-			else
-			{
-				typeOfRoom = "Room";
-			}
+			String typeOfRoom = "Room";
 
 			String version = "0.1";
 
@@ -134,7 +108,7 @@ public class LevelConversions
 				try
 				{
 					ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-					ImageIO.write(s.print(), "png", outputStream);
+//					ImageIO.write(s.draw(), "png", outputStream); TODO
 					byte[] data = outputStream.toByteArray();
 
 					MessageDigest md = MessageDigest.getInstance("MD5");
@@ -145,17 +119,18 @@ public class LevelConversions
 				}
 				catch(Exception e)
 				{
-					new CrashReport(e);
+					//TODO
+					e.printStackTrace();
 				}
 
-				try 
-				{
-					ImageIO.write(s.print(), "png", new File(Hash + ".png"));
-				}
-				catch (IOException e) 
-				{
-					new CrashReport(e);
-				}
+//				try TODO
+//				{
+//					ImageIO.write(s.draw(), "png", new File(Hash + ".png"));
+//				}
+//				catch (IOException e) 
+//				{
+//					new CrashReport(e);
+//				}
 
 				temp.put("name", s.getClass().getName());
 				temp.put("hash", Hash);
@@ -171,7 +146,8 @@ public class LevelConversions
 		}
 		catch(Exception e)
 		{
-			new CrashReport(e);
+			//TODO
+			e.printStackTrace();
 		}
 	}
 	

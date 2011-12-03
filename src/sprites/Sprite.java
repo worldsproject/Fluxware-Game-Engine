@@ -1,20 +1,25 @@
 package sprites;
 
-import java.awt.image.BufferedImage;
-import java.awt.image.WritableRaster;
+import static org.lwjgl.opengl.GL11.GL_QUADS;
+import static org.lwjgl.opengl.GL11.glBegin;
+import static org.lwjgl.opengl.GL11.glPushMatrix;
+import static org.lwjgl.opengl.GL11.glTexCoord2f;
+import static org.lwjgl.opengl.GL11.glTranslatef;
+import static org.lwjgl.opengl.GL11.glVertex2f;
+
 import java.io.IOException;
 import java.io.Serializable;
 
-import listener.bounding.BoundingBox;
 import util.Point2D;
+import util.Texture;
+import collision.BoundingBox;
 
 public class Sprite implements Serializable
 {
-	public int serial = 0;
-	public int id = 0;
+	public final int serial;
 	private static int internalID = 0;
-
-	private transient BufferedImage o = new BufferedImage(1, 1, 1);
+	
+	protected Texture texture;
 
 	protected int state;
 	protected Point2D location;
@@ -25,24 +30,24 @@ public class Sprite implements Serializable
 
 	public Sprite()
 	{
-		o = null;
+		texture = null;
 		state = 0;
 		
 		location = new Point2D(-1, -1, 0);
 		
-		id = ++internalID;
+		serial = ++internalID;
 		
 		box = new BoundingBox(this);
 		box.updateBounds();
 	}
 
-	public Sprite(BufferedImage img, int x, int y, int layer)
+	public Sprite(Texture tex, int x, int y, int layer)
 	{
-		o = img;
+		texture = tex;
 		
 		location = new Point2D(x, y, layer);
 		
-		id = ++internalID;
+		serial = ++internalID;
 		
 		box = new BoundingBox(this);
 		box.updateBounds();
@@ -110,9 +115,9 @@ public class Sprite implements Serializable
 		this.state = state;
 	}
 
-	public void setSprite(BufferedImage img)
+	public void setSprite(Texture tex)
 	{
-		o = img;
+		texture = tex;
 	}
 
 	public void update(long lastUpdate, long totalTime)
@@ -139,9 +144,26 @@ public class Sprite implements Serializable
 	 * Returns the Object to be printed.
 	 * @return The Object that represents the Sprite.
 	 */
-	public BufferedImage print()
+	public void draw()
 	{
-		return o;
+		glPushMatrix();
+		texture.bind();
+		glTranslatef((int)location.getX(), (int)location.getY(), location.getLayer());
+		
+		glBegin(GL_QUADS);
+		{
+			glTexCoord2f(0, 0);
+			glVertex2f(0, 0);
+			
+			glTexCoord2f(0, texture.getHeight());
+			glVertex2f(0, getHeight());
+			
+			glTexCoord2f(texture.getWidth(), texture.getHeight());
+			glVertex2f(getWidth(), getHeight());
+			
+			glTexCoord2f(texture.getWidth(), 0);
+			glVertex2f(getWidth(), 0);
+		}
 	}
 	
 	public Point2D getPoint()
@@ -157,12 +179,12 @@ public class Sprite implements Serializable
 	
 	public int getWidth()
 	{
-		return o.getWidth();
+		return texture.getImageWidth();
 	}
 	
 	public int getHeight()
 	{
-		return o.getHeight();
+		return texture.getImageHeight();
 	}
 
 	public BoundingBox getBoundingBox()
@@ -190,30 +212,30 @@ public class Sprite implements Serializable
 		return "Coords: (" + this.getX() + ", " + this.getY() + ")";
 	}
 	
-	private void writeObject(java.io.ObjectOutputStream out) throws IOException
+	private void writeObject(java.io.ObjectOutputStream out) throws IOException //TODO
 	{
-		out.defaultWriteObject();
-		int w = o.getWidth();
-		int h = o.getHeight();
-		int[] rgb = new int[w*h];
-		o.getRGB(0, 0, w, h, rgb, 0, w);  //I find this odd that it works as a function and procedure.
-		
-		out.writeObject(rgb);
-		out.writeObject(new Integer(w));
-		out.writeObject(new Integer(h));
+//		out.defaultWriteObject();
+//		int w = o.getWidth();
+//		int h = o.getHeight();
+//		int[] rgb = new int[w*h];
+//		o.getRGB(0, 0, w, h, rgb, 0, w);  //I find this odd that it works as a function and procedure.
+//		
+//		out.writeObject(rgb);
+//		out.writeObject(new Integer(w));
+//		out.writeObject(new Integer(h));
 	}
 	
-	private void readObject(java.io.ObjectInputStream in) throws IOException, ClassNotFoundException
+	private void readObject(java.io.ObjectInputStream in) throws IOException, ClassNotFoundException //TODO
 	{
-		in.defaultReadObject();
-		int[] rgb = (int[]) in.readObject();
-		int width = ((Integer) in.readObject()).intValue();
-		int height = ((Integer) in.readObject()).intValue();
-		
-		BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
-        WritableRaster raster = (WritableRaster) image.getData();
-        raster.setPixels(0, 0, width, height, rgb);
-        
-        o = image;
+//		in.defaultReadObject();
+//		int[] rgb = (int[]) in.readObject();
+//		int width = ((Integer) in.readObject()).intValue();
+//		int height = ((Integer) in.readObject()).intValue();
+//		
+//		BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+//        WritableRaster raster = (WritableRaster) image.getData();
+//        raster.setPixels(0, 0, width, height, rgb);
+//        
+//        o = image;
 	}
 }

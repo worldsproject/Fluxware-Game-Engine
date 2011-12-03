@@ -99,8 +99,8 @@ public class Game
 			
 			glEnable(GL_TEXTURE_2D); //Enable textures in 2D mode.
 			glDisable(GL_DEPTH_TEST); //Disable depth test as we are only doing 2D items.
-			glMatrixMode(GL_PROJECTION); //TODO unknown function.
-			glLoadIdentity(); //TODO unknown function.
+			glMatrixMode(GL_PROJECTION);
+			glLoadIdentity();
 			
 			glOrtho(0, size.width, size.height, 0, -1, 1);
 			glMatrixMode(GL_MODELVIEW);

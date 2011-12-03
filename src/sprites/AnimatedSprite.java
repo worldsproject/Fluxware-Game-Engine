@@ -2,7 +2,7 @@ package sprites;
 
 import java.awt.image.BufferedImage;
 
-import util.Timer;
+import util.Texture;
 
 /**
  * The Animated Sprite takes in an array of images and rotates through them in order
@@ -15,7 +15,7 @@ public class AnimatedSprite extends Sprite implements Runnable
 {
 	public final int serial = 3;
 
-	protected BufferedImage[] images = null;
+	protected Texture[] textures = null;
 	protected long time = 200;
 
 	protected int currentImg = 0;
@@ -31,13 +31,11 @@ public class AnimatedSprite extends Sprite implements Runnable
 		new Thread(this).start();
 	}
 
-	public AnimatedSprite(BufferedImage image, int x, int y, int layer)
+	public AnimatedSprite(Texture texture, int x, int y, int layer)
 	{
-		super(image, x, y, layer);
+		super(texture, x, y, layer);
 
-		images = new BufferedImage[1];
-
-		images[0] = image;
+		textures = new Texture[] {texture};
 		
 		new Thread(this).start();
 	}
@@ -50,11 +48,11 @@ public class AnimatedSprite extends Sprite implements Runnable
 	 * @param y - The initial Y coordinate of the Sprite.
 	 * @param layer - The initial Layer position of the Sprite.
 	 */
-	public AnimatedSprite(BufferedImage[] img, int x, int y, int layer)
+	public AnimatedSprite(Texture[] tex, int x, int y, int layer)
 	{
-		super(img[0], x, y, layer);
+		super(tex[0], x, y, layer);
 
-		this.images = img;
+		textures = tex;
 		
 		new Thread(this).start();
 	}
@@ -68,11 +66,11 @@ public class AnimatedSprite extends Sprite implements Runnable
 	 * @param layer - The initial Layer position of the Sprite.
 	 * @param time - The period of time that each from persists.
 	 */
-	public AnimatedSprite(BufferedImage[] img, int x, int y, int layer, long time)
+	public AnimatedSprite(Texture[] tex, int x, int y, int layer, long time)
 	{
-		super(img[0], x, y, layer);
+		super(tex[0], x, y, layer);
 
-		this.images = img;
+		textures = tex;
 		this.time = time;
 		
 		new Thread(this).start();
@@ -82,21 +80,16 @@ public class AnimatedSprite extends Sprite implements Runnable
 	 * Sets a new animation sequence for the Animated Sprite.
 	 * @param im - The array of images to replace the old array.
 	 */
-	public void setSprite(BufferedImage[] im)
+	public void setSprite(Texture[] tex)
 	{
-		images = im;
-	}
-
-	public BufferedImage print() 
-	{
-		return images[currentImg];
+		textures = tex;
 	}
 
 	private void nextFrame()
 	{
 		currentImg++;
 
-		if(currentImg >= images.length)
+		if(currentImg >= textures.length)
 		{
 			currentImg = 0;
 		}
