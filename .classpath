@@ -19,5 +19,6 @@
 	<classpathentry kind="lib" path="src/resources/lwjgl/lwjgl_util.jar"/>
 	<classpathentry kind="lib" path="src/resources/lwjgl/jinput.jar"/>
 	<classpathentry kind="lib" path="src/resources/lwjgl/lzma.jar"/>
+	<classpathentry kind="lib" path="src/resources/lwjgl/slick-util.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

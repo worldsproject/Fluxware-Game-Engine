@@ -27,7 +27,6 @@ import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
 
 import sprites.Sprite;
-import util.ImageManager;
 
 /**
  * This is the main class for the Fluxware Game Engine.  This class handles and maintains the Windowing System.
@@ -56,7 +55,6 @@ public class Game
 	private boolean isRunning = true;
 
 	//Each of the differing managers.
-	ImageManager imageManager = new ImageManager();
 	//SoundManager
 	//CollisionManager
 	/**
@@ -147,11 +145,6 @@ public class Game
 	public int getFramesPerSecond()
 	{
 		return framesPerSecond;
-	}
-	
-	public ImageManager getImageManager()
-	{
-		return imageManager;
 	}
 
 	private void gameLoop()

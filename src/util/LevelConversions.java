@@ -12,14 +12,13 @@ import level.Room;
 
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
+import org.newdawn.slick.opengl.Texture;
 
 import sprites.Sprite;
 
 
 public class LevelConversions 
 {
-	private ImageManager imageManager = new ImageManager();
-	
 	public Room JSONToRoom(File f)
 	{
 		Room rv = null;
@@ -58,7 +57,7 @@ public class LevelConversions
 				int y = ((Long)temp.get("y")).intValue();
 				int layer = ((Long)temp.get("layer")).intValue();
 				
-				Texture tex = imageManager.getTexture(new File(hash + ".png").getPath());
+				Texture tex = ImageUtil.loadTexture("png", new File(hash + ".png").getPath());
 				Sprite s = new Sprite(tex, x, y, layer);
 				
 				rv.addSprite(s);

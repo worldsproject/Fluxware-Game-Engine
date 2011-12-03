@@ -12,8 +12,9 @@ import static org.lwjgl.opengl.GL11.glVertex2f;
 import java.io.IOException;
 import java.io.Serializable;
 
+import org.newdawn.slick.opengl.Texture;
+
 import util.Point2D;
-import util.Texture;
 import collision.BoundingBox;
 
 public class Sprite implements Serializable
