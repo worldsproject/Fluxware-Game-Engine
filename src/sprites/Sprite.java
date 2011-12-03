@@ -137,6 +137,7 @@ public class Sprite implements Serializable
 	
 	public void move(long delta)
 	{
+		System.out.println(delta);
 		location.x += (delta * dx) / 1000;
 		location.y += (delta * dy) / 1000;
 	}
@@ -154,7 +155,9 @@ public class Sprite implements Serializable
 	{
 		glPushMatrix();
 		texture.bind();
-		glTranslatef((int)location.x, (int)location.y, location.layer);
+		int tx = (int)location.x;
+		int ty = (int)location.y;
+		glTranslatef(tx, ty, 0);
 		
 		glBegin(GL_QUADS);
 		{

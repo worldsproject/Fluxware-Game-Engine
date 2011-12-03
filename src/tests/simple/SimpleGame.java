@@ -11,10 +11,10 @@ public class SimpleGame extends Game
 	{
 		super(room, false);
 		
-		Texture fox = getImageManager().getTexture("tests/resources/fox.png");
+		Texture fox = getImageManager().getTexture("tests/resources/fox.jpg");
 		Sprite one = new Sprite(fox, 0, 0, 0);
 		Sprite two = new Sprite(fox, 100, 100, 0);
-		
+		one.setHorizontalMovementSpeed(10);
 		room.addSprite(one);
 		room.addSprite(two);
 	}

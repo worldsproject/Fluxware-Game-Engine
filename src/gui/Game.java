@@ -51,7 +51,7 @@ public class Game
 	private static long ticksPerSecond = Sys.getTimerResolution();
 	private long delta = 0;
 	private long lastLoopTime = 0;
-	private int framesPerSecond = 1;
+	private int framesPerSecond = 60;
 	
 	private boolean isRunning = true;
 
@@ -210,6 +210,7 @@ public class Game
 	{
 		try
 		{
+			lastLoopTime = getTime();
 			setDisplayMode();
 			Display.setTitle(title);
 			Display.setFullscreen(fullscreen);
