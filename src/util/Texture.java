@@ -78,7 +78,8 @@ public class Texture {
 	 * @param target The GL target
 	 * @param textureID The GL texture ID
 	 */
-	public Texture(int target, int textureID) {
+	public Texture(int target, int textureID) 
+	{
 		this.target = target;
 		this.textureID = textureID;
 	}
@@ -86,7 +87,8 @@ public class Texture {
 	/**
 	 * Bind the specified GL context to a texture
 	 */
-	public void bind() {
+	public void bind() 
+	{
 		glBindTexture(target, textureID);
 	}
 
@@ -95,7 +97,8 @@ public class Texture {
 	 *
 	 * @param height The height of the image
 	 */
-	public void setHeight(int height) {
+	public void setHeight(int height) 
+	{
 		this.height = height;
 		setHeight();
 	}

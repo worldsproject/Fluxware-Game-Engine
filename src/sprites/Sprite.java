@@ -2,6 +2,8 @@ package sprites;
 
 import static org.lwjgl.opengl.GL11.GL_QUADS;
 import static org.lwjgl.opengl.GL11.glBegin;
+import static org.lwjgl.opengl.GL11.glEnd;
+import static org.lwjgl.opengl.GL11.glPopMatrix;
 import static org.lwjgl.opengl.GL11.glPushMatrix;
 import static org.lwjgl.opengl.GL11.glTexCoord2f;
 import static org.lwjgl.opengl.GL11.glTranslatef;
@@ -27,6 +29,9 @@ public class Sprite implements Serializable
 	protected BoundingBox box = null;
 	
 	protected boolean dead = false;
+	
+	protected double dy = 0;
+	protected double dx = 0;
 
 	public Sprite()
 	{
@@ -58,7 +63,7 @@ public class Sprite implements Serializable
 	 */
 	public double getX() 
 	{
-		return location.getX();
+		return location.x;
 	}
 
 	/**
@@ -67,7 +72,7 @@ public class Sprite implements Serializable
 	 */
 	public void setX(int x)
 	{
-		location.setX(x);
+		location.x = x;
 		box.updateBounds();
 	}
 
@@ -76,7 +81,7 @@ public class Sprite implements Serializable
 	 */
 	public double getY() 
 	{
-		return location.getY();
+		return location.y;
 	}
 
 	/**
@@ -84,7 +89,7 @@ public class Sprite implements Serializable
 	 */
 	public void setY(int y)
 	{
-		location.setY(y);
+		location.y = y;
 		box.updateBounds();
 	}
 
@@ -93,7 +98,7 @@ public class Sprite implements Serializable
 	 */
 	public int getLayer()
 	{
-		return location.getLayer();
+		return location.layer;
 	}
 
 	/**
@@ -101,43 +106,44 @@ public class Sprite implements Serializable
 	 */
 	public void setLayer(int layer)
 	{
-		location.setLayer(layer);
+		location.layer = layer;
 		box.updateBounds();
-	}
-
-	public int getState()
-	{
-		return state;
-	}
-
-	public void setState(int state)
-	{
-		this.state = state;
 	}
 
 	public void setSprite(Texture tex)
 	{
 		texture = tex;
 	}
-
-	public void update(long lastUpdate, long totalTime)
+	
+	public void setHorizontalMovementSpeed(double dx)
 	{
-		box.updateBounds();
+		this.dx = dx;
 	}
 	
-	/**
-	 * Compares two Sprites.  If the Sprites occupy the same spot,
-	 * the method returns true, otherwise the method returns false.
-	 * 
-	 * @param s The other Sprite to be compared.
-	 * @return true if the Sprites have the same coordinates, false if otherwise.
-	 */
-	public boolean equals(Sprite s)
+	public void setVerticalMovementSpeed(double dy)
 	{
-		if(s.getX() == this.getX() && s.getY() == this.getY() && s.getLayer() == this.getLayer())
-			return true;
-
-		return false;
+		this.dy = dy;
+	}
+	
+	public double getHorizontalMovementSpeed()
+	{
+		return dx;
+	}
+	
+	public double getVerticalMovementSpeed()
+	{
+		return dy;
+	}
+	
+	public void move(long delta)
+	{
+		location.x += (delta * dx) / 1000;
+		location.y += (delta * dy) / 1000;
+	}
+	
+	public void logic()
+	{
+		
 	}
 
 	/**
@@ -148,7 +154,7 @@ public class Sprite implements Serializable
 	{
 		glPushMatrix();
 		texture.bind();
-		glTranslatef((int)location.getX(), (int)location.getY(), location.getLayer());
+		glTranslatef((int)location.x, (int)location.y, location.layer);
 		
 		glBegin(GL_QUADS);
 		{
@@ -164,14 +170,16 @@ public class Sprite implements Serializable
 			glTexCoord2f(texture.getWidth(), 0);
 			glVertex2f(getWidth(), 0);
 		}
+		glEnd();
+		glPopMatrix();
 	}
 	
-	public Point2D getPoint()
+	public Point2D getLocation()
 	{
 		return location;
 	}
 	
-	public void setPoint(Point2D p)
+	public void setLocation(Point2D p)
 	{
 		location = p;
 		box.updateBounds();

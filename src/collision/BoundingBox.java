@@ -46,10 +46,10 @@ public class BoundingBox
 
 	public boolean withinBounds(Point2D p) 
 	{
-		double x = p.getX();
-		double y = p.getY();
+		double x = p.x;
+		double y = p.y;
 		
-		if(p.getLayer() == bound.getLayer())
+		if(p.layer == bound.getLayer())
 		{
 			if(rect == null)
 			{

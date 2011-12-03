@@ -1,17 +1,33 @@
 package gui;
 
+import static org.lwjgl.opengl.GL11.GL_COLOR_BUFFER_BIT;
+import static org.lwjgl.opengl.GL11.GL_DEPTH_BUFFER_BIT;
+import static org.lwjgl.opengl.GL11.GL_DEPTH_TEST;
+import static org.lwjgl.opengl.GL11.GL_MODELVIEW;
+import static org.lwjgl.opengl.GL11.GL_PROJECTION;
+import static org.lwjgl.opengl.GL11.GL_TEXTURE_2D;
+import static org.lwjgl.opengl.GL11.glClear;
+import static org.lwjgl.opengl.GL11.glDisable;
+import static org.lwjgl.opengl.GL11.glEnable;
+import static org.lwjgl.opengl.GL11.glLoadIdentity;
+import static org.lwjgl.opengl.GL11.glMatrixMode;
+import static org.lwjgl.opengl.GL11.glOrtho;
+import static org.lwjgl.opengl.GL11.glViewport;
+
 import java.awt.Dimension;
+import java.util.LinkedList;
 
 import level.Room;
 
 import org.lwjgl.LWJGLException;
+import org.lwjgl.Sys;
+import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
 
-import static org.lwjgl.opengl.GL11.*;
-
 import sprites.Sprite;
+import util.ImageManager;
 
 /**
  * This is the main class for the Fluxware Game Engine.  This class handles and maintains the Windowing System.
@@ -22,17 +38,25 @@ public class Game
 {
 	//Sets the default size of the window that the game is displayed in.
 	private Dimension size = new Dimension(800, 600);
-	
+
 	//Sets whether the window will display in fullscreen. Default false.
 	private boolean fullscreen = false;
-	
+
 	//The current room that the game is displaying.
 	private Room room = null;
 
 	//The title of the window. Defaults to 'Fluxware Game Engine'
 	private String title = "Fluxware Game Engine";
+
+	private static long ticksPerSecond = Sys.getTimerResolution();
+	private long delta = 0;
+	private long lastLoopTime = 0;
+	private int framesPerSecond = 1;
 	
+	private boolean isRunning = true;
+
 	//Each of the differing managers.
+	ImageManager imageManager = new ImageManager();
 	//SoundManager
 	//CollisionManager
 	/**
@@ -42,8 +66,9 @@ public class Game
 	public Game(Room room)
 	{
 		this.room = room;
+		construct();
 	}
-	
+
 	/**
 	 * Creates a new Game based on the given room and if it should be fullscreen or not.
 	 * @param room - The room to be displayed.
@@ -53,8 +78,9 @@ public class Game
 	{	
 		this.room = room;
 		this.fullscreen = fullscreen;
+		construct();
 	}
-	
+
 	/**
 	 * Creates a new Game based upon the Room given to it.
 	 * @param room - The room the Game will start displaying.
@@ -66,8 +92,9 @@ public class Game
 		this.room = room;
 		this.fullscreen = fullscreen;
 		this.size = size;
+		construct();
 	}
-	
+
 	/**
 	 * Creates a new Game based upon the Room given to it.
 	 * @param room - The Room the Game will start displaying.
@@ -81,8 +108,101 @@ public class Game
 		this.fullscreen = fullscreen;
 		this.size = size;
 		this.title = title;
+		construct();
+	}
+
+
+	/**
+	 * Sets a new Room as the default, generally used when changing rooms or levels.
+	 * @param room
+	 */
+	public void setRoom(Room room)
+	{
+		this.room = room;
+	}
+
+	/**
+	 * Returns the current Room
+	 */
+	public Room getRoom()
+	{
+		return room;
+	}
+
+	public long getDelta()
+	{
+		return delta;
+	}
+
+	public long getTime()
+	{
+		return (Sys.getTime() * 1000) / ticksPerSecond;
 	}
 	
+	public void setFramesPerSecond(int fps)
+	{
+		framesPerSecond = fps;
+	}
+	
+	public int getFramesPerSecond()
+	{
+		return framesPerSecond;
+	}
+	
+	public ImageManager getImageManager()
+	{
+		return imageManager;
+	}
+
+	private void gameLoop()
+	{
+		while(isRunning)
+		{
+			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+			glMatrixMode(GL_MODELVIEW);
+			glLoadIdentity();
+
+			drawFrame();
+
+			Display.update();
+			
+			if(Keyboard.isKeyDown(Keyboard.KEY_ESCAPE))
+				isRunning = false;
+		}
+		
+		Display.destroy();
+	}
+
+	public void drawFrame()
+	{
+		System.out.println("Frame Drawn");
+		Display.sync(framesPerSecond);
+		
+		delta = getTime() - lastLoopTime;
+		lastLoopTime = getTime();
+		LinkedList<Sprite> as = room.getSprites();
+
+		for(Sprite s: as) //Move
+		{
+			s.move(delta);
+		}
+
+		for(Sprite s: as) //Logic
+		{
+			s.logic();
+		}
+
+		for(Sprite s: as) //Draw
+		{
+			s.draw();
+		}
+	}
+	
+	public void startGame()
+	{
+		gameLoop();
+	}
+
 	/*
 	 * The standard default method calls that are needed for every constructor.
 	 */
@@ -94,14 +214,14 @@ public class Game
 			Display.setTitle(title);
 			Display.setFullscreen(fullscreen);
 			Display.create();
-			
+
 			Mouse.setGrabbed(true);
-			
+
 			glEnable(GL_TEXTURE_2D); //Enable textures in 2D mode.
 			glDisable(GL_DEPTH_TEST); //Disable depth test as we are only doing 2D items.
 			glMatrixMode(GL_PROJECTION);
 			glLoadIdentity();
-			
+
 			glOrtho(0, size.width, size.height, 0, -1, 1);
 			glMatrixMode(GL_MODELVIEW);
 			glLoadIdentity();
@@ -113,81 +233,25 @@ public class Game
 			e.printStackTrace();
 		}
 	}
-	
+
 	//Sets the display mode for fullscreen if possible.
 	private void setDisplayMode()
 	{
 		try
 		{
 			DisplayMode[] dm = org.lwjgl.util.Display.getAvailableDisplayModes(size.width, size.height, -1, -1, -1, -1, 60, 60);
-			
+
 			org.lwjgl.util.Display.setDisplayMode(dm, new String[] {
 					"width="+size.width,
 					"height="+size.height,
 					"freq=60",
 					"bpp="+org.lwjgl.opengl.Display.getDisplayMode().getBitsPerPixel()
-					});
+			});
 		}
 		catch(Exception e)
 		{
 			e.printStackTrace();
 			System.err.println("Unable to enter into fullscreen, continuing in windowed mode.");
 		}
-	}
-
-	/**
-	 * This creates all of the Swing components, sets the JFrame properties,
-	 * and does other config items.  This should be called before calling Game.run().
-	 * Sets up and creates the GUI.
-	 */
-	protected void setupGUI()
-	{
-
-	}
-
-	/**
-	 * Sets a new Room as the default, generally used when changing rooms or levels.
-	 * @param room
-	 */
-	public void setRoom(Room room)
-	{
-		//TODO
-	}
-	
-	/**
-	 * Returns the current Room
-	 */
-	public Room getRoom()
-	{
-		return null; //TODO
-	}
-	
-	/**
-	 * Updates all of the Sprites.
-	 * @param totalTime - The amount of time since the start of the Game.
-	 * @param elapsedTime - The amount of time since the last Frame update.
-	 */
-	public void update(long totalTime, long elapsedTime)
-	{
-		//TODO
-	}
-	
-	/**
-	 * Moves the viewscreen by X and Y amount. This is relative to it's current position.
-	 * @param x - The amount of X movement.
-	 * @param y - The amount of Y movement.
-	 */
-	public void scrollViewscreen(int x, int y)
-	{
-		//TODO
-	}
-	
-	/**
-	 * Centers the Viewscreen to the given Sprite.
-	 * @param s - The Sprite that the Viewscreen will center upon.
-	 */
-	public void scrollViewscreenRelativeTo(Sprite s)
-	{
-		//TODO
 	}
 }

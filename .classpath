@@ -11,7 +11,13 @@
 	<classpathentry kind="lib" path="src/resources/vorbisspi1.0.3.jar"/>
 	<classpathentry kind="lib" path="src/resources/jl1.0.1.jar"/>
 	<classpathentry kind="lib" path="src/resources/mp3spi1.9.5.jar"/>
-	<classpathentry kind="lib" path="src/resources/lwjgl/lwjgl.jar"/>
+	<classpathentry kind="lib" path="src/resources/lwjgl/lwjgl.jar">
+		<attributes>
+			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="Fluxware-Game-Engine/src/resources/lwjgl/native/windows"/>
+		</attributes>
+	</classpathentry>
 	<classpathentry kind="lib" path="src/resources/lwjgl/lwjgl_util.jar"/>
+	<classpathentry kind="lib" path="src/resources/lwjgl/jinput.jar"/>
+	<classpathentry kind="lib" path="src/resources/lwjgl/lzma.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

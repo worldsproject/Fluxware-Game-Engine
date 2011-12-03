@@ -8,9 +8,9 @@ import java.io.Serializable;
  */
 public class Point2D implements Serializable
 {
-	private double x;
-	private double y;
-	private int layer;
+	public double x;
+	public double y;
+	public int layer;
 
 	/**
 	 * The Point class encapsulates a single point in a TiledRoom
@@ -28,66 +28,6 @@ public class Point2D implements Serializable
 	}
 
 	/**
-	 * Returns the X coordinate of the Point.
-	 * 
-	 * @return int of the X coordinate of the Point.
-	 */
-	public double getX()
-	{
-		return x;
-	}
-
-	/**
-	 * Returns the Y coordinate of the Point.
-	 * 
-	 * @return int of the Y coordinate of the Point.
-	 */
-	public double getY()
-	{
-		return y;
-	}
-
-	/**
-	 * Return the Layer of the Point.
-	 * 
-	 * @return int of the Layer of the Point.
-	 */
-	public int getLayer()
-	{
-		return layer;
-	}
-
-	/**
-	 * Set the x coordinate of the Point.
-	 * 
-	 * @param x - int of the x coordinate.
-	 */
-	public void setX(double x)
-	{
-		this.x = x;
-	}
-
-	/**
-	 * Sets the y coordinate of the Point.
-	 * 
-	 * @param y - int of the y coordinate.
-	 */
-	public void setY(double y)
-	{
-		this.y = y;
-	}
-
-	/**
-	 * Sets the layer of the Point.
-	 * 
-	 * @param layer - int of the layer position.
-	 */
-	public void setLayer(int layer)
-	{
-		this.layer = layer;
-	}
-
-	/**
 	 * Matches itself to the given Point2D.  If all 3 coordinates match (x, y, layer)
 	 * the method returns true, otherwise false.
 	 * 
@@ -96,7 +36,7 @@ public class Point2D implements Serializable
 	 */
 	public boolean equals(Point2D p)
 	{
-		return (p.getX() == x && p.getY() == y && p.getLayer() == layer) ? true : false; 
+		return (p.x == x && p.y == y && p.layer == layer) ? true : false; 
 	}
 	
 	/**

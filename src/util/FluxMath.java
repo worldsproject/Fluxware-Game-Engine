@@ -12,11 +12,11 @@ public class FluxMath
 	 */
 	public static double distance(Point2D one, Point2D two)
 	{
-		double x1 = one.getX();
-		double x2 = two.getX();
+		double x1 = one.x;
+		double x2 = two.x;
 		
-		double y1 = one.getY();
-		double y2 = two.getY();
+		double y1 = one.y;
+		double y2 = two.y;
 		
 		double xSq = Math.pow((x2 - x1), 2);
 		double ySq = Math.pow((y2 - y1), 2);
