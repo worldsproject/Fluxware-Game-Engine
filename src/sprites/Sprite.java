@@ -11,6 +11,7 @@ import static org.lwjgl.opengl.GL11.glVertex2f;
 
 import java.io.IOException;
 import java.io.Serializable;
+import java.util.LinkedList;
 
 import org.newdawn.slick.opengl.Texture;
 
@@ -136,14 +137,23 @@ public class Sprite implements Serializable
 		return dy;
 	}
 	
+	public void updateBounds()
+	{
+		box.updateBounds();
+	}
+	
 	public void move(long delta)
 	{
-		System.out.println(delta);
 		location.x += (delta * dx) / 1000;
 		location.y += (delta * dy) / 1000;
 	}
 	
 	public void logic()
+	{
+		
+	}
+	
+	public void collisions(LinkedList<Sprite> collisions)
 	{
 		
 	}
@@ -158,7 +168,7 @@ public class Sprite implements Serializable
 		texture.bind();
 		int tx = (int)location.x;
 		int ty = (int)location.y;
-		glTranslatef(tx, ty, 0);
+		glTranslatef(tx, ty, location.layer);
 		
 		glBegin(GL_QUADS);
 		{

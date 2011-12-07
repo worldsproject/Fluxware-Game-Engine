@@ -27,6 +27,7 @@ import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
 
 import sprites.Sprite;
+import collision.CollisionManager;
 
 /**
  * This is the main class for the Fluxware Game Engine.  This class handles and maintains the Windowing System.
@@ -52,7 +53,7 @@ public class Game
 	private long lastLoopTime = 0;
 	private int framesPerSecond = 60;
 	
-	private boolean isRunning = true;
+	protected boolean isRunning = true;
 
 	//Each of the differing managers.
 	//SoundManager
@@ -168,7 +169,6 @@ public class Game
 
 	public void drawFrame()
 	{
-		System.out.println("Frame Drawn");
 		Display.sync(framesPerSecond);
 		
 		delta = getTime() - lastLoopTime;
@@ -179,6 +179,8 @@ public class Game
 		{
 			s.move(delta);
 		}
+		
+		CollisionManager.checkBoundingBoxCollisions(as);
 
 		for(Sprite s: as) //Logic
 		{

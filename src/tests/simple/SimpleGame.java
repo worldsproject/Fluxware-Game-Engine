@@ -14,12 +14,10 @@ public class SimpleGame extends Game
 	{
 		super(room, false);
 		
-		Texture fox = ImageUtil.loadTexture("gif", "tests/resources/fox.gif");
-		Texture fox2 = ImageUtil.loadTexture("jpg", "tests/resources/fox.jpg");
-		Texture fox3 = ImageUtil.loadTexture("png", "tests/resources/fox.png");
+		Texture fox = ImageUtil.loadTexture("png", "tests/resources/fox.png");
 		Sprite one = new Sprite(fox, 0, 0, 0);
-		Sprite two = new Sprite(fox2, 100, 100, 0);
-		Sprite three = new Sprite(fox3, 200, 200, 0);
+		Sprite two = new Sprite(fox, 100, 100, 0);
+		Sprite three = new Sprite(fox, 200, 200, 0);
 		room.addSprite(one);
 		room.addSprite(two);
 		room.addSprite(three);
