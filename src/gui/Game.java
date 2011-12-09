@@ -180,7 +180,8 @@ public class Game
 			s.move(delta);
 		}
 		
-		CollisionManager.checkBoundingBoxCollisions(as);
+//		CollisionManager.checkBoundingBoxCollisions(as);
+		CollisionManager.checkPixelPerfectCollisions(as);
 
 		for(Sprite s: as) //Logic
 		{

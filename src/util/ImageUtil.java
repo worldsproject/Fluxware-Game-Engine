@@ -13,12 +13,14 @@ import org.newdawn.slick.util.ResourceLoader;
 
 public class ImageUtil 
 {
-	public static Texture loadTexture(String format, String location)
+	public static ImageData loadTexture(String format, String location)
 	{
 		Texture t = null;
+		boolean[][] mask = null;
 		try 
 		{
 			t = TextureLoader.getTexture(format, ResourceLoader.getResourceAsStream(location));
+			mask = generateMask(location);
 		} 
 		catch (IOException e) 
 		{
@@ -26,21 +28,13 @@ public class ImageUtil
 			e.printStackTrace();
 		}
 		
-		return t;
+		return new ImageData(t, mask);
 	}
 	
-	private static boolean[][] generateMask(String location)
+	private static boolean[][] generateMask(String location) throws IOException
 	{
-		BufferedImage buf = null;
-		try 
-		{
-			buf = ImageIO.read(new File(location));
-		}
-		catch (IOException e) 
-		{
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		BufferedImage buf = ImageIO.read(new File(location));
+
 		
 		boolean[][] rv = new boolean[buf.getWidth()][buf.getHeight()];
 		

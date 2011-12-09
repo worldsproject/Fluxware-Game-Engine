@@ -15,6 +15,7 @@ import java.util.LinkedList;
 
 import org.newdawn.slick.opengl.Texture;
 
+import util.ImageData;
 import util.Point2D;
 import collision.BoundingBox;
 
@@ -23,7 +24,7 @@ public class Sprite implements Serializable
 	public final int serial;
 	private static int internalID = 0;
 	
-	protected Texture texture;
+	protected ImageData imageData;
 
 	protected int state;
 	protected Point2D location;
@@ -37,7 +38,7 @@ public class Sprite implements Serializable
 
 	public Sprite()
 	{
-		texture = null;
+		imageData = null;
 		state = 0;
 		
 		location = new Point2D(-1, -1, 0);
@@ -48,9 +49,9 @@ public class Sprite implements Serializable
 		box.updateBounds();
 	}
 
-	public Sprite(Texture tex, int x, int y, int layer)
+	public Sprite(ImageData tex, int x, int y, int layer)
 	{
-		texture = tex;
+		imageData = tex;
 		
 		location = new Point2D(x, y, layer);
 		
@@ -112,9 +113,9 @@ public class Sprite implements Serializable
 		box.updateBounds();
 	}
 
-	public void setSprite(Texture tex)
+	public void setSprite(ImageData tex)
 	{
-		texture = tex;
+		imageData = tex;
 	}
 	
 	public void setHorizontalMovementSpeed(double dx)
@@ -165,7 +166,7 @@ public class Sprite implements Serializable
 	public void draw()
 	{
 		glPushMatrix();
-		texture.bind();
+		imageData.getTexture().bind();
 		int tx = (int)location.x;
 		int ty = (int)location.y;
 		glTranslatef(tx, ty, location.layer);
@@ -175,13 +176,13 @@ public class Sprite implements Serializable
 			glTexCoord2f(0, 0);
 			glVertex2f(0, 0);
 			
-			glTexCoord2f(0, texture.getHeight());
+			glTexCoord2f(0, imageData.getTexture().getHeight());
 			glVertex2f(0, getHeight());
 			
-			glTexCoord2f(texture.getWidth(), texture.getHeight());
+			glTexCoord2f(imageData.getTexture().getWidth(), imageData.getTexture().getHeight());
 			glVertex2f(getWidth(), getHeight());
 			
-			glTexCoord2f(texture.getWidth(), 0);
+			glTexCoord2f(imageData.getTexture().getWidth(), 0);
 			glVertex2f(getWidth(), 0);
 		}
 		glEnd();
@@ -201,12 +202,17 @@ public class Sprite implements Serializable
 	
 	public int getWidth()
 	{
-		return texture.getImageWidth();
+		return imageData.getTexture().getImageWidth();
 	}
 	
 	public int getHeight()
 	{
-		return texture.getImageHeight();
+		return imageData.getTexture().getImageHeight();
+	}
+	
+	public boolean[][] getMask()
+	{
+		return this.imageData.getMask();
 	}
 
 	public BoundingBox getBoundingBox()

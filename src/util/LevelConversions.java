@@ -57,7 +57,7 @@ public class LevelConversions
 				int y = ((Long)temp.get("y")).intValue();
 				int layer = ((Long)temp.get("layer")).intValue();
 				
-				Texture tex = ImageUtil.loadTexture("png", new File(hash + ".png").getPath());
+				ImageData tex = ImageUtil.loadTexture("png", new File(hash + ".png").getPath());
 				Sprite s = new Sprite(tex, x, y, layer);
 				
 				rv.addSprite(s);

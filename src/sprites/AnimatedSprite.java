@@ -2,6 +2,8 @@ package sprites;
 
 import org.newdawn.slick.opengl.Texture;
 
+import util.ImageData;
+
 /**
  * The Animated Sprite takes in an array of images and rotates through them in order
  * to create an animation.
@@ -13,7 +15,7 @@ public class AnimatedSprite extends Sprite implements Runnable
 {
 	public final int serial = 3;
 
-	protected Texture[] textures = null;
+	protected ImageData[] textures = null;
 	protected long time = 200;
 
 	protected int currentImg = 0;
@@ -29,11 +31,11 @@ public class AnimatedSprite extends Sprite implements Runnable
 		new Thread(this).start();
 	}
 
-	public AnimatedSprite(Texture texture, int x, int y, int layer)
+	public AnimatedSprite(ImageData texture, int x, int y, int layer)
 	{
 		super(texture, x, y, layer);
 
-		textures = new Texture[] {texture};
+		textures = new ImageData[] {texture};
 		
 		new Thread(this).start();
 	}
@@ -46,7 +48,7 @@ public class AnimatedSprite extends Sprite implements Runnable
 	 * @param y - The initial Y coordinate of the Sprite.
 	 * @param layer - The initial Layer position of the Sprite.
 	 */
-	public AnimatedSprite(Texture[] tex, int x, int y, int layer)
+	public AnimatedSprite(ImageData[] tex, int x, int y, int layer)
 	{
 		super(tex[0], x, y, layer);
 
@@ -64,7 +66,7 @@ public class AnimatedSprite extends Sprite implements Runnable
 	 * @param layer - The initial Layer position of the Sprite.
 	 * @param time - The period of time that each from persists.
 	 */
-	public AnimatedSprite(Texture[] tex, int x, int y, int layer, long time)
+	public AnimatedSprite(ImageData[] tex, int x, int y, int layer, long time)
 	{
 		super(tex[0], x, y, layer);
 
@@ -78,7 +80,7 @@ public class AnimatedSprite extends Sprite implements Runnable
 	 * Sets a new animation sequence for the Animated Sprite.
 	 * @param im - The array of images to replace the old array.
 	 */
-	public void setSprite(Texture[] tex)
+	public void setSprite(ImageData[] tex)
 	{
 		textures = tex;
 	}

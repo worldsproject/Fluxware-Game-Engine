@@ -1,7 +1,8 @@
 package tests.junit;
 
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 import gui.Game;
 
 import java.util.LinkedList;
@@ -11,9 +12,9 @@ import level.Room;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.newdawn.slick.opengl.Texture;
 
 import sprites.Sprite;
+import util.ImageData;
 import util.ImageUtil;
 import util.Point2D;
 
@@ -175,9 +176,9 @@ public class BoundingBoxTest
 		public FoxSprite()
 		{
 			super(null, 0, 0, 0);
-			Texture tex = ImageUtil.loadTexture("png", "tests/resources/fox.png");
-			texW = tex.getTextureWidth();
-			imgW = tex.getImageWidth();
+			ImageData tex = ImageUtil.loadTexture("png", "tests/resources/fox.png");
+			texW = tex.getTexture().getTextureWidth();
+			imgW = tex.getTexture().getImageWidth();
 			setSprite(tex);
 		}
 		
@@ -210,7 +211,7 @@ public class BoundingBoxTest
 		public BoxSprite()
 		{
 			super(null, 0, 0, 0);
-			Texture tex = ImageUtil.loadTexture("png", "tests/resources/box.png");
+			ImageData tex = ImageUtil.loadTexture("png", "tests/resources/box.png");
 			setSprite(tex);
 		}
 		
@@ -233,7 +234,7 @@ public class BoundingBoxTest
 		public BoxTSprite()
 		{
 			super(null, 0, 0, 0);
-			Texture tex = ImageUtil.loadTexture("png", "tests/resources/botT.png");
+			ImageData tex = ImageUtil.loadTexture("png", "tests/resources/botT.png");
 			setSprite(tex);
 		}
 		
