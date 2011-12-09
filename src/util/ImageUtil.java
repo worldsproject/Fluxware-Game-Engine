@@ -2,8 +2,8 @@ package util;
 
 import java.awt.Color;
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 
 import javax.imageio.ImageIO;
 
@@ -33,9 +33,10 @@ public class ImageUtil
 	
 	private static boolean[][] generateMask(String location) throws IOException
 	{
-		BufferedImage buf = ImageIO.read(new File(location));
+		URL u = ImageUtil.class.getResource("/" +location);
+		System.out.println(u);
+		BufferedImage buf = ImageIO.read(u);
 
-		
 		boolean[][] rv = new boolean[buf.getWidth()][buf.getHeight()];
 		
 		for(int i = 0; i < buf.getWidth(); i++)
