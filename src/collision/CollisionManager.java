@@ -64,14 +64,10 @@ public class CollisionManager
 					double cy2 = 0; //Collision box bottom right Y corner.
 
 					int aw1 = 0;
-					int aw2 = s.getMask().length;
 					int ah1 = 0;
-					int ah2 = s.getMask()[0].length;
 
 					int bw1 = 0;
-					int bw2 = sn.getMask().length;
 					int bh1 = 0;
-					int bh2 = sn.getMask()[0].length;
 
 					if(ax1 < bx1)
 					{
@@ -96,14 +92,10 @@ public class CollisionManager
 					}
 
 					aw1 = (int) (cx1 - ax1);
-					aw2 = (int) (aw1 + (cx2-cx1));
 					ah1 = (int) (cy1 - ay1);
-					ah2 = (int) (ah1 + (cy2-cy1));
 
 					bw1 = (int) (cx1 - bx1);
-					bw2 = (int) (bw1 + (cx2 - cx1));
 					bh1 = (int) (cy1 - by1);
-					bh2 = (int) (bh1 + (cy2 - cy1));
 					
 					boolean[][] aMask = s.getMask();
 					boolean[][] bMask = sn.getMask();
