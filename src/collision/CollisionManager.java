@@ -1,22 +1,96 @@
 package collision;
 
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.List;
 
+import level.Room;
 import sprites.Sprite;
+import sprites.SpriteGroup;
 
 
 public class CollisionManager 
 {
-	public static void checkBoundingBoxCollisions(LinkedList<Sprite> list)
+	private Room room;
+	private ArrayList<GroupPair> pairs = new ArrayList<GroupPair>();
+	private boolean pixelPerfect = true;
+	
+	public CollisionManager(Room r)
 	{
-		for(Sprite sn: list)
+		room = r;
+	}
+	
+	public void manageCollisions()
+	{
+		if(pairs.isEmpty())
+		{
+			if(pixelPerfect)
+			{
+				this.checkPixelPerfectCollisions(room.getSprites(), room.getSprites());
+			}
+			else
+			{
+				this.checkBoundingBoxCollisions(room.getSprites(), room.getSprites());
+			}
+		}
+		else
+		{
+			if(pixelPerfect)
+			{
+				for(GroupPair p: pairs)
+				{
+					this.checkPixelPerfectCollisions(p.a.getGroup(), p.b.getGroup());
+				}
+			}
+			else
+			{
+				for(GroupPair p: pairs)
+				{
+					this.checkBoundingBoxCollisions(p.a.getGroup(), p.b.getGroup());
+				}
+			}
+		}
+	}
+	
+	public void setCollisionDetectionMode(boolean pixelPerfect)
+	{
+		this.pixelPerfect = pixelPerfect;
+	}
+	
+	public void addPair(SpriteGroup a, SpriteGroup b)
+	{
+		pairs.add(new GroupPair(a, b));
+	}
+	
+	public void removePair(String nameA, String nameB)
+	{
+		Iterator<GroupPair> it = pairs.iterator();
+		
+		while(it.hasNext())
+		{
+			GroupPair temp = it.next();
+			
+			if(temp.nameMatches(nameA, nameB))
+			{
+				it.remove();
+				break;
+			}
+		}
+	}
+	
+	private void checkBoundingBoxCollisions(List<Sprite> listA, List<Sprite> listB)
+	{
+		for(Sprite sn: listA)
+			sn.updateBounds();
+		for(Sprite sn: listB)
 			sn.updateBounds();
 
-		for(Sprite s: list)
+		for(Sprite s: listA)
 		{
 			LinkedList<Sprite> collided = new LinkedList<Sprite>();
 
-			for(Sprite sn: list)
+			for(Sprite sn: listB)
 			{
 				if(s == sn)
 					continue;
@@ -32,16 +106,18 @@ public class CollisionManager
 		}
 	}
 
-	public static void checkPixelPerfectCollisions(LinkedList<Sprite> list)
+	private void checkPixelPerfectCollisions(List<Sprite> listA, List<Sprite> listB)
 	{
-		for(Sprite sn: list)
+		for(Sprite sn: listA)
+			sn.updateBounds();
+		for(Sprite sn: listB)
 			sn.updateBounds();
 
-		for(Sprite s: list)
+		for(Sprite s: listA)
 		{
 			LinkedList<Sprite> collided = new LinkedList<Sprite>();
 
-			for(Sprite sn: list)
+			for(Sprite sn: listB)
 			{
 				if(s == sn)
 					continue;
@@ -117,6 +193,29 @@ public class CollisionManager
 						s.collisions(collided);
 					}
 				}
+			}
+		}
+	}
+
+	private class GroupPair
+	{
+		private SpriteGroup a, b;
+		
+		public GroupPair(SpriteGroup a, SpriteGroup b)
+		{
+			this.a = a;
+			this.b = b;
+		}
+		
+		public boolean nameMatches(String a, String b)
+		{
+			if(this.a.getName().equals(a) && this.b.getName().equals(b))
+			{
+				return true;
+			}
+			else
+			{
+				return false;
 			}
 		}
 	}
