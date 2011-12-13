@@ -15,6 +15,7 @@ import static org.lwjgl.opengl.GL11.glOrtho;
 import static org.lwjgl.opengl.GL11.glViewport;
 
 import java.awt.Dimension;
+import java.io.IOException;
 import java.util.LinkedList;
 
 import level.Room;
@@ -27,7 +28,10 @@ import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
 
 import sprites.Sprite;
-import collision.CollisionManager;
+import de.matthiasmann.twl.GUI;
+import de.matthiasmann.twl.Widget;
+import de.matthiasmann.twl.renderer.lwjgl.LWJGLRenderer;
+import de.matthiasmann.twl.theme.ThemeManager;
 
 /**
  * This is the main class for the Fluxware Game Engine.  This class handles and maintains the Windowing System.
@@ -58,6 +62,8 @@ public class Game
 	//Each of the differing managers.
 	//SoundManager
 	//CollisionManager
+	GUI gui;
+	Widget root = new Widget();
 	/**
 	 * Creates a Game with the given Room. Uses defaults of 800x600 and not in fullscreen.
 	 * @param room
@@ -147,6 +153,11 @@ public class Game
 	{
 		return framesPerSecond;
 	}
+	
+	public void addWidget(Widget w)
+	{
+		root.add(w);
+	}
 
 	private void gameLoop()
 	{
@@ -158,12 +169,13 @@ public class Game
 
 			drawFrame();
 
+			gui.update();
 			Display.update();
 			
 			if(Keyboard.isKeyDown(Keyboard.KEY_ESCAPE))
 				isRunning = false;
 		}
-		
+		gui.destroy();
 		Display.destroy();
 	}
 
@@ -181,7 +193,7 @@ public class Game
 		}
 		
 //		CollisionManager.checkBoundingBoxCollisions(as);
-		CollisionManager.checkPixelPerfectCollisions(as);
+//		CollisionManager.checkPixelPerfectCollisions(as);
 
 		for(Sprite s: as) //Logic
 		{
@@ -211,6 +223,13 @@ public class Game
 			Display.setTitle(title);
 			Display.setFullscreen(fullscreen);
 			Display.create();
+			
+			LWJGLRenderer render = new LWJGLRenderer(); 
+			gui = new GUI(root, render);
+			
+			ThemeManager theme = ThemeManager.createThemeManager(Game.class.getResource("/tests/resources/gui/gameui.xml"), render);
+			root.setTheme("gameuidemo");
+			gui.applyTheme(theme);
 
 			Mouse.setGrabbed(true);
 
@@ -227,6 +246,11 @@ public class Game
 		catch(LWJGLException e)
 		{
 			System.err.println("Game Exiting - Error in initialization: ");
+			e.printStackTrace();
+		}
+		catch (IOException e)
+		{
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
