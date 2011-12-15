@@ -198,25 +198,20 @@ public class Game
 		
 		delta = getTime() - lastLoopTime;
 		lastLoopTime = getTime();
-		LinkedList<Sprite> as = room.getSprites();
-
-		for(Sprite s: as) //Move
-		{
-			s.move(delta);
-		}
 		
 		collision.manageCollisions();
 
-		Iterator<Sprite> it = as.iterator();
+		Iterator<Sprite> it = room.getSprites().iterator();
+		
 		while(it.hasNext())
 		{
 			Sprite s = it.next();
-			
 			if(s.isGarbage())
 			{
 				it.remove();
 				continue;
 			}
+			s.move(delta);
 			s.logic();
 			s.draw();
 		}
