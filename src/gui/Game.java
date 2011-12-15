@@ -46,7 +46,7 @@ public class Game
 	private Dimension size = new Dimension(800, 600);
 
 	//Sets whether the window will display in fullscreen. Default false.
-	private boolean fullscreen = false;
+	private boolean fullscreen;
 
 	//The current room that the game is displaying.
 	private Room room = null;
@@ -74,9 +74,7 @@ public class Game
 	 */
 	public Game(Room room)
 	{
-		this.room = room;
-		collision = new CollisionManager(room);
-		construct();
+		this(room, false, null, null);
 	}
 
 	/**
@@ -86,10 +84,7 @@ public class Game
 	 */
 	public Game(Room room, boolean fullscreen)
 	{	
-		this.room = room;
-		this.fullscreen = fullscreen;
-		collision = new CollisionManager(room);
-		construct();
+		this(room, fullscreen, null, null);
 	}
 
 	/**
@@ -100,11 +95,7 @@ public class Game
 	 */
 	public Game(Room room, boolean fullscreen, Dimension size)
 	{
-		this.room = room;
-		this.fullscreen = fullscreen;
-		this.size = size;
-		collision = new CollisionManager(room);
-		construct();
+		this(room, fullscreen, size, null);
 	}
 
 	/**
@@ -116,10 +107,17 @@ public class Game
 	 */
 	public Game(Room room, boolean fullscreen, Dimension size, String title)
 	{
-		this.room = room;
+		if(room != null)
+			this.room = room;
+		
 		this.fullscreen = fullscreen;
-		this.size = size;
-		this.title = title;
+		
+		if(size != null)
+			this.size = size;
+		
+		if(title != null)
+			this.title = title;
+		
 		collision = new CollisionManager(room);
 		construct();
 	}
