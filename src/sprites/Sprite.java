@@ -13,8 +13,7 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.util.LinkedList;
 
-import org.newdawn.slick.opengl.Texture;
-
+import level.Room;
 import util.ImageData;
 import util.Point2D;
 import collision.BoundingBox;
@@ -35,6 +34,8 @@ public class Sprite implements Serializable
 	
 	protected double dy = 0;
 	protected double dx = 0;
+	
+	protected Room room;
 
 	public Sprite()
 	{
@@ -157,6 +158,11 @@ public class Sprite implements Serializable
 	public void collisions(LinkedList<Sprite> collisions)
 	{
 		
+	}
+	
+	public void setRoom(Room r)
+	{
+		room = r;
 	}
 
 	/**

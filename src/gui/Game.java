@@ -16,6 +16,7 @@ import static org.lwjgl.opengl.GL11.glViewport;
 
 import java.awt.Dimension;
 import java.io.IOException;
+import java.util.Iterator;
 import java.util.LinkedList;
 
 import level.Room;
@@ -28,6 +29,7 @@ import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
 
 import sprites.Sprite;
+import collision.CollisionManager;
 import de.matthiasmann.twl.GUI;
 import de.matthiasmann.twl.Widget;
 import de.matthiasmann.twl.renderer.lwjgl.LWJGLRenderer;
@@ -62,6 +64,8 @@ public class Game
 	//Each of the differing managers.
 	//SoundManager
 	//CollisionManager
+	CollisionManager collision;
+	//GUI manager
 	GUI gui;
 	Widget root = new Widget();
 	/**
@@ -71,6 +75,7 @@ public class Game
 	public Game(Room room)
 	{
 		this.room = room;
+		collision = new CollisionManager(room);
 		construct();
 	}
 
@@ -83,6 +88,7 @@ public class Game
 	{	
 		this.room = room;
 		this.fullscreen = fullscreen;
+		collision = new CollisionManager(room);
 		construct();
 	}
 
@@ -97,6 +103,7 @@ public class Game
 		this.room = room;
 		this.fullscreen = fullscreen;
 		this.size = size;
+		collision = new CollisionManager(room);
 		construct();
 	}
 
@@ -113,6 +120,7 @@ public class Game
 		this.fullscreen = fullscreen;
 		this.size = size;
 		this.title = title;
+		collision = new CollisionManager(room);
 		construct();
 	}
 
@@ -158,6 +166,11 @@ public class Game
 	{
 		root.add(w);
 	}
+	
+	public CollisionManager getCollisionManager()
+	{
+		return collision;
+	}
 
 	private void gameLoop()
 	{
@@ -192,16 +205,19 @@ public class Game
 			s.move(delta);
 		}
 		
-//		CollisionManager.checkBoundingBoxCollisions(as);
-//		CollisionManager.checkPixelPerfectCollisions(as);
+		collision.manageCollisions();
 
-		for(Sprite s: as) //Logic
+		Iterator<Sprite> it = as.iterator();
+		while(it.hasNext())
 		{
+			Sprite s = it.next();
+			
+			if(s.isGarbage())
+			{
+				it.remove();
+				continue;
+			}
 			s.logic();
-		}
-
-		for(Sprite s: as) //Draw
-		{
 			s.draw();
 		}
 	}
