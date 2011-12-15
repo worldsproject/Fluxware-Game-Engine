@@ -1,9 +1,6 @@
 package tests.simple;
 
 import gui.Game;
-
-import java.util.LinkedList;
-
 import level.Room;
 import sprites.Sprite;
 import util.ImageData;
@@ -29,17 +26,5 @@ public class SimpleGame extends Game
 		Room r = new Room(500, 500, 10);
 		SimpleGame g = new SimpleGame(r);
 		g.startGame();
-	}
-	
-	private class Fox extends Sprite
-	{
-		public Fox(ImageData i, int a, int b, int c)
-		{
-			super(i, a, b,c);
-		}
-		public void collisions(LinkedList<Sprite> coll)
-		{
-			System.out.println(coll.size());
-		}
 	}
 }
