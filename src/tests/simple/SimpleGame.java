@@ -21,7 +21,7 @@ public class SimpleGame extends Game
 		room.addSprite(three);
 	}
 
-	public static void main(String args[])
+	public static void main(String[] args)
 	{
 		Room r = new Room(500, 500, 10);
 		SimpleGame g = new SimpleGame(r);
