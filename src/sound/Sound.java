@@ -1,251 +1,154 @@
 package sound;
 
-import java.io.IOException;
+import java.nio.FloatBuffer;
+import java.nio.IntBuffer;
+import java.util.Scanner;
 
-import javax.sound.sampled.AudioFormat;
-import javax.sound.sampled.AudioInputStream;
-import javax.sound.sampled.AudioSystem;
-import javax.sound.sampled.Line;
-import javax.sound.sampled.LineEvent;
-import javax.sound.sampled.LineListener;
-import javax.sound.sampled.Mixer;
-import javax.sound.sampled.SourceDataLine;
-import javax.sound.sampled.UnsupportedAudioFileException;
+import org.lwjgl.BufferUtils;
+import org.lwjgl.LWJGLException;
+import org.lwjgl.openal.AL;
+import org.lwjgl.openal.AL10;
+import org.lwjgl.util.WaveData;
 
-/**
- * Supports the playback of wave files. 
- * If a "unsupported format" problem arises,
- * use an external program (such as audacity)
- * to export the song in the following format:
- * Compression: Uncompressed PCM
- * Samplerate: 44100Hz
- * Bit Depth: 16
- * 
- * Also has trouble playing 24 bit with
- * pulseaudio on default configuration.
- * Although it is not recommended,
- * disabling pulseaudio withe following
- * command may solve the problem
- * 
- * killall -9 pulseaudio
- * 
- * @author cj
- *
- */
-public class Sound implements LineListener, Runnable
+public class Sound 
 {
-	protected AudioInputStream inputStream;
-	protected AudioFormat format;
-	protected long position, leftFrame, rightFrame;
-	protected int frameSize;
-	protected SourceDataLine line;
-	protected byte[] data;
-	protected int bytesRead, bytesWritten;
-	protected boolean paused,close,loop;
-	protected String file;
+	/** Buffers hold sound data. */
+	IntBuffer buffer = BufferUtils.createIntBuffer(1);
 
+	/** Sources are points emitting sound. */
+	IntBuffer source = BufferUtils.createIntBuffer(1);
 
-	public Sound(){}
+	/** Position of the source sound. */
+	FloatBuffer sourcePos = (FloatBuffer)BufferUtils.createFloatBuffer(3).put(new float[] { 0.0f, 0.0f, 0.0f }).rewind();
 
-	public Sound(String file)
-	{
-		this.file = file;
+	/** Velocity of the source sound. */
+	FloatBuffer sourceVel = (FloatBuffer)BufferUtils.createFloatBuffer(3).put(new float[] { 0.0f, 0.0f, 0.0f }).rewind();
+
+	/** Position of the listener. */
+	FloatBuffer listenerPos = (FloatBuffer)BufferUtils.createFloatBuffer(3).put(new float[] { 0.0f, 0.0f, 0.0f }).rewind();
+
+	/** Velocity of the listener. */
+	FloatBuffer listenerVel = (FloatBuffer)BufferUtils.createFloatBuffer(3).put(new float[] { 0.0f, 0.0f, 0.0f }).rewind();
+
+	/** Orientation of the listener. (first 3 elements are "at", second 3 are "up") */
+	FloatBuffer listenerOri = (FloatBuffer)BufferUtils.createFloatBuffer(6).put(new float[] { 0.0f, 0.0f, -1.0f,  0.0f, 1.0f, 0.0f }).rewind();
+
+	/**
+	 * boolean LoadALData()
+	 *
+	 *  This function will load our sample data from the disk using the Alut
+	 *  utility and send the data into OpenAL as a buffer. A source is then
+	 *  also created to play that buffer.
+	 */
+	int loadALData() {
+		// Load wav data into a buffer.
+		AL10.alGenBuffers(buffer);
+
+		if(AL10.alGetError() != AL10.AL_NO_ERROR)
+			return AL10.AL_FALSE;
+
+		//Loads the wave file from this class's package in your classpath
+		WaveData waveFile = WaveData.create("tests/resources/sounds/boo16.wav");
+
+		AL10.alBufferData(buffer.get(0), waveFile.format, waveFile.data, waveFile.samplerate);
+		waveFile.dispose();
+
+		// Bind the buffer with the source.
+		AL10.alGenSources(source);
+
+		if (AL10.alGetError() != AL10.AL_NO_ERROR)
+		{
+			return AL10.AL_FALSE;
+		}
+
+		AL10.alSourcei(source.get(0), AL10.AL_BUFFER,   buffer.get(0) );
+		AL10.alSourcef(source.get(0), AL10.AL_PITCH,    1.0f          );
+		AL10.alSourcef(source.get(0), AL10.AL_GAIN,     1.0f          );
+		AL10.alSource (source.get(0), AL10.AL_POSITION, sourcePos     );
+		AL10.alSource (source.get(0), AL10.AL_VELOCITY, sourceVel     );
+
+		// Do another error check and return.
+		if (AL10.alGetError() == AL10.AL_NO_ERROR)
+			return AL10.AL_TRUE;
+
+		return AL10.AL_FALSE;
 	}
 
-	public void run()
-	{
-		openInputStream();
-		getLine();
-		line.start();
-		if(line!=null)
-		{
-			frameSize = line.getFormat().getFrameSize();
-			data = new byte[1024*frameSize];
+	/**
+	 * void setListenerValues()
+	 *
+	 *  We already defined certain values for the Listener, but we need
+	 *  to tell OpenAL to use that data. This function does just that.
+	 */
+	void setListenerValues() {
+		AL10.alListener(AL10.AL_POSITION,    listenerPos);
+		AL10.alListener(AL10.AL_VELOCITY,    listenerVel);
+		AL10.alListener(AL10.AL_ORIENTATION, listenerOri);
+	}
 
-			while(!close)
-			{
-				try {
+	/**
+	 * void killALData()
+	 *
+	 *  We have allocated memory for our buffers and sources which needs
+	 *  to be returned to the system. This function frees that memory.
+	 */
+	void killALData() {
+		AL10.alDeleteSources(source);
+		AL10.alDeleteBuffers(buffer);
+	}
 
-					if(line.isActive())
-					{
-						if((bytesRead = inputStream.read(data, 0, data.length)) != -1)
-						{
-							line.write(data, 0, bytesRead);
-							position = line.getLongFramePosition();
-						}
-					}
-					else if(paused)
-					{
-						try {
+	public static void main(String[] args) {
+		new Sound().execute();
+	}
 
-							Thread.sleep(0,1);
-						} catch (InterruptedException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						}
-					}
-				}catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+	public void execute() {
+		// Initialize OpenAL and clear the error bit.
+		try{
+			AL.create();
+		} catch (LWJGLException le) {
+			le.printStackTrace();
+			return;
+		}
+		AL10.alGetError();
 
-				} 
-			}
-			
+		// Load the wav data.
+		if(loadALData() == AL10.AL_FALSE) {
+			System.out.println("Error loading data.");
+			return;
+		}
+
+		setListenerValues();
+
+		// Loop.
+		System.out.println("OpenAL Tutorial 1 - Single Static Source");
+		System.out.println("[Menu]");
+		System.out.println("p - Play the sample.");
+		System.out.println("s - Stop the sample.");
+		System.out.println("h - Pause the sample.");
+		System.out.println("q - Quit the program.");
+		char c = ' ';
+		Scanner stdin = new Scanner(System.in);
+		while(c != 'q') {
 			try {
-				inputStream.close();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				System.out.print("Input: ");
+				c = (char)stdin.nextLine().charAt(0);
+			} catch (Exception ex) {
+				c = 'q';
 			}
 
-			line.flush();
-			line.close();
+			switch(c) {
+				// Pressing 'p' will begin playing the sample.
+				case 'p': AL10.alSourcePlay(source.get(0)); break;
 
-			inputStream = null;
-			line = null;
-			
-			if(loop)
-			{
-				close = false;
-				new Thread(this).start();
-			}
+				// Pressing 's' will stop the sample from playing.
+				case's': AL10.alSourceStop(source.get(0)); break;
 
+				// Pressing 'h' will pause the sample.
+				case 'h': AL10.alSourcePause(source.get(0)); break;
+			};
 		}
-	}
-
-	/**
-	 * Starts playback of the file.
-	 */
-	public void play()
-	{		
-		if(paused)
-		{
-			paused = false;
-		}
-		else
-		{
-			new Thread(this).start();
-		}
-	}
-
-	/**
-	 * Stops playback of the file. 
-	 * SourceDataLine is closed when called, 
-	 * also terminating the thread.
-	 */
-	public void stop()
-	{
-		if(line != null)
-		{
-			line.stop();
-		}
-	}
-
-	/**
-	 * 
-	 */
-	public void stopLoop()
-	{
-		loop = false;
-		stop();
-	}
-
-	/**
-	 * Pauses playback of the file.
-	 */
-	public void pause()
-	{
-		if(line != null)
-		{
-			paused = true;
-			line.stop();
-		}
-	}
-
-	/**
-	 * 
-	 */
-	public void loop()
-	{
-		loop = true;
-		play();
-	}
-
-	protected void getLine()
-	{
-		for(Mixer.Info mixerInfo: AudioSystem.getMixerInfo())
-		{
-			for(Line.Info lineInfo: AudioSystem.getMixer(mixerInfo).getSourceLineInfo())
-			{
-				try
-				{
-					if(lineInfo instanceof SourceDataLine.Info)
-					{
-						if(((SourceDataLine.Info) lineInfo).isFormatSupported(inputStream.getFormat()))
-						{
-							line = (SourceDataLine)AudioSystem.getMixer(mixerInfo).getLine(lineInfo);
-							line.addLineListener(this);
-							line.open(inputStream.getFormat(), inputStream.getFormat().getFrameSize()*1024*20);
-						}
-					}
-				}
-
-				catch(Exception ex)
-				{
-					line = null;
-					continue;
-				}
-				break;
-			}
-			if(line!=null)
-			{
-				break;
-			}
-		}
-	}
-
-	protected void openInputStream()
-	{
-		try {
-			inputStream = AudioSystem.getAudioInputStream(Sound.class.getResource(file));
-
-			if(file.endsWith(".ogg") || file.endsWith(".mp3"))
-			{				
-				AudioFormat baseFormat = inputStream.getFormat();
-
-				AudioFormat decodedFormat = new AudioFormat(
-						AudioFormat.Encoding.PCM_SIGNED,
-						baseFormat.getSampleRate(),
-						16,
-						baseFormat.getChannels(),
-						baseFormat.getChannels()*2,
-						baseFormat.getSampleRate(),
-						false);
-
-				inputStream = AudioSystem.getAudioInputStream(decodedFormat, inputStream);
-			}
-		} catch (UnsupportedAudioFileException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) 
-		{
-			e.printStackTrace();
-		}
-	}
-
-	@Override
-	public void update(LineEvent event) {
-		// TODO Auto-generated method stub
-
-		System.out.println(event.getType());
-
-		if(event.getType() == LineEvent.Type.STOP)
-		{
-			if(!paused)
-			{
-				close = true;
-			}
-		}
+		
+		killALData();
+		AL.destroy();
 	}
 }
-
