@@ -33,6 +33,12 @@ public class Sound
 	/** Orientation of the listener. (first 3 elements are "at", second 3 are "up") */
 	FloatBuffer listenerOri = (FloatBuffer)BufferUtils.createFloatBuffer(6).put(new float[] { 0.0f, 0.0f, -1.0f,  0.0f, 1.0f, 0.0f }).rewind();
 
+	public Sound(String path)
+	{
+		loadALData(path);
+		setListenerValues();
+	}
+	
 	/**
 	 * boolean LoadALData()
 	 *
@@ -40,7 +46,8 @@ public class Sound
 	 *  utility and send the data into OpenAL as a buffer. A source is then
 	 *  also created to play that buffer.
 	 */
-	int loadALData() {
+	int loadALData(String path) 
+	{
 		// Load wav data into a buffer.
 		AL10.alGenBuffers(buffer);
 
@@ -48,13 +55,14 @@ public class Sound
 			return AL10.AL_FALSE;
 
 		//Loads the wave file from this class's package in your classpath
-		WaveData waveFile = WaveData.create("tests/resources/sounds/boo16.wav");
+		WaveData waveFile = WaveData.create(path);
 
 		AL10.alBufferData(buffer.get(0), waveFile.format, waveFile.data, waveFile.samplerate);
 		waveFile.dispose();
 
 		// Bind the buffer with the source.
 		AL10.alGenSources(source);
+		
 
 		if (AL10.alGetError() != AL10.AL_NO_ERROR)
 		{
@@ -80,7 +88,8 @@ public class Sound
 	 *  We already defined certain values for the Listener, but we need
 	 *  to tell OpenAL to use that data. This function does just that.
 	 */
-	void setListenerValues() {
+	public void setListenerValues() 
+	{
 		AL10.alListener(AL10.AL_POSITION,    listenerPos);
 		AL10.alListener(AL10.AL_VELOCITY,    listenerVel);
 		AL10.alListener(AL10.AL_ORIENTATION, listenerOri);
@@ -92,63 +101,52 @@ public class Sound
 	 *  We have allocated memory for our buffers and sources which needs
 	 *  to be returned to the system. This function frees that memory.
 	 */
-	void killALData() {
+	public void killALData() 
+	{
 		AL10.alDeleteSources(source);
 		AL10.alDeleteBuffers(buffer);
 	}
 
-	public static void main(String[] args) {
-		new Sound().execute();
-	}
-
-	public void execute() {
-		// Initialize OpenAL and clear the error bit.
-		try{
+	public static void main(String[] args) 
+	{
+		try
+		{
 			AL.create();
-		} catch (LWJGLException le) {
+		}
+		catch (LWJGLException le) 
+		{
 			le.printStackTrace();
 			return;
 		}
-		AL10.alGetError();
-
-		// Load the wav data.
-		if(loadALData() == AL10.AL_FALSE) {
-			System.out.println("Error loading data.");
-			return;
-		}
-
-		setListenerValues();
-
-		// Loop.
-		System.out.println("OpenAL Tutorial 1 - Single Static Source");
-		System.out.println("[Menu]");
-		System.out.println("p - Play the sample.");
-		System.out.println("s - Stop the sample.");
-		System.out.println("h - Pause the sample.");
-		System.out.println("q - Quit the program.");
-		char c = ' ';
-		Scanner stdin = new Scanner(System.in);
-		while(c != 'q') {
-			try {
-				System.out.print("Input: ");
-				c = (char)stdin.nextLine().charAt(0);
-			} catch (Exception ex) {
-				c = 'q';
-			}
-
-			switch(c) {
-				// Pressing 'p' will begin playing the sample.
-				case 'p': AL10.alSourcePlay(source.get(0)); break;
-
-				// Pressing 's' will stop the sample from playing.
-				case's': AL10.alSourceStop(source.get(0)); break;
-
-				// Pressing 'h' will pause the sample.
-				case 'h': AL10.alSourcePause(source.get(0)); break;
-			};
-		}
 		
-		killALData();
-		AL.destroy();
+		AL10.alGetError();
+		
+		Sound one = new Sound("tests/resources/sounds/boo16.wav");
+		one.play();
+		Sound two = new Sound("tests/resources/sounds/FancyPants.wav");
+		two.play();
+		
+		while(one.isPlaying() || two.isPlaying());
+		
+	}
+	
+	public void play()
+	{
+		AL10.alSourcePlay(source.get(0));
+	}
+	
+	public void pause()
+	{
+		AL10.alSourcePause(source.get(0));
+	}
+	
+	public void stop()
+	{
+		AL10.alSourceStop(source.get(0));
+	}
+	
+	public boolean isPlaying()
+	{
+		return AL10.alGetSourcei(source.get(0), AL10.AL_SOURCE_STATE) == AL10.AL_PLAYING;
 	}
 }
