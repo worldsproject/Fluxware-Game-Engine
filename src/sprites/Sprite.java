@@ -82,7 +82,7 @@ public class Sprite implements Serializable
 	 * 
 	 * @param x - Sets the Sprites current X coordinate to this value.
 	 */
-	public void setX(int x)
+	public void setX(double x)
 	{
 		location.x = x;
 		box.updateBounds();
@@ -99,7 +99,7 @@ public class Sprite implements Serializable
 	/**
 	 * @param y - Sets the Sprites current Y coordinate to this value.
 	 */
-	public void setY(int y)
+	public void setY(double y)
 	{
 		location.y = y;
 		box.updateBounds();
