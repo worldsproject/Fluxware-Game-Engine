@@ -1,7 +1,5 @@
 package sprites;
 
-import org.newdawn.slick.opengl.Texture;
-
 import util.ImageData;
 
 /**
@@ -83,6 +81,11 @@ public class AnimatedSprite extends Sprite implements Runnable
 	public void setSprite(ImageData[] tex)
 	{
 		textures = tex;
+	}
+	
+	public void setFrameDuration(long time)
+	{
+		this.time = time;
 	}
 
 	private void nextFrame()
