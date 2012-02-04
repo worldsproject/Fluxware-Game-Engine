@@ -21,6 +21,11 @@ public class CollisionManager
 		room = r;
 	}
 	
+	public void updateRoom(Room r)
+	{
+		room = r;
+	}
+	
 	public void manageCollisions()
 	{
 		if(pairs.isEmpty())

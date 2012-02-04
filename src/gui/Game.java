@@ -133,6 +133,7 @@ public class Game
 	public void setRoom(Room room)
 	{
 		this.room = room;
+		collision.updateRoom(room);
 	}
 
 	/**
@@ -261,7 +262,7 @@ public class Game
 			
 			setTheme(null);
 
-			Mouse.setGrabbed(true);
+//			Mouse.setGrabbed(true);
 
 			glEnable(GL_TEXTURE_2D); //Enable textures in 2D mode.
 			glDisable(GL_DEPTH_TEST); //Disable depth test as we are only doing 2D items.
