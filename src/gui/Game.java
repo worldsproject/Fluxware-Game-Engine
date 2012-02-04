@@ -65,9 +65,12 @@ public class Game
 	//SoundManager
 	//CollisionManager
 	CollisionManager collision;
+	
 	//GUI manager
+	LWJGLRenderer render;
 	GUI gui;
 	Widget root = new Widget();
+	String theme_location = "/tests/resources/gui/gameui.xml";
 	/**
 	 * Creates a Game with the given Room. Uses defaults of 800x600 and not in fullscreen.
 	 * @param room
@@ -165,6 +168,25 @@ public class Game
 		root.add(w);
 	}
 	
+	public void setTheme(String theme_location)
+	{
+		if(theme_location == null)
+			theme_location = "/tests/resources/gui/gameui.xml";
+		
+		ThemeManager theme = null;
+		try
+		{
+			theme = ThemeManager.createThemeManager(Game.class.getResource(this.theme_location), render);
+		}
+		catch (IOException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		root.setTheme("gameuidemo");
+		gui.applyTheme(theme);
+	}
+	
 	public CollisionManager getCollisionManager()
 	{
 		return collision;
@@ -178,7 +200,8 @@ public class Game
 			glMatrixMode(GL_MODELVIEW);
 			glLoadIdentity();
 
-			drawFrame();
+			if(room != null)
+				drawFrame();
 
 			gui.update();
 			Display.update();
@@ -233,12 +256,10 @@ public class Game
 			Display.setFullscreen(fullscreen);
 			Display.create();
 			
-			LWJGLRenderer render = new LWJGLRenderer(); 
+			render = new LWJGLRenderer(); 
 			gui = new GUI(root, render);
 			
-			ThemeManager theme = ThemeManager.createThemeManager(Game.class.getResource("/tests/resources/gui/gameui.xml"), render);
-			root.setTheme("gameuidemo");
-			gui.applyTheme(theme);
+			setTheme(null);
 
 			Mouse.setGrabbed(true);
 
@@ -255,11 +276,6 @@ public class Game
 		catch(LWJGLException e)
 		{
 			System.err.println("Game Exiting - Error in initialization: ");
-			e.printStackTrace();
-		}
-		catch (IOException e)
-		{
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
