@@ -167,6 +167,7 @@ public class Game
 	public void addWidget(Widget w)
 	{
 		root.add(w);
+		w.adjustSize();
 	}
 	
 	public void setTheme(String theme_location)
