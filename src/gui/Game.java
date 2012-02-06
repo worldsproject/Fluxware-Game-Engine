@@ -253,7 +253,7 @@ public class Game
 		try
 		{
 			lastLoopTime = getTime();
-			setDisplayMode();
+			Display.setDisplayMode(new DisplayMode(size.width, size.height));
 			Display.setTitle(title);
 			Display.setFullscreen(fullscreen);
 			Display.create();
@@ -288,6 +288,7 @@ public class Game
 		try
 		{
 			DisplayMode[] dm = org.lwjgl.util.Display.getAvailableDisplayModes(size.width, size.height, -1, -1, -1, -1, 60, 60);
+			
 
 			org.lwjgl.util.Display.setDisplayMode(dm, new String[] {
 					"width="+size.width,
