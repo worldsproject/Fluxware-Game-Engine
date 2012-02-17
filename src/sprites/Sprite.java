@@ -234,12 +234,12 @@ public class Sprite implements Serializable
 	
 	public int getWidth()
 	{
-		return imageData.getTexture().getImageWidth()/columns;
+		return imageData.getTexture().getWidth()/columns;
 	}
 	
 	public int getHeight()
 	{
-		return imageData.getTexture().getImageHeight()/rows;
+		return imageData.getTexture().getHeight()/rows;
 	}
 	
 	public boolean[][] getMask()

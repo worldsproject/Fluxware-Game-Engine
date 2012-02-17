@@ -13,16 +13,16 @@ public class SimpleSpriteSheet extends Game
 	{
 		super(room, false);
 		
-		ImageData fox = ImageUtil.loadTexture("png", "tests/resources/tiled/tiles.png");
+		ImageData fox = ImageUtil.loadTexture("/tests/resources/tiled/tiles.png");
 		Sprite one = new Sprite(fox, 0, 0, 0);
-		one.setSpriteSheetPosition(2, 2, 0, 0, 1, 1);
-		Sprite two = new Sprite(fox, 32, 0, 0);
-		two.setSpriteSheetPosition(2, 2, 1, 1, 1, 1);
-		Sprite three = new Sprite(fox, 64, 0, 0);
-		three.setSpriteSheetPosition(2, 2, 1, 0, 1, 1);
+//		one.setSpriteSheetPosition(2, 2, 0, 0, 1, 1);
+//		Sprite two = new Sprite(fox, 32, 0, 0);
+//		two.setSpriteSheetPosition(2, 2, 1, 1, 1, 1);
+//		Sprite three = new Sprite(fox, 64, 0, 0);
+//		three.setSpriteSheetPosition(2, 2, 1, 0, 1, 1);
 		room.addSprite(one);
-		room.addSprite(two);
-		room.addSprite(three);
+//		room.addSprite(two);
+//		room.addSprite(three);
 	}
 	
 	public static void main(String args[])

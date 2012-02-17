@@ -2,24 +2,24 @@ package util;
 
 import java.awt.Color;
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 
 import javax.imageio.ImageIO;
 
-import org.newdawn.slick.opengl.Texture;
-import org.newdawn.slick.opengl.TextureLoader;
-import org.newdawn.slick.util.ResourceLoader;
+import de.matthiasmann.textureloader.Texture;
 
 public class ImageUtil 
 {
-	public static ImageData loadTexture(String format, String location)
+	public static ImageData loadTexture(String location)
 	{
 		Texture t = null;
 		boolean[][] mask = null;
 		try 
 		{
-			t = TextureLoader.getTexture(format, ResourceLoader.getResourceAsStream(location));
+			t = Texture.loadTexture(ImageData.class.getResource(location));
+			t.getWidth();
 			mask = generateMask(location);
 		} 
 		catch (IOException e) 
@@ -33,8 +33,7 @@ public class ImageUtil
 	
 	private static boolean[][] generateMask(String location) throws IOException
 	{
-		URL u = ImageUtil.class.getResource("/" +location);
-		System.out.println(u);
+		URL u = ImageUtil.class.getResource(location);
 		BufferedImage buf = ImageIO.read(u);
 
 		boolean[][] rv = new boolean[buf.getWidth()][buf.getHeight()];

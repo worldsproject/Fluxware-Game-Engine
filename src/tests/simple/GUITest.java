@@ -23,7 +23,7 @@ public class GUITest extends Game
 	{
 		super(room, false);
 		
-		ImageData fox = ImageUtil.loadTexture("png", "tests/resources/fox.png");
+		ImageData fox = ImageUtil.loadTexture("tests/resources/fox.png");
 		Fox one = new Fox(fox, 0, 0, 0);
 		Sprite two = new Sprite(fox, 10, 10, 0);
 		Sprite three = new Sprite(fox, 200, 200, 0);

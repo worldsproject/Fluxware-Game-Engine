@@ -1,6 +1,6 @@
 package util;
 
-import org.newdawn.slick.opengl.Texture;
+import de.matthiasmann.textureloader.Texture;
 
 public class ImageData 
 {

@@ -176,9 +176,9 @@ public class BoundingBoxTest
 		public FoxSprite()
 		{
 			super(null, 0, 0, 0);
-			ImageData tex = ImageUtil.loadTexture("png", "tests/resources/fox.png");
-			texW = tex.getTexture().getTextureWidth();
-			imgW = tex.getTexture().getImageWidth();
+			ImageData tex = ImageUtil.loadTexture("tests/resources/fox.png");
+			texW = tex.getTexture().getWidth();
+			imgW = tex.getTexture().getWidth();
 			setSprite(tex);
 		}
 		
@@ -211,7 +211,7 @@ public class BoundingBoxTest
 		public BoxSprite()
 		{
 			super(null, 0, 0, 0);
-			ImageData tex = ImageUtil.loadTexture("png", "tests/resources/box.png");
+			ImageData tex = ImageUtil.loadTexture("tests/resources/box.png");
 			setSprite(tex);
 		}
 		
@@ -234,7 +234,7 @@ public class BoundingBoxTest
 		public BoxTSprite()
 		{
 			super(null, 0, 0, 0);
-			ImageData tex = ImageUtil.loadTexture("png", "tests/resources/botT.png");
+			ImageData tex = ImageUtil.loadTexture("tests/resources/botT.png");
 			setSprite(tex);
 		}
 		

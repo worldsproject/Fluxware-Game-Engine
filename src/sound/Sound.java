@@ -1,7 +1,6 @@
 package sound;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.nio.ByteBuffer;
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
@@ -10,18 +9,17 @@ import org.lwjgl.BufferUtils;
 import org.lwjgl.LWJGLException;
 import org.lwjgl.openal.AL;
 import org.lwjgl.openal.AL10;
-import org.lwjgl.util.WaveData;
 
 public class Sound 
 {
 	/** Buffers hold sound data. */
-	IntBuffer buffer = BufferUtils.createIntBuffer(1);
+	public static IntBuffer buffer = BufferUtils.createIntBuffer(1);
 
 	/** Sources are points emitting sound. */
 	IntBuffer source = BufferUtils.createIntBuffer(1);
 	
 	/** Buffer for Streaming files */
-	private ByteBuffer dataBuffer = ByteBuffer.allocateDirect(4096*8);
+	private ByteBuffer dataBuffer[] = new ByteBuffer[3];
 
 	/** Position of the source sound. */
 	FloatBuffer sourcePos = (FloatBuffer)BufferUtils.createFloatBuffer(3).put(new float[] { 0.0f, 0.0f, 0.0f }).rewind();
@@ -37,9 +35,16 @@ public class Sound
 
 	/** Orientation of the listener. (first 3 elements are "at", second 3 are "up") */
 	FloatBuffer listenerOri = (FloatBuffer)BufferUtils.createFloatBuffer(6).put(new float[] { 0.0f, 0.0f, -1.0f,  0.0f, 1.0f, 0.0f }).rewind();
+	
+	SoundLoader sound;
 
 	public Sound(String path) throws IOException
 	{
+		for(int i = 0; i < dataBuffer.length; i++)
+		{
+			dataBuffer[i] = ByteBuffer.allocateDirect(4096);
+		}
+		
 		loadALData(path);
 		setListenerValues();
 	}
@@ -62,27 +67,7 @@ public class Sound
 		if(path.endsWith("wav"))
 		{
 			//Loads the wave file from this class's package in your classpath
-			WaveData waveFile = WaveData.create(path);
-
-			AL10.alBufferData(buffer.get(0), waveFile.format, waveFile.data, waveFile.samplerate);
-			waveFile.dispose();
-		}
-		else if(path.endsWith("ogg"))
-		{
-			InputStream in = this.getClass().getResourceAsStream(path);
-			System.out.println(in == null);
-			OggInputStream ois = new OggInputStream(in);
-			
-			int bytesRead = ois.read(dataBuffer, 0, dataBuffer.capacity());
-			
-			if(bytesRead >= 0)
-			{
-				dataBuffer.rewind();
-				boolean mono = (ois.getFormat() == OggInputStream.FORMAT_MONO16);
-				int format = (mono ? AL10.AL_FORMAT_MONO16 : AL10.AL_FORMAT_STEREO16);
-				AL10.alBufferData(buffer.get(0), format, dataBuffer, ois.getRate());
-				checkError();
-			}
+			sound = new WaveLoader(path);
 		}
 
 		// Bind the buffer with the source.
@@ -98,6 +83,16 @@ public class Sound
 		AL10.alSource (source.get(0), AL10.AL_VELOCITY, sourceVel     );
 
 		checkError();
+		
+		continuePlaying();
+	}
+	
+	private void continuePlaying()
+	{	
+		while(sound.readCorrectly() && sound.read(dataBuffer[0]) != -1)
+		{
+			AL10.alBufferData(buffer.get(0), sound.getFormat(), dataBuffer[0], sound.getSampleRate());
+		}
 	}
 
 	private void checkError()
@@ -145,10 +140,12 @@ public class Sound
 
 		AL10.alGetError();
 
-		Sound one = new Sound("tests/resources/sounds/boo.ogg");
+		Sound one = new Sound("/tests/resources/sounds/seal16.wav");
 		one.play();
 
 		while(one.isPlaying());
+		
+		one.killALData();
 
 	}
 
@@ -170,5 +167,20 @@ public class Sound
 	public boolean isPlaying()
 	{
 		return AL10.alGetSourcei(source.get(0), AL10.AL_SOURCE_STATE) == AL10.AL_PLAYING;
+	}
+	
+	private class Streamer extends Thread
+	{
+		SoundLoader sl;
+		
+		public Streamer(SoundLoader sl)
+		{
+			this.sl = sl;
+		}
+		
+		public void run()
+		{
+			
+		}
 	}
 }

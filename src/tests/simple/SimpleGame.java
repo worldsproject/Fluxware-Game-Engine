@@ -10,15 +10,20 @@ public class SimpleGame extends Game
 {
 	public SimpleGame(Room room) 
 	{
-		super(room, false);
+		super(room, true);
 		
-		ImageData fox = ImageUtil.loadTexture("png", "tests/resources/fox.png");
-		Fox one = new Fox(fox, 0, 0, 0);
-		Sprite two = new Sprite(fox, 10, 10, 0);
-		Sprite three = new Sprite(fox, 200, 200, 0);
+		ImageData foxPNG = ImageUtil.loadTexture("/tests/resources/fox.png");
+//		ImageData foxGIF = ImageUtil.loadTexture("/tests/resources/fox.gif");
+		ImageData foxBMP = ImageUtil.loadTexture("/tests/resources/fox.bmp");
+		ImageData foxJPG = ImageUtil.loadTexture("/tests/resources/fox.jpg");
+		Sprite one = new Sprite(foxPNG, 0, 0, 0);
+//		Sprite two = new Sprite(foxGIF, 100, 0, 0);
+		Sprite three = new Sprite(foxBMP, 200, 0, 0);
+		Sprite five = new Sprite(foxJPG, 400, 0, 0);
 		room.addSprite(one);
-		room.addSprite(two);
+//		room.addSprite(two);
 		room.addSprite(three);
+		room.addSprite(five);
 	}
 
 	public static void main(String[] args)

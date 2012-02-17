@@ -17,19 +17,18 @@ import static org.lwjgl.opengl.GL11.glViewport;
 import java.awt.Dimension;
 import java.io.IOException;
 import java.util.Iterator;
-import java.util.LinkedList;
 
 import level.Room;
 
 import org.lwjgl.LWJGLException;
 import org.lwjgl.Sys;
 import org.lwjgl.input.Keyboard;
-import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
 
 import sprites.Sprite;
 import collision.CollisionManager;
+import de.matthiasmann.textureloader.AsyncExecution;
 import de.matthiasmann.twl.GUI;
 import de.matthiasmann.twl.Widget;
 import de.matthiasmann.twl.renderer.lwjgl.LWJGLRenderer;
@@ -279,28 +278,6 @@ public class Game
 		{
 			System.err.println("Game Exiting - Error in initialization: ");
 			e.printStackTrace();
-		}
-	}
-
-	//Sets the display mode for fullscreen if possible.
-	private void setDisplayMode()
-	{
-		try
-		{
-			DisplayMode[] dm = org.lwjgl.util.Display.getAvailableDisplayModes(size.width, size.height, -1, -1, -1, -1, 60, 60);
-			
-
-			org.lwjgl.util.Display.setDisplayMode(dm, new String[] {
-					"width="+size.width,
-					"height="+size.height,
-					"freq=60",
-					"bpp="+org.lwjgl.opengl.Display.getDisplayMode().getBitsPerPixel()
-			});
-		}
-		catch(Exception e)
-		{
-			e.printStackTrace();
-			System.err.println("Unable to enter into fullscreen, continuing in windowed mode.");
 		}
 	}
 }
