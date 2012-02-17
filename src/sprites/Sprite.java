@@ -200,8 +200,8 @@ public class Sprite implements Serializable
 		
 		float texture_X = ((float)which_column/(float)columns)*width;
 		float texture_Y = ((float)which_row/(float)rows)*height;
-		float texture_XplusWidth = ((float)(which_column+wide)/(float)columns)*width;
-		float texture_YplusHeight = ((float)(which_row+tall)/(float)rows)*height;
+		float texture_XplusWidth = ((float)(which_column+wide)/(float)columns);
+		float texture_YplusHeight = ((float)(which_row+tall)/(float)rows);
 		
 		glBegin(GL_QUADS);
 		{
