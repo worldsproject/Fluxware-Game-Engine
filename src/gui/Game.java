@@ -15,6 +15,7 @@ import static org.lwjgl.opengl.GL11.glOrtho;
 import static org.lwjgl.opengl.GL11.glViewport;
 
 import java.awt.Dimension;
+import java.io.File;
 import java.io.IOException;
 import java.util.Iterator;
 
@@ -28,7 +29,6 @@ import org.lwjgl.opengl.DisplayMode;
 
 import sprites.Sprite;
 import collision.CollisionManager;
-import de.matthiasmann.textureloader.AsyncExecution;
 import de.matthiasmann.twl.GUI;
 import de.matthiasmann.twl.Widget;
 import de.matthiasmann.twl.renderer.lwjgl.LWJGLRenderer;

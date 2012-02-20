@@ -195,11 +195,11 @@ public class Sprite implements Serializable
 		int ty = (int)location.y;
 		glTranslatef(tx, ty, location.layer);
 		
-		float height = imageData.getTexture().getHeight();
-		float width = imageData.getTexture().getWidth();
+//		float height = imageData.getTexture().getHeight();
+//		float width = imageData.getTexture().getWidth();
 		
-		float texture_X = ((float)which_column/(float)columns)*width;
-		float texture_Y = ((float)which_row/(float)rows)*height;
+		float texture_X = ((float)which_column/(float)columns);
+		float texture_Y = ((float)which_row/(float)rows);
 		float texture_XplusWidth = ((float)(which_column+wide)/(float)columns);
 		float texture_YplusHeight = ((float)(which_row+tall)/(float)rows);
 		
