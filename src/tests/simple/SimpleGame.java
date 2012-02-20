@@ -1,5 +1,6 @@
 package tests.simple;
 
+import de.matthiasmann.textureloader.TextureBuffer;
 import gui.Game;
 import level.Room;
 import sprites.Sprite;
@@ -12,6 +13,7 @@ public class SimpleGame extends Game
 	{
 		super(room, true);
 		
+		TextureBuffer.USE_PBO = false;
 		ImageData foxPNG = ImageUtil.loadTexture("/tests/resources/fox.png");
 //		ImageData foxGIF = ImageUtil.loadTexture("/tests/resources/fox.gif");
 		ImageData foxBMP = ImageUtil.loadTexture("/tests/resources/fox.bmp");
