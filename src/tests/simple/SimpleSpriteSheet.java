@@ -1,6 +1,5 @@
 package tests.simple;
 
-import de.matthiasmann.textureloader.TextureBuffer;
 import gui.Game;
 import level.Room;
 import sprites.Sprite;
@@ -14,7 +13,6 @@ public class SimpleSpriteSheet extends Game
 	{
 		super(room, false);
 		
-		TextureBuffer.USE_PBO = false;
 		ImageData fox = ImageUtil.loadTexture("/tests/resources/tiled/tiles.png");
 		Sprite one = new Sprite(fox, 0, 0, 0);
 		one.setSpriteSheetPosition(2, 2, 0, 0, 1, 1);
