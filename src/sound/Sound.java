@@ -97,8 +97,10 @@ public class Sound
 
 	private void checkError()
 	{
-		if(AL10.alGetError() != AL10.AL_NO_ERROR)
-			System.err.println(AL10.AL_FALSE);
+		int error = 0;
+		
+		if((error = AL10.alGetError()) != AL10.AL_NO_ERROR)
+			System.err.println(error);
 	}
 
 	/**
@@ -143,7 +145,10 @@ public class Sound
 		Sound one = new Sound("/tests/resources/sounds/boo16.wav");
 		one.play();
 
-		while(one.isPlaying());
+		while(one.isPlaying())
+		{
+			System.out.println("Playing");
+		}
 		
 		one.killALData();
 
