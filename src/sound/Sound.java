@@ -140,7 +140,7 @@ public class Sound
 
 		AL10.alGetError();
 
-		Sound one = new Sound("/tests/resources/sounds/seal16.wav");
+		Sound one = new Sound("/tests/resources/sounds/boo.wav");
 		one.play();
 
 		while(one.isPlaying());
