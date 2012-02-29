@@ -19,7 +19,6 @@ public class Room
 	//Basic dimensions of the room.
 	protected int height;
 	protected int width;
-	protected int layers;
 
 	//Holds all of the sprites in the room.
 	protected LinkedList<Sprite> allSprite = new LinkedList<Sprite>();
@@ -31,7 +30,6 @@ public class Room
 	{
 		this.height = height;
 		this.width = width;
-		this.layers = layers;
 	}
 
 	/**
@@ -48,14 +46,6 @@ public class Room
 	public int getWidth()
 	{
 		return width;
-	}
-
-	/**
-	 * @return - The number of Layers in the room.
-	 */
-	public int getLayers()
-	{
-		return layers;
 	}
 
 	/**
@@ -98,6 +88,6 @@ public class Room
 
 	public String toString()
 	{
-		return "Width: " + this.getWidth() + " Height: " + this.getHeight() + " Layers: " + this.getLayers();
+		return "Width: " + this.getWidth() + " Height: " + this.getHeight();
 	}
 }

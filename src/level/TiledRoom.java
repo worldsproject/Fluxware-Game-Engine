@@ -6,11 +6,10 @@ public class TiledRoom extends Room
 	
 	public TiledRoom(){}
 
-	public TiledRoom(int cellsize, int width, int height, int layers)
+	public TiledRoom(int cellsize, int width, int height)
 	{
 		this.height = height;
 		this.width = width;
-		this.layers = layers;
 		this.cellSize = cellsize;
 	}
 	
