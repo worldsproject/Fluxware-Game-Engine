@@ -14,6 +14,7 @@ import java.io.Serializable;
 import java.util.LinkedList;
 
 import level.Room;
+import level.TiledRoom;
 import util.ImageData;
 import util.Point2D;
 import collision.BoundingBox;
@@ -189,6 +190,17 @@ public class Sprite implements Serializable
 	 */
 	public void draw()
 	{
+		switch(room.getType())
+		{
+			case NORMAL: drawNormal(); break;
+			case TILED: drawTiled(); break;
+			case HEX: break;
+			case ISOMETRIC: break;
+		}
+	}
+	
+	private void drawNormal()
+	{
 		glPushMatrix();
 		imageData.getTexture().bind();
 		int tx = (int)location.x;
@@ -222,8 +234,12 @@ public class Sprite implements Serializable
 	{
 		glPushMatrix();
 		imageData.getTexture().bind();
-		int tx = (int)location.x;
-		int ty = (int)location.y;
+		
+		TiledRoom r = (TiledRoom)room;
+		int cellSize = r.getCellSize();
+		int tx = (int)location.x * cellSize;
+		int ty = (int)location.y * cellSize;
+		
 		glTranslatef(tx, ty, location.layer);
 		
 		float texture_X = ((float)which_column/(float)columns);
