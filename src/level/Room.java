@@ -75,6 +75,7 @@ public class Room
 	{
 		allSprite.add(sprite);
 		spriteByID.put(sprite.serial, sprite);
+		sprite.setRoom(this);
 	}
 
 	/**
@@ -84,6 +85,8 @@ public class Room
 	public void removeSprite(Sprite sprite) 
 	{	
 		allSprite.remove(sprite);
+		spriteByID.remove(sprite);
+		sprite.setRoom(null);
 	}
 	
 	public Type getType()
