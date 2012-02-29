@@ -17,4 +17,9 @@ public class TiledRoom extends Room
 	{
 		return cellSize;
 	}
+	
+	public Type getType()
+	{
+		return Type.TILED;
+	}
 }

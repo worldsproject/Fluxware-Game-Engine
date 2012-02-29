@@ -15,7 +15,7 @@ import sprites.Sprite;
  *
  */
 public class Room
-{
+{	
 	//Basic dimensions of the room.
 	protected int height;
 	protected int width;
@@ -84,6 +84,11 @@ public class Room
 	public void removeSprite(Sprite sprite) 
 	{	
 		allSprite.remove(sprite);
+	}
+	
+	public Type getType()
+	{
+		return Type.NORMAL;
 	}
 
 	public String toString()
