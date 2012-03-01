@@ -213,99 +213,44 @@ public class Sprite implements Serializable
 	 */
 	public void draw()
 	{
+		glPushMatrix();
+		imageData.getTexture().bind();
+		
+		int tx = 0;
+		int ty = 0;
+		
 		switch(room.getType())
 		{
-			case NORMAL: drawNormal(); break;
-			case TILED: drawTiled(); break;
+			case NORMAL:
+				tx = (int)location.x;
+				ty = (int)location.y;
+				glTranslatef(tx, ty, location.layer); 
+				break;
+			case TILED: 
+				TiledRoom tr = (TiledRoom)room;
+				int cellSize = tr.getCellSize();
+				tx = (int)location.x * cellSize;
+				ty = (int)location.y * cellSize;
+				
+				glTranslatef(tx, ty, location.layer);				
+				break;
 			case FLAT_HEX: break;
 			case POINTED_HEX: break;
-			case ISOMETRIC: drawIsometric(); break;
-		}
-	}
-	
-	private void drawNormal()
-	{
-		glPushMatrix();
-		imageData.getTexture().bind();
-		int tx = (int)location.x;
-		int ty = (int)location.y;
-		glTranslatef(tx, ty, location.layer);
-		
-		float texture_X = ((float)which_column/(float)columns);
-		float texture_Y = ((float)which_row/(float)rows);
-		float texture_XplusWidth = ((float)(which_column+wide)/(float)columns);
-		float texture_YplusHeight = ((float)(which_row+tall)/(float)rows);
-		
-		glBegin(GL_QUADS);
-		{
-			glTexCoord2f(texture_X, texture_Y);
-			glVertex2f(0, 0);
-			
-			glTexCoord2f(texture_X, texture_YplusHeight);
-			glVertex2f(0, getHeight());
-			
-			glTexCoord2f(texture_XplusWidth, texture_YplusHeight);
-			glVertex2f(getWidth(), getHeight());
-			
-			glTexCoord2f(texture_XplusWidth, texture_Y);
-			glVertex2f(getWidth(), 0);
-		}
-		glEnd();
-		glPopMatrix();
-	}
-	
-	private void drawTiled()
-	{
-		glPushMatrix();
-		imageData.getTexture().bind();
-		
-		TiledRoom r = (TiledRoom)room;
-		int cellSize = r.getCellSize();
-		int tx = (int)location.x * cellSize;
-		int ty = (int)location.y * cellSize;
-		
-		glTranslatef(tx, ty, location.layer);
-		
-		float texture_X = ((float)which_column/(float)columns);
-		float texture_Y = ((float)which_row/(float)rows);
-		float texture_XplusWidth = ((float)(which_column+wide)/(float)columns);
-		float texture_YplusHeight = ((float)(which_row+tall)/(float)rows);
-		
-		glBegin(GL_QUADS);
-		{
-			glTexCoord2f(texture_X, texture_Y);
-			glVertex2f(0, 0);
-			
-			glTexCoord2f(texture_X, texture_YplusHeight);
-			glVertex2f(0, getHeight());
-			
-			glTexCoord2f(texture_XplusWidth, texture_YplusHeight);
-			glVertex2f(getWidth(), getHeight());
-			
-			glTexCoord2f(texture_XplusWidth, texture_Y);
-			glVertex2f(getWidth(), 0);
-		}
-		glEnd();
-		glPopMatrix();
-	}
-	
-	private void drawIsometric()
-	{
-		glPushMatrix();
-		imageData.getTexture().bind();
-		
-		IsometricRoom r = (IsometricRoom)room;
-		
-		int x_offset = 0;
-		if(location.y % 2 == 1)
-		{
-			x_offset = r.getTileWidth() / 2;
-		}
-		
-		int tx = (int)location.x * r.getTileWidth() + x_offset;
-		int ty = (int)location.y * r.getTileHeight() / 2;
+			case ISOMETRIC: 
+				IsometricRoom ir = (IsometricRoom)room;
+				
+				int x_offset = 0;
+				if(location.y % 2 == 1)
+				{
+					x_offset = ir.getTileWidth() / 2;
+				}
+				
+				tx = (int)location.x * ir.getTileWidth() + x_offset;
+				ty = (int)location.y * ir.getTileHeight() / 2;
 
-		glTranslatef(tx, ty, tx);
+				glTranslatef(tx, ty, tx);
+				break;
+		}
 		
 		float texture_X = ((float)which_column/(float)columns);
 		float texture_Y = ((float)which_row/(float)rows);
