@@ -303,8 +303,8 @@ public class Sprite implements Serializable
 		
 		int tx = (int)location.x * r.getTileWidth() + x_offset;
 		int ty = (int)location.y * r.getTileHeight() / 2;
-		System.out.println(tx + " | " + ty);
-		glTranslatef(tx, ty, 0);
+
+		glTranslatef(tx, ty, tx);
 		
 		float texture_X = ((float)which_column/(float)columns);
 		float texture_Y = ((float)which_row/(float)rows);

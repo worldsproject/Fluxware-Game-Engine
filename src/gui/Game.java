@@ -269,9 +269,9 @@ public class Game
 			glMatrixMode(GL_PROJECTION);
 			glLoadIdentity();
 
-			glOrtho(0, size.width, size.height, 0, -1, 1);
-			glMatrixMode(GL_MODELVIEW);
-			glLoadIdentity();
+			glOrtho(0, size.width, size.height, 0, -100, 100);
+//			glMatrixMode(GL_MODELVIEW);
+//			glLoadIdentity();
 			glViewport(0, 0, size.width, size.height);
 		}
 		catch(LWJGLException e)
