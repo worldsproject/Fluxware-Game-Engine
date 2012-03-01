@@ -26,7 +26,7 @@ public class Room
 
 	public Room(){}
 
-	public Room(int width, int height, int layers)
+	public Room(int width, int height)
 	{
 		this.height = height;
 		this.width = width;
