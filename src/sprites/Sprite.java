@@ -59,6 +59,18 @@ public class Sprite implements Serializable
 		box = new BoundingBox(this);
 		box.updateBounds();
 	}
+	
+	public Sprite(ImageData tex, int x, int y)
+	{
+		imageData = tex;
+		
+		location = new Point2D(x, y, 0);
+		
+		serial = ++internalID;
+		
+		box = new BoundingBox(this);
+		box.updateBounds();
+	}
 
 	public Sprite(ImageData tex, int x, int y, int layer)
 	{
@@ -284,15 +296,15 @@ public class Sprite implements Serializable
 		IsometricRoom r = (IsometricRoom)room;
 		
 		int x_offset = 0;
-		if(location.x % 2 == 1)
+		if(location.y % 2 == 1)
 		{
-			x_offset = r.getWidth() / 2;
+			x_offset = r.getTileWidth() / 2;
 		}
 		
-		int tx = ((int)location.x * r.getWidth()) + x_offset;
-		int ty = (int)location.y * r.getHeight() / 2;
-		
-		glTranslatef(tx, ty, tx);
+		int tx = (int)location.x * r.getTileWidth() + x_offset;
+		int ty = (int)location.y * r.getTileHeight() / 2;
+		System.out.println(tx + " | " + ty);
+		glTranslatef(tx, ty, 0);
 		
 		float texture_X = ((float)which_column/(float)columns);
 		float texture_Y = ((float)which_row/(float)rows);
