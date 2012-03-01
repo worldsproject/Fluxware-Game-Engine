@@ -15,7 +15,6 @@ import static org.lwjgl.opengl.GL11.glOrtho;
 import static org.lwjgl.opengl.GL11.glViewport;
 
 import java.awt.Dimension;
-import java.io.File;
 import java.io.IOException;
 import java.util.Iterator;
 
@@ -26,6 +25,7 @@ import org.lwjgl.Sys;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
+import org.lwjgl.opengl.GL11;
 
 import sprites.Sprite;
 import collision.CollisionManager;
@@ -270,6 +270,8 @@ public class Game
 			glLoadIdentity();
 
 			glOrtho(0, size.width, size.height, 0, -999999, 999999);
+			GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+			GL11.glEnable(GL11.GL_BLEND);
 //			glMatrixMode(GL_MODELVIEW);
 //			glLoadIdentity();
 			glViewport(0, 0, size.width, size.height);
