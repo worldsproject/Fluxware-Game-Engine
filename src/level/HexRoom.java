@@ -46,8 +46,21 @@ public class HexRoom extends Room
 		
 		adjust_dimensions();
 	}
-	
-	
+
+	public double getR()
+	{
+		return r;
+	}
+
+	public double getH()
+	{
+		return h;
+	}
+
+	public double getS()
+	{
+		return s;
+	}
 
 	public int getTileHeight()
 	{

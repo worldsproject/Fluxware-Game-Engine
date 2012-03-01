@@ -13,6 +13,7 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.util.LinkedList;
 
+import level.HexRoom;
 import level.IsometricRoom;
 import level.Room;
 import level.TiledRoom;
@@ -234,7 +235,22 @@ public class Sprite implements Serializable
 				
 				glTranslatef(tx, ty, location.layer);				
 				break;
-			case FLAT_HEX: break;
+			case FLAT_HEX: 
+				HexRoom hr = (HexRoom)room;
+				
+				double width_mod = hr.getH() + hr.getS();
+				double height_mod = 0;
+				
+				if(location.y % 2 == 1)
+				{
+					height_mod = hr.getR();
+				}
+				
+				tx = (int)(location.x * width_mod);
+				ty = (int)((location.y * hr.getHeight()) + height_mod);
+				
+				glTranslatef(tx, ty, location.layer);
+				break;
 			case POINTED_HEX: break;
 			case ISOMETRIC: 
 				IsometricRoom ir = (IsometricRoom)room;
