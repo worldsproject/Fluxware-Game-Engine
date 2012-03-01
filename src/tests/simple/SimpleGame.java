@@ -29,7 +29,7 @@ public class SimpleGame extends Game
 	public static void main(String[] args)
 	{
 		System.setProperty("org.lwjgl.util.Debug", "true");
-		Room r = new Room(500, 500, 10);
+		Room r = new Room(500, 500);
 		SimpleGame g = new SimpleGame(r);
 		g.startGame();
 	}

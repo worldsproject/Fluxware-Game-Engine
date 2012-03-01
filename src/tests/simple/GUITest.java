@@ -14,7 +14,7 @@ public class GUITest extends Game
 {
 	public static void main(String args[])
 	{
-		Room r = new Room(500, 500, 10);
+		Room r = new Room(500, 500);
 		GUITest g = new GUITest(r);
 		g.startGame();
 	}

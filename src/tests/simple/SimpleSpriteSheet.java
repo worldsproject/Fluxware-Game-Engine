@@ -27,7 +27,7 @@ public class SimpleSpriteSheet extends Game
 	
 	public static void main(String args[])
 	{
-		Room r = new Room(500, 500, 10);
+		Room r = new Room(500, 500);
 		SimpleSpriteSheet g = new SimpleSpriteSheet(r);
 		g.startGame();
 	}

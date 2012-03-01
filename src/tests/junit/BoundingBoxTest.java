@@ -38,7 +38,7 @@ public class BoundingBoxTest
 	@Before
 	public void setUp() throws Exception 
 	{
-		room = new Room(500, 500, 1);
+		room = new Room(500, 500);
 		
 		game = new SimpleGame(room);
 		

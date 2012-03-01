@@ -25,7 +25,7 @@ public class LinearMainMenu extends Room
 	
 	public LinearMainMenu(Game game, int width, int height, int layers)
 	{
-		super(width, height, layers);
+		super(width, height);
 		
 		mid_height = (int)(height * 0.4);
 		mid_width = width/2;
