@@ -13,6 +13,7 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.util.LinkedList;
 
+import level.IsometricRoom;
 import level.Room;
 import level.TiledRoom;
 import util.ImageData;
@@ -183,6 +184,29 @@ public class Sprite implements Serializable
 		this.wide = wide;
 		this.tall = tall;
 	}
+	
+	public void setSpriteSheetPosition(int columns, int rows, int which_column, int which_row)
+	{
+		this.columns = columns;
+		this.rows = rows;
+		this.which_column = which_column;
+		this.which_row = which_row;
+		this.wide = 1;
+		this.tall = 1;
+	}
+	
+	public void setSpriteSheetPosition(int column, int row)
+	{
+		this.which_column = column;
+		this.which_row = row;
+	}
+	
+	public void setSpriteSheetGrid(int columns, int rows)
+	{
+		this.columns = columns;
+		this.rows = rows;
+	}
+
 
 	/**
 	 * Returns the Object to be printed.
@@ -195,7 +219,7 @@ public class Sprite implements Serializable
 			case NORMAL: drawNormal(); break;
 			case TILED: drawTiled(); break;
 			case HEX: break;
-			case ISOMETRIC: break;
+			case ISOMETRIC: drawIsometric(); break;
 		}
 	}
 	
@@ -239,6 +263,47 @@ public class Sprite implements Serializable
 		int cellSize = r.getCellSize();
 		int tx = (int)location.x * cellSize;
 		int ty = (int)location.y * cellSize;
+		
+		glTranslatef(tx, ty, location.layer);
+		
+		float texture_X = ((float)which_column/(float)columns);
+		float texture_Y = ((float)which_row/(float)rows);
+		float texture_XplusWidth = ((float)(which_column+wide)/(float)columns);
+		float texture_YplusHeight = ((float)(which_row+tall)/(float)rows);
+		
+		glBegin(GL_QUADS);
+		{
+			glTexCoord2f(texture_X, texture_Y);
+			glVertex2f(0, 0);
+			
+			glTexCoord2f(texture_X, texture_YplusHeight);
+			glVertex2f(0, getHeight());
+			
+			glTexCoord2f(texture_XplusWidth, texture_YplusHeight);
+			glVertex2f(getWidth(), getHeight());
+			
+			glTexCoord2f(texture_XplusWidth, texture_Y);
+			glVertex2f(getWidth(), 0);
+		}
+		glEnd();
+		glPopMatrix();
+	}
+	
+	private void drawIsometric()
+	{
+		glPushMatrix();
+		imageData.getTexture().bind();
+		
+		IsometricRoom r = (IsometricRoom)room;
+		
+		int x_offset = 0;
+		if(location.x % 2 == 1)
+		{
+			x_offset = r.getWidth() / 2;
+		}
+		
+		int tx = ((int)location.x * r.getWidth()) + x_offset;
+		int ty = (int)location.y * r.getHeight() / 2;
 		
 		glTranslatef(tx, ty, location.layer);
 		
