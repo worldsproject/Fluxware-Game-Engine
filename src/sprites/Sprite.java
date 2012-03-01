@@ -194,19 +194,6 @@ public class Sprite implements Serializable
 		this.wide = 1;
 		this.tall = 1;
 	}
-	
-	public void setSpriteSheetPosition(int column, int row)
-	{
-		this.which_column = column;
-		this.which_row = row;
-	}
-	
-	public void setSpriteSheetGrid(int columns, int rows)
-	{
-		this.columns = columns;
-		this.rows = rows;
-	}
-
 
 	/**
 	 * Returns the Object to be printed.

@@ -5,12 +5,12 @@ public class IsometricRoom extends Room
 	private int tile_height = 60;
 	private int tile_width = 64;
 	
-	private IsometricRoom(int width, int height)
+	public IsometricRoom(int width, int height)
 	{
 		super(width, height);
 	}
 	
-	private IsometricRoom(int width, int height, int tileWidth, int tileHeight)
+	public IsometricRoom(int width, int height, int tileWidth, int tileHeight)
 	{
 		super(width, height);
 		
