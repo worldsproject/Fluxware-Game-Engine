@@ -2,5 +2,5 @@ package level;
 
 public enum Type
 {
-	NORMAL, TILED, HEX, ISOMETRIC
+	NORMAL, TILED, POINTED_HEX, ISOMETRIC, FLAT_HEX
 }

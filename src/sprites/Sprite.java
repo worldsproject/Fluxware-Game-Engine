@@ -217,7 +217,8 @@ public class Sprite implements Serializable
 		{
 			case NORMAL: drawNormal(); break;
 			case TILED: drawTiled(); break;
-			case HEX: break;
+			case FLAT_HEX: break;
+			case POINTED_HEX: break;
 			case ISOMETRIC: drawIsometric(); break;
 		}
 	}
