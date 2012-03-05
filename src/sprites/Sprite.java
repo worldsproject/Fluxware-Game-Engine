@@ -247,8 +247,8 @@ public class Sprite implements Serializable
 				}
 				
 				tx = (int)(location.x * width_mod);
-				ty = (int)((location.y * hr.getHeight()) + height_mod);
-				
+				ty = (int)((location.y * hr.getTileHeight()) + height_mod);
+
 				glTranslatef(tx, ty, location.layer);
 				break;
 			case POINTED_HEX: break;
