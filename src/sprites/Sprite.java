@@ -241,7 +241,7 @@ public class Sprite implements Serializable
 				double width_mod = hr.getH() + hr.getS();
 				double height_mod = 0;
 				
-				if(location.y % 2 == 1)
+				if(location.x % 2 == 1)
 				{
 					height_mod = hr.getR();
 				}

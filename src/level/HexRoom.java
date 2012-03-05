@@ -26,7 +26,7 @@ public class HexRoom extends Room
 	{
 		super(width, height);
 		
-		if(type != Type.POINTED_HEX || type != Type.FLAT_HEX)
+		if(type != Type.POINTED_HEX && type != Type.FLAT_HEX)
 			throw new IllegalArgumentException("HexRoom may only be of POINTED_HEX or FLAT_HEX type.");
 		
 		setTileWidth(tile_width);

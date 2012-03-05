@@ -40,7 +40,7 @@ public class ImageUtil
 		
 		for(int i = 0; i < buf.getWidth(); i++)
 		{
-			for(int j = 0; j < buf.getWidth(); j++)
+			for(int j = 0; j < buf.getHeight(); j++)
 			{
 				if(new Color(buf.getRGB(i, j)).getAlpha() != 0)
 				{
