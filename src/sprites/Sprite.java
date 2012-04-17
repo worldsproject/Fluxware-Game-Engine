@@ -251,7 +251,21 @@ public class Sprite implements Serializable
 
 				glTranslatef(tx, ty, location.layer);
 				break;
-			case POINTED_HEX: break;
+			case POINTED_HEX: 
+				hr = (HexRoom)room;
+				width_mod = 0;
+				height_mod = hr.getS() + hr.getH();
+				
+				if(location.y % 2 == 1)
+				{
+					width_mod = hr.getR();
+				}
+				
+				tx = (int)((location.x * hr.getTileWidth()) + width_mod);
+				ty = (int)(location.y * height_mod);
+
+				glTranslatef(tx, ty, location.layer);
+				break;
 			case ISOMETRIC: 
 				IsometricRoom ir = (IsometricRoom)room;
 				
