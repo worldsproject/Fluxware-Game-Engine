@@ -19,12 +19,17 @@ public class PointedHex extends Game
 		Sprite c = new Sprite(one, 2, 0);
 		Sprite d = new Sprite(one, 0, 1);
 		Sprite e = new Sprite(one, 1, 1);
+		Sprite f = new Sprite(one, 0, 2);
+		Sprite g = new Sprite(one, 1, 2);
+		
 		
 		r.addSprite(a);
 		r.addSprite(b);
 		r.addSprite(c);
 		r.addSprite(d);
 		r.addSprite(e);
+		r.addSprite(f);
+		r.addSprite(g);
 	}
 	
 	public static void main(String args[])

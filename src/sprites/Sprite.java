@@ -13,6 +13,8 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.util.LinkedList;
 
+import javax.sound.midi.SysexMessage;
+
 import level.HexRoom;
 import level.IsometricRoom;
 import level.Room;
@@ -254,11 +256,11 @@ public class Sprite implements Serializable
 			case POINTED_HEX: 
 				hr = (HexRoom)room;
 				width_mod = 0;
-				height_mod = hr.getS() + hr.getH();
+				height_mod = hr.getS() + hr.getH()+6;
 				
 				if(location.y % 2 == 1)
 				{
-					width_mod = hr.getR();
+					width_mod = hr.getR()-5;
 				}
 				
 				tx = (int)((location.x * hr.getTileWidth()) + width_mod);
